@@ -25,7 +25,7 @@
         body.light-theme input.bg-slate-800, body.light-theme input.bg-slate-900 { background-color: #ffffff !important; border-color: #cbd5e1 !important; color: #0f172a !important; }
         body.light-theme .border-slate-700 { border-color: #cbd5e1 !important; }
 
-        /* Estilos Exclusivos para o PDF Gerado (oculto na tela) */
+        /* Estilos Exclusivos para o PDF Gerado */
         #pdf-template { display: none; }
         .pdf-page { padding: 30px; font-family: Arial, sans-serif; color: #111; font-size: 12px; line-height: 1.5; background: #fff; }
         .pdf-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f59e0b; padding-bottom: 10px; margin-bottom: 20px; }
@@ -35,8 +35,8 @@
         .pdf-row { display: flex; justify-content: space-between; margin-bottom: 5px; }
         .pdf-label { font-weight: bold; }
         .pdf-img-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
-        .pdf-img-card { width: 31%; text-align: center; font-size: 10px; }
-        .pdf-img-card img { width: 100%; height: 120px; object-fit: cover; border: 1px solid #ccc; border-radius: 4px; }
+        .pdf-img-card { width: 31%; text-align: center; font-size: 10px; border: 1px solid #eee; padding: 4px; border-radius: 4px; }
+        .pdf-img-card img { width: 100%; height: 110px; object-fit: cover; border-radius: 3px; }
         .pdf-signatures { display: flex; justify-content: space-between; margin-top: 30px; }
         .pdf-sig-box { width: 45%; text-align: center; }
         .pdf-sig-box img { max-width: 100%; height: 80px; border-bottom: 1px solid #000; margin-bottom: 5px; }
@@ -44,12 +44,14 @@
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-300">
 
+    <!-- Top Bar -->
     <header class="bg-slate-800 border-b border-slate-700 py-3 px-4 sm:px-6 flex justify-between items-center shadow-md sticky top-0 z-40">
         <div class="flex items-center space-x-2 sm:space-x-3">
             <button onclick="toggleMenu()" class="text-slate-300 hover:text-amber-500 text-xl focus:outline-none mr-2">
                 <i class="fa-solid fa-bars"></i>
             </button>
-            <img src="cabe.png" alt="Logo Viecelli" class="h-7 sm:h-8 w-auto object-contain">
+            <!-- Logo Alterada para login.png -->
+            <img src="login.png" alt="Logo Viecelli" class="h-7 sm:h-8 w-auto object-contain">
             <div>
                 <h1 class="font-bold text-xs sm:text-sm text-white leading-tight">Aceite de Entrega</h1>
                 <p class="text-[10px] sm:text-[11px] text-slate-400">Validação em campo</p>
@@ -60,6 +62,7 @@
         </button>
     </header>
 
+    <!-- Menu Lateral -->
     <div id="sideMenuOverlay" onclick="toggleMenu()" class="fixed inset-0 bg-black/60 z-[60] hidden transition-opacity"></div>
     <div id="sideMenu" class="fixed inset-y-0 left-0 transform -translate-x-full transition-transform duration-300 bg-slate-800 w-64 shadow-2xl z-[70] flex flex-col border-r border-slate-700">
         <div class="p-4 border-b border-slate-700 flex justify-between items-center">
@@ -102,14 +105,14 @@
                 </div>
             </div>
 
-            <!-- ETAPA 1 -->
+            <!-- ETAPA 1: Pedido -->
             <div id="etapa1" class="etapa-form space-y-4 bg-slate-800 border border-slate-700 rounded-xl p-4 shadow-lg">
                 <h2 class="text-[11px] sm:text-xs font-bold text-amber-400 uppercase tracking-wider pb-2 border-b border-slate-700 flex items-center">
                     <i class="fa-solid fa-file-lines mr-2"></i> 1. Identificação do Pedido
                 </h2>
                 <div class="space-y-3">
                     <div>
-                        <label class="block text-[11px] sm:text-xs font-semibold text-slate-300 mb-1">Nr. do Pedido</label>
+                        <label class="block text-[11px] sm:text-xs font-semibold text-slate-300 mb-1">Nr. do Pedido *</label>
                         <div class="flex space-x-2">
                             <input type="number" id="inputNrPedido" placeholder="Ex: 10203" class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-500">
                             <button onclick="buscarPedido()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-lg text-xs font-semibold transition flex items-center">
@@ -118,11 +121,11 @@
                         </div>
                     </div>
                     <div>
-                        <label class="block text-[11px] sm:text-xs font-semibold text-slate-300 mb-1">Cliente / Marca</label>
+                        <label class="block text-[11px] sm:text-xs font-semibold text-slate-300 mb-1">Cliente / Marca *</label>
                         <input type="text" id="inputCliente" placeholder="Ex: Arezzo" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-500">
                     </div>
                     <div>
-                        <label class="block text-[11px] sm:text-xs font-semibold text-slate-300 mb-1">Endereço da Obra</label>
+                        <label class="block text-[11px] sm:text-xs font-semibold text-slate-300 mb-1">Endereço da Obra *</label>
                         <input type="text" id="inputEndereco" placeholder="Ex: Iguatemi" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-500">
                     </div>
                 </div>
@@ -133,7 +136,7 @@
                 </div>
             </div>
 
-            <!-- ETAPA 2 (Inalterada) -->
+            <!-- ETAPA 2: Fotos com Título e Descrição -->
             <div id="etapa2" class="etapa-form hidden space-y-4 bg-slate-800 border border-slate-700 rounded-xl p-4 shadow-lg">
                 <div class="flex items-center justify-between pb-2 border-b border-slate-700">
                     <h2 class="text-[11px] sm:text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center">
@@ -161,7 +164,7 @@
                 </div>
             </div>
 
-            <!-- ETAPA 3 (Inalterada) -->
+            <!-- ETAPA 3: Termo de Aceite ÍNTEGRA -->
             <div id="etapa3" class="etapa-form hidden space-y-4 bg-slate-800 border border-slate-700 rounded-xl p-4 shadow-lg">
                 <div class="bg-indigo-500/10 border border-indigo-500/30 p-3 rounded-xl flex items-center space-x-3 mb-2">
                     <div class="bg-indigo-500 text-white rounded-full w-8 h-8 flex items-center justify-center shrink-0"><i class="fa-solid fa-handshake"></i></div>
@@ -170,13 +173,18 @@
                 <h2 class="text-[11px] sm:text-xs font-bold text-amber-400 uppercase tracking-wider pb-2 border-b border-slate-700 flex items-center">
                     <i class="fa-solid fa-circle-info mr-2"></i> 3. Termo de Aceite de Entrega
                 </h2>
+                
+                <!-- TEXTO COMPLETO RESTAURADO -->
                 <div class="bg-slate-900 p-4 rounded-lg border border-slate-700/80 text-[11px] sm:text-xs text-slate-300 space-y-2 leading-relaxed">
-                    <p class="font-semibold text-white">Este documento formaliza a entrega do projeto executado...</p>
+                    <p class="font-semibold text-white">Este documento formaliza a entrega do projeto executado, considerando os requisitos, cronograma e os critérios de aceitação previamente relacionados e acordados através de um contrato entre o cliente e a Viecelli Móveis S/A.</p>
                     <ul class="list-disc list-inside space-y-1 text-slate-400">
                         <li>A partir da assinatura deste Termo, será considerada como encerrada a etapa de montagem.</li>
                         <li>Qualquer problema relacionado aos procedimentos, dentro do prazo, será resolvido sob garantia.</li>
+                        <li>A garantia não é estendida a produtos/serviços de terceiros não contratados pela Viecelli.</li>
                     </ul>
+                    <p class="text-white pt-1">O Cliente declara que a Viecelli Móveis S/A entregou os produtos/serviços de acordo com os requisitos e prazos.</p>
                 </div>
+
                 <div class="bg-slate-900 p-3 rounded-xl border border-amber-500/50 flex items-start space-x-3">
                     <input type="checkbox" id="checkTermo" class="mt-0.5 w-4 h-4 accent-amber-500 cursor-pointer shrink-0">
                     <label for="checkTermo" class="text-[11px] sm:text-xs text-slate-200 cursor-pointer leading-tight">Estou de acordo com o termo de aceite de entrega.</label>
@@ -187,48 +195,74 @@
                 </div>
             </div>
 
-            <!-- ETAPA 4 (Inalterada) -->
+            <!-- ETAPA 4: Checklist com Evidência Obrigatoria se "NÃO" -->
             <div id="etapa4" class="etapa-form hidden space-y-4 bg-slate-800 border border-slate-700 rounded-xl p-4 shadow-lg">
                 <h2 class="text-[11px] sm:text-xs font-bold text-amber-400 uppercase tracking-wider pb-2 border-b border-slate-700 flex items-center">
                     <i class="fa-solid fa-clipboard-question mr-2"></i> 4. Checklist de Avaliação
                 </h2>
                 <div class="space-y-4">
+                    <!-- Transporte -->
                     <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-700 space-y-3">
                         <h3 class="text-[11px] font-bold text-amber-300 uppercase"><i class="fa-solid fa-truck-fast mr-1"></i> Transporte / Embalagem</h3>
                         <div>
                             <p class="text-[11px] text-white">Mobiliário devidamente embalado/transportado?</p>
                             <div class="flex space-x-4 mt-1">
-                                <label class="text-xs"><input type="radio" name="t1" value="SIM" checked onchange="toggleObs('obs_t1', false)" class="accent-amber-500"> SIM</label>
-                                <label class="text-xs"><input type="radio" name="t1" value="NÃO" onchange="toggleObs('obs_t1', true)" class="accent-amber-500"> NÃO</label>
+                                <label class="text-xs"><input type="radio" name="t1" value="SIM" checked onchange="toggleObs('t1', false)" class="accent-amber-500"> SIM</label>
+                                <label class="text-xs"><input type="radio" name="t1" value="NÃO" onchange="toggleObs('t1', true)" class="accent-amber-500"> NÃO</label>
                             </div>
-                            <div id="obs_t1" class="mt-2 space-y-2"><input type="text" id="input_obs_t1" placeholder="Observações" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs text-white"></div>
+                            <div id="obs_t1" class="hidden mt-2 space-y-2">
+                                <input type="text" id="input_obs_t1" placeholder="Motivo da não conformidade (obrigatório)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs text-white">
+                                <label class="flex items-center justify-center w-full h-10 border border-slate-600 border-dashed rounded cursor-pointer hover:bg-slate-800 text-[10px] text-slate-300">
+                                    <i class="fa-solid fa-camera mr-2"></i> Anexar Evidência (Obrigatório)
+                                    <input type="file" id="input_file_t1" accept="image/*" class="hidden" onchange="carregarEvidencia('t1', event)">
+                                </label>
+                                <div id="preview_evidencia_t1" class="hidden"></div>
+                            </div>
                         </div>
+
                         <div class="pt-2 border-t border-slate-700/50">
                             <p class="text-[11px] text-white">Obra entregue limpa (sem embalagens)?</p>
                             <div class="flex space-x-4 mt-1">
-                                <label class="text-xs"><input type="radio" name="t2" value="SIM" checked onchange="toggleObs('obs_t2', false)" class="accent-amber-500"> SIM</label>
-                                <label class="text-xs"><input type="radio" name="t2" value="NÃO" onchange="toggleObs('obs_t2', true)" class="accent-amber-500"> NÃO</label>
+                                <label class="text-xs"><input type="radio" name="t2" value="SIM" checked onchange="toggleObs('t2', false)" class="accent-amber-500"> SIM</label>
+                                <label class="text-xs"><input type="radio" name="t2" value="NÃO" onchange="toggleObs('t2', true)" class="accent-amber-500"> NÃO</label>
                             </div>
-                            <div id="obs_t2" class="mt-2 space-y-2"><input type="text" id="input_obs_t2" placeholder="Observações" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs text-white"></div>
+                            <div id="obs_t2" class="hidden mt-2 space-y-2">
+                                <input type="text" id="input_obs_t2" placeholder="Motivo da não conformidade (obrigatório)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs text-white">
+                                <label class="flex items-center justify-center w-full h-10 border border-slate-600 border-dashed rounded cursor-pointer hover:bg-slate-800 text-[10px] text-slate-300">
+                                    <i class="fa-solid fa-camera mr-2"></i> Anexar Evidência (Obrigatório)
+                                    <input type="file" id="input_file_t2" accept="image/*" class="hidden" onchange="carregarEvidencia('t2', event)">
+                                </label>
+                                <div id="preview_evidencia_t2" class="hidden"></div>
+                            </div>
                         </div>
                     </div>
+
+                    <!-- Mobiliário -->
                     <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-700 space-y-3">
                         <h3 class="text-[11px] font-bold text-amber-300 uppercase"><i class="fa-solid fa-couch mr-1"></i> Mobiliário</h3>
                         <div>
                             <p class="text-[11px] text-white">Móveis entregues conforme contrato?</p>
                             <div class="flex space-x-4 mt-1">
-                                <label class="text-xs"><input type="radio" name="m1" value="SIM" checked onchange="toggleObs('obs_m1', false)" class="accent-amber-500"> SIM</label>
-                                <label class="text-xs"><input type="radio" name="m1" value="NÃO" onchange="toggleObs('obs_m1', true)" class="accent-amber-500"> NÃO</label>
+                                <label class="text-xs"><input type="radio" name="m1" value="SIM" checked onchange="toggleObs('m1', false)" class="accent-amber-500"> SIM</label>
+                                <label class="text-xs"><input type="radio" name="m1" value="NÃO" onchange="toggleObs('m1', true)" class="accent-amber-500"> NÃO</label>
                             </div>
-                            <div id="obs_m1" class="mt-2 space-y-2"><input type="text" id="input_obs_m1" placeholder="Observações" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs text-white"></div>
+                            <div id="obs_m1" class="hidden mt-2 space-y-2">
+                                <input type="text" id="input_obs_m1" placeholder="Motivo da não conformidade (obrigatório)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs text-white">
+                                <label class="flex items-center justify-center w-full h-10 border border-slate-600 border-dashed rounded cursor-pointer hover:bg-slate-800 text-[10px] text-slate-300">
+                                    <i class="fa-solid fa-camera mr-2"></i> Anexar Evidência (Obrigatório)
+                                    <input type="file" id="input_file_m1" accept="image/*" class="hidden" onchange="carregarEvidencia('m1', event)">
+                                </label>
+                                <div id="preview_evidencia_m1" class="hidden"></div>
+                            </div>
                         </div>
                     </div>
+
+                    <!-- Montagem -->
                     <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-700 space-y-3">
                         <h3 class="text-[11px] font-bold text-amber-300 uppercase"><i class="fa-solid fa-hammer mr-1"></i> Montagem</h3>
                         <div>
                             <p class="text-[11px] text-white">De 1 a 10, qual a nota para a equipa de montagem?</p>
                             <div class="flex flex-wrap gap-1.5 mt-2">
-                                <!-- Notas 1 a 10 mantidas -->
                                 <script>
                                     for(let i=1; i<=10; i++){
                                         document.write(`<label class="bg-slate-800 px-2.5 py-1.5 rounded text-xs cursor-pointer border border-slate-700 flex items-center justify-center min-w-[32px] hover:bg-amber-500 hover:text-slate-900 transition-colors"><input type="radio" name="notaMontagem" value="${i}" ${i===10?'checked':''} class="accent-amber-500 mr-1"> ${i}</label>`);
@@ -245,7 +279,7 @@
                 </div>
             </div>
 
-            <!-- ETAPA 5 -->
+            <!-- ETAPA 5: Assinaturas e Validação Estrita -->
             <div id="etapa5" class="etapa-form hidden space-y-4 bg-slate-800 border border-slate-700 rounded-xl p-4 shadow-lg">
                 <h2 class="text-[11px] sm:text-xs font-bold text-amber-400 uppercase tracking-wider pb-2 border-b border-slate-700 flex items-center">
                     <i class="fa-solid fa-file-signature mr-2"></i> 5. Conformidade e Assinaturas
@@ -265,15 +299,16 @@
                 </div>
 
                 <div class="space-y-4">
+                    <!-- Cliente -->
                     <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-700 space-y-2.5">
                         <h3 class="text-[11px] font-bold text-amber-300 uppercase"><i class="fa-solid fa-user mr-1"></i> Cliente</h3>
                         <div class="space-y-2">
-                            <input type="text" id="clienteNome" placeholder="Nome completo" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-sm text-white">
-                            <input type="tel" id="clienteTel" placeholder="Telefone / WhatsApp" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-sm text-white">
-                            <input type="email" id="clienteEmail" placeholder="E-mail (Receberá cópia)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-sm text-white">
+                            <input type="text" id="clienteNome" placeholder="Nome completo do Cliente *" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-sm text-white">
+                            <input type="tel" id="clienteTel" placeholder="Telefone / WhatsApp *" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-sm text-white">
+                            <input type="email" id="clienteEmail" placeholder="E-mail (Receberá cópia) *" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-sm text-white">
                         </div>
                         <div class="pt-1">
-                            <label class="block text-[10px] text-slate-400 mb-1">Assinatura do Cliente</label>
+                            <label class="block text-[10px] text-slate-400 mb-1">Assinatura do Cliente *</label>
                             <div class="bg-white rounded border border-slate-600 relative overflow-hidden">
                                 <canvas id="canvasCliente" height="80" class="signature-canvas w-full block"></canvas>
                                 <button onclick="limparCanvas('canvasCliente')" class="absolute top-1 right-1 bg-slate-200 text-slate-800 text-[9px] px-1.5 py-0.5 rounded">Limpar</button>
@@ -281,14 +316,15 @@
                         </div>
                     </div>
 
+                    <!-- Montador -->
                     <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-700 space-y-2.5">
                         <div class="flex justify-between items-center">
                             <h3 class="text-[11px] font-bold text-indigo-400 uppercase"><i class="fa-solid fa-screwdriver-wrench mr-1"></i> Montador</h3>
                             <span class="text-[9px] text-indigo-300 bg-indigo-900/30 px-2 py-0.5 rounded"><i class="fa-solid fa-check"></i> Assinatura Automática</span>
                         </div>
-                        <input type="text" id="montadorNome" placeholder="Nome do Montador" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-sm text-white">
+                        <input type="text" id="montadorNome" placeholder="Nome do Montador *" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-sm text-white">
                         <div>
-                            <label class="block text-[10px] text-slate-400 mb-1">Assinatura do Montador</label>
+                            <label class="block text-[10px] text-slate-400 mb-1">Assinatura do Montador *</label>
                             <div class="bg-white rounded border border-slate-600 relative overflow-hidden">
                                 <canvas id="canvasMontador" height="80" class="signature-canvas w-full block"></canvas>
                                 <button onclick="limparCanvas('canvasMontador')" class="absolute top-1 right-1 bg-slate-200 text-slate-800 text-[9px] px-1.5 py-0.5 rounded">Limpar</button>
@@ -304,21 +340,16 @@
             </div>
         </div>
 
-        <!-- MODO ADMIN (TURBINADO) -->
+        <!-- MODO ADMIN -->
         <div id="viewAdmin" class="hidden space-y-4">
-            
-            <!-- ABAS DO ADMIN -->
             <div class="flex space-x-2 overflow-x-auto bg-slate-800 p-2 rounded-xl border border-slate-700">
                 <button onclick="mudarAbaAdmin('admin-relatorios')" class="aba-btn flex-1 py-2 px-3 bg-slate-700 text-white text-[11px] font-bold rounded-lg transition"><i class="fa-solid fa-chart-line mr-1"></i> Relatórios</button>
                 <button onclick="mudarAbaAdmin('admin-pedidos')" class="aba-btn flex-1 py-2 px-3 text-slate-400 hover:bg-slate-700/50 text-[11px] font-bold rounded-lg transition"><i class="fa-solid fa-box mr-1"></i> Pedidos</button>
                 <button onclick="mudarAbaAdmin('admin-config')" class="aba-btn flex-1 py-2 px-3 text-slate-400 hover:bg-slate-700/50 text-[11px] font-bold rounded-lg transition"><i class="fa-solid fa-gear mr-1"></i> Config.</button>
             </div>
 
-            <!-- Aba Relatórios (Antiga Tabela) -->
             <div id="admin-relatorios" class="aba-conteudo bg-slate-800 border border-slate-700 rounded-xl p-4 shadow-lg space-y-4">
-                <div>
-                    <h2 class="text-sm font-bold text-white">Relatórios Salvos</h2>
-                </div>
+                <h2 class="text-sm font-bold text-white">Relatórios Salvos</h2>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse text-[11px] whitespace-nowrap">
                         <thead><tr class="border-b border-slate-700 text-slate-400 bg-slate-900/50"><th class="p-2">Pedido</th><th class="p-2">Cliente</th><th class="p-2">Tipo</th></tr></thead>
@@ -327,11 +358,8 @@
                 </div>
             </div>
 
-            <!-- Aba Cadastrar Pedidos -->
             <div id="admin-pedidos" class="aba-conteudo hidden bg-slate-800 border border-slate-700 rounded-xl p-4 shadow-lg space-y-4">
-                <div>
-                    <h2 class="text-sm font-bold text-white border-b border-slate-700 pb-2">Gerenciar Pedidos (Pré-cadastro)</h2>
-                </div>
+                <h2 class="text-sm font-bold text-white border-b border-slate-700 pb-2">Gerenciar Pedidos (Pré-cadastro)</h2>
                 <div class="space-y-3 bg-slate-900 p-3 rounded-lg border border-slate-700">
                     <input type="number" id="novoNrPedido" placeholder="Nº Pedido" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs text-white">
                     <input type="text" id="novoClientePedido" placeholder="Cliente / Marca" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs text-white">
@@ -346,12 +374,8 @@
                 </div>
             </div>
 
-            <!-- Aba Configurações do Sistema -->
             <div id="admin-config" class="aba-conteudo hidden bg-slate-800 border border-slate-700 rounded-xl p-4 shadow-lg space-y-4">
-                <div>
-                    <h2 class="text-sm font-bold text-white border-b border-slate-700 pb-2">Configurações de E-mail</h2>
-                    <p class="text-[10px] text-slate-400 mt-2">Este é o e-mail central da empresa que receberá cópia de todos os Termos gerados.</p>
-                </div>
+                <h2 class="text-sm font-bold text-white border-b border-slate-700 pb-2">Configurações de E-mail</h2>
                 <div class="space-y-3 bg-slate-900 p-3 rounded-lg border border-slate-700">
                     <label class="block text-[11px] text-slate-300 font-bold">E-mail Padrão do Sistema</label>
                     <input type="email" id="emailPadraoAdmin" placeholder="entregas@viecelli.com.br" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-sm text-white">
@@ -362,13 +386,12 @@
 
     </main>
 
-    <!-- Modal de Configuração (Assinatura Local Montador) -->
+    <!-- Modal Assinatura -->
     <div id="modalConfig" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4 z-[80]">
         <div class="bg-slate-800 border border-slate-700 rounded-2xl w-full max-w-sm p-6 space-y-4 shadow-2xl">
             <h3 class="text-base font-bold text-white border-b border-slate-700 pb-2"><i class="fa-solid fa-signature text-amber-500 mr-2"></i>Configurar Assinatura</h3>
             <p class="text-xs text-slate-300">Desenhe a sua assinatura abaixo para guardar no dispositivo.</p>
             <div class="bg-slate-900 p-3 rounded-xl border border-slate-700">
-                <label class="block text-[10px] text-slate-400 mb-1">Assinatura Padrão do Montador:</label>
                 <div class="bg-white rounded border border-slate-600 relative overflow-hidden">
                     <canvas id="canvasConfigAssinatura" height="120" class="signature-canvas w-full block"></canvas>
                     <button onclick="limparCanvas('canvasConfigAssinatura')" class="absolute top-1 right-1 bg-slate-200 text-slate-800 text-[9px] px-1.5 py-0.5 rounded">Limpar</button>
@@ -384,46 +407,47 @@
     <!-- Template PDF Escondido -->
     <div id="pdf-template">
         <div class="pdf-page" id="pdf-content">
-            <!-- Cabeçalho -->
             <div class="pdf-header">
                 <div>
                     <h1 class="pdf-title">TERMO DE ACEITE DE ENTREGA</h1>
-                    <p style="color: #666; margin-top:5px;">Emitido via Aplicação Web Viecelli</p>
+                    <p style="color: #666; margin-top:3px;">Viecelli Móveis S/A</p>
                 </div>
-                <!-- Imagem Logo Base64 genérica ou texto se imagem falhar. Idealmente use base64 aqui -->
-                <div style="font-weight:bold; font-size: 16px; color: #f59e0b;">VIECELLI MÓVEIS</div>
+                <div style="font-weight:bold; font-size: 16px; color: #f59e0b;">VIECELLI</div>
             </div>
 
-            <!-- Dados do Pedido -->
             <div class="pdf-section">
                 <h3>1. Dados do Pedido</h3>
                 <div class="pdf-row"><span class="pdf-label">Nº Pedido:</span> <span id="pdf-num"></span></div>
                 <div class="pdf-row"><span class="pdf-label">Cliente / Marca:</span> <span id="pdf-cli"></span></div>
                 <div class="pdf-row"><span class="pdf-label">Endereço da Obra:</span> <span id="pdf-end"></span></div>
-                <div class="pdf-row" style="margin-top:5px;"><span class="pdf-label">Data da Validação:</span> <span id="pdf-data"></span></div>
+                <div class="pdf-row" style="margin-top:5px;"><span class="pdf-label">Data:</span> <span id="pdf-data"></span></div>
             </div>
 
-            <!-- Checklist -->
             <div class="pdf-section">
                 <h3>2. Avaliação de Conformidade (Checklist)</h3>
                 <div class="pdf-row"><span class="pdf-label">Transporte Adequado?</span> <span id="pdf-t1"></span></div>
-                <div class="pdf-row" style="margin-bottom:8px; font-style:italic; color:#555;" id="pdf-obs-t1"></div>
+                <div class="pdf-row" style="margin-bottom:6px; font-style:italic; color:#555;" id="pdf-obs-t1"></div>
                 
                 <div class="pdf-row"><span class="pdf-label">Obra limpa (sem embalagens)?</span> <span id="pdf-t2"></span></div>
-                <div class="pdf-row" style="margin-bottom:8px; font-style:italic; color:#555;" id="pdf-obs-t2"></div>
+                <div class="pdf-row" style="margin-bottom:6px; font-style:italic; color:#555;" id="pdf-obs-t2"></div>
                 
                 <div class="pdf-row"><span class="pdf-label">Móveis conforme contrato?</span> <span id="pdf-m1"></span></div>
-                <div class="pdf-row" style="margin-bottom:8px; font-style:italic; color:#555;" id="pdf-obs-m1"></div>
+                <div class="pdf-row" style="margin-bottom:6px; font-style:italic; color:#555;" id="pdf-obs-m1"></div>
                 
                 <div class="pdf-row"><span class="pdf-label">Nota da Montagem (1-10):</span> <span id="pdf-nota"></span></div>
-                <div class="pdf-row" style="margin-bottom:8px; font-style:italic; color:#555;" id="pdf-obs-nota"></div>
+                <div class="pdf-row" style="margin-bottom:6px; font-style:italic; color:#555;" id="pdf-obs-nota"></div>
             </div>
 
-            <!-- Termo e Assinaturas -->
             <div class="pdf-section">
-                <h3>3. Conformidade e Assinaturas</h3>
-                <p style="margin-bottom: 15px;"><strong>Status Final:</strong> <span id="pdf-status" style="color: #f59e0b;"></span></p>
-                <p style="margin-bottom: 15px; font-size: 10px; color:#444;">O Cliente declara que a Viecelli Móveis S/A entregou os produtos/serviços de acordo com os requisitos e prazos. Qualquer problema relacionado aos procedimentos, dentro do prazo, será resolvido sob garantia.</p>
+                <h3>3. Termo de Aceite e Conformidade</h3>
+                <p style="margin-bottom: 8px; font-size: 10px; color:#333; line-height: 1.4;">
+                    Este documento formaliza a entrega do projeto executado, considerando os requisitos, cronograma e os critérios de aceitação previamente relacionados e acordados através de um contrato entre o cliente e a Viecelli Móveis S/A.<br>
+                    • A partir da assinatura deste Termo, será considerada como encerrada a etapa de montagem.<br>
+                    • Qualquer problema relacionado aos procedimentos, dentro do prazo, será resolvido sob garantia.<br>
+                    • A garantia não é estendida a produtos/serviços de terceiros não contratados pela Viecelli.<br>
+                    O Cliente declara que a Viecelli Móveis S/A entregou os produtos/serviços de acordo com os requisitos e prazos.
+                </p>
+                <p style="margin-bottom: 10px; font-size: 11px;"><strong>Status Final:</strong> <span id="pdf-status" style="color: #f59e0b; font-weight:bold;"></span></p>
                 
                 <div class="pdf-row"><span class="pdf-label">Nome do Cliente:</span> <span id="pdf-nomecli"></span></div>
                 <div class="pdf-row"><span class="pdf-label">Contato / E-mail:</span> <span id="pdf-contatocli"></span></div>
@@ -441,23 +465,23 @@
                 </div>
             </div>
 
-            <!-- Fotos (Renderizadas dinamicamente) -->
             <div class="pdf-section" id="pdf-fotos-container" style="display:none; page-break-before: always;">
-                <h3>4. Registo Fotográfico</h3>
+                <h3>4. Registo Fotográfico e Evidências</h3>
                 <div class="pdf-img-grid" id="pdf-grid"></div>
             </div>
         </div>
     </div>
 
+    <!-- SCRIPT GERAL -->
     <script>
-        // SISTEMA DE DADOS BASE (LOCALSTORAGE PARA ADMIN)
         let pedidosBase = JSON.parse(localStorage.getItem('pedidosBase')) || { "10203": { cliente: "Arezzo", endereco: "Iguatemi Faria Lima" } };
         let emailSistema = localStorage.getItem('emailPadrao') || "entregas@viecelli.com.br";
         
+        // Memória Temporária (NÃO Persiste no Banco/LocalStorage)
         let fotosGerais = [];
+        let fotosEvidencia = { t1: null, t2: null, m1: null };
         let relatoriosSalvos = JSON.parse(localStorage.getItem('relatoriosSalvos')) || [];
 
-        // Inicialização
         window.addEventListener('DOMContentLoaded', () => {
             setupCanvas('canvasCliente');
             setupCanvas('canvasMontador');
@@ -474,9 +498,7 @@
             }
         });
 
-        // ====================================
-        // FUNÇÕES DO ADMIN E DADOS
-        // ====================================
+        // ADMIN
         function alternarVisao() {
             const isAdmin = document.getElementById('viewAdmin').classList.contains('hidden');
             document.getElementById('viewUsuario').classList.toggle('hidden', isAdmin);
@@ -497,7 +519,6 @@
         }
 
         function atualizarAdminUI() {
-            // Relatórios
             const tbodyRel = document.getElementById('tabelaRelatorios');
             tbodyRel.innerHTML = '';
             relatoriosSalvos.forEach(item => {
@@ -505,14 +526,12 @@
                 tbodyRel.innerHTML += `<tr><td class="p-2 font-semibold">#${item.pedido}</td><td class="p-2">${item.cliente}</td><td class="p-2"><span class="px-2 py-0.5 rounded text-[9px] ${bClass}">${item.tipo}</span></td></tr>`;
             });
 
-            // Pedidos Pré-cadastrados
             const tbodyPed = document.getElementById('tabelaPedidosBase');
             tbodyPed.innerHTML = '';
             for (const [nr, dados] of Object.entries(pedidosBase)) {
                 tbodyPed.innerHTML += `<tr><td class="p-2 font-bold text-amber-400">#${nr}</td><td class="p-2 text-white text-[10px]">${dados.cliente}<br><span class="text-slate-500">${dados.endereco}</span></td><td class="p-2 text-right"><button onclick="removerPedidoBase('${nr}')" class="text-red-500 hover:text-red-400"><i class="fa-solid fa-trash"></i></button></td></tr>`;
             }
 
-            // Configuração E-mail
             document.getElementById('emailPadraoAdmin').value = emailSistema;
             document.getElementById('spanAvisoEmail').innerText = emailSistema;
         }
@@ -529,11 +548,11 @@
             document.getElementById('novoClientePedido').value = '';
             document.getElementById('novoEndPedido').value = '';
             atualizarAdminUI();
-            alert("Pedido cadastrado com sucesso!");
+            alert("Pedido cadastrado!");
         }
 
         function removerPedidoBase(nr) {
-            if(confirm("Excluir este pedido da base?")) {
+            if(confirm("Excluir este pedido?")) {
                 delete pedidosBase[nr];
                 localStorage.setItem('pedidosBase', JSON.stringify(pedidosBase));
                 atualizarAdminUI();
@@ -546,7 +565,7 @@
             emailSistema = novoEmail;
             localStorage.setItem('emailPadrao', emailSistema);
             atualizarAdminUI();
-            alert("E-mail de receção atualizado!");
+            alert("E-mail atualizado!");
         }
 
         function buscarPedido() {
@@ -555,13 +574,11 @@
                 document.getElementById('inputCliente').value = pedidosBase[num].cliente;
                 document.getElementById('inputEndereco').value = pedidosBase[num].endereco;
             } else {
-                alert('Pedido não encontrado na base de dados. Preencha manualmente ou contate o Admin.');
+                alert('Pedido não encontrado na base de dados.');
             }
         }
 
-        // ====================================
-        // FUNÇÕES DO FORMULÁRIO E CANVAS
-        // ====================================
+        // NAVEGAÇÃO E TEMA
         function toggleMenu() {
             document.getElementById('sideMenu').classList.toggle('-translate-x-full');
             document.getElementById('sideMenuOverlay').classList.toggle('hidden');
@@ -586,7 +603,7 @@
             localStorage.setItem('assinaturaMontadorLocal', canvas.toDataURL("image/png"));
             const nomeMont = document.getElementById('montadorNome').value.trim();
             if(nomeMont) localStorage.setItem('nomeMontadorLocal', nomeMont);
-            alert("Assinatura guardada com sucesso!");
+            alert("Assinatura guardada!");
             fecharModalConfig();
         }
 
@@ -619,7 +636,6 @@
             if(etapaDestino === 5) {
                 redimensionarCanvas('canvasCliente');
                 redimensionarCanvas('canvasMontador');
-                // CARREGAMENTO AUTOMÁTICO DA ASSINATURA SALVA
                 setTimeout(carregarAssinaturaSalvaAuto, 100); 
             }
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -630,24 +646,7 @@
             mudarEtapa(4);
         }
 
-        function toggleObs(obsId, isNegative) {
-            const input = document.getElementById('input_' + obsId);
-            if (isNegative) input.classList.add('border-red-500');
-            else input.classList.remove('border-red-500');
-        }
-
-        function avancarEtapa4() {
-            const checks = ['t1', 't2', 'm1'];
-            for (let id of checks) {
-                const isNao = document.querySelector(`input[name="${id}"][value="NÃO"]`).checked;
-                const obsValue = document.getElementById(`input_obs_${id}`).value.trim();
-                if (isNao && obsValue === "") {
-                    alert('Por favor, preencha as observações justificando as respostas "NÃO" no checklist.'); return;
-                }
-            }
-            mudarEtapa(5);
-        }
-
+        // FOTOS PASSO 2 (COM TÍTULO E DESCRIÇÃO)
         function adicionarFotosGerais(event) {
             const files = event.target.files;
             for (let i = 0; i < files.length; i++) {
@@ -660,19 +659,109 @@
                 reader.readAsDataURL(files[i]);
             }
         }
+
         function atualizarListaFotos() {
             const lista = document.getElementById('listaFotosGerais');
             document.getElementById('contadorFotosGerais').innerText = `${fotosGerais.length} / 20 fotos`;
             lista.innerHTML = '';
             fotosGerais.forEach((foto, index) => {
-                lista.innerHTML += `<div class="bg-slate-900 border border-slate-700 p-2 rounded-lg flex space-x-3 items-start"><div class="w-16 h-16 shrink-0 relative rounded overflow-hidden"><img src="${foto.src}" class="w-full h-full object-cover"><button onclick="fotosGerais.splice(${index},1); atualizarListaFotos();" class="absolute top-0 right-0 bg-red-600 text-white rounded-bl w-4 h-4 flex items-center justify-center text-[8px]"><i class="fa-solid fa-xmark"></i></button></div><div class="flex-1 space-y-1.5"><input type="text" placeholder="Título da foto" value="${foto.titulo}" onchange="fotosGerais[${index}].titulo = this.value" class="w-full bg-slate-800 border border-slate-700 rounded px-2 py-1 text-[11px] text-white"></div></div>`;
+                lista.innerHTML += `
+                    <div class="bg-slate-900 border border-slate-700 p-2 rounded-lg flex space-x-3 items-start">
+                        <div class="w-16 h-16 shrink-0 relative rounded overflow-hidden">
+                            <img src="${foto.src}" class="w-full h-full object-cover">
+                            <button onclick="fotosGerais.splice(${index},1); atualizarListaFotos();" class="absolute top-0 right-0 bg-red-600 text-white rounded-bl w-4 h-4 flex items-center justify-center text-[8px]"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                        <div class="flex-1 space-y-1.5">
+                            <input type="text" placeholder="Título (ex: Fachada)" value="${foto.titulo}" onchange="fotosGerais[${index}].titulo = this.value" class="w-full bg-slate-800 border border-slate-700 rounded px-2 py-1 text-[11px] text-white">
+                            <input type="text" placeholder="Descrição (opcional)" value="${foto.desc}" onchange="fotosGerais[${index}].desc = this.value" class="w-full bg-slate-800 border border-slate-700 rounded px-2 py-1 text-[11px] text-white">
+                        </div>
+                    </div>
+                `;
             });
+        }
+
+        // CHECKLIST E EVIDÊNCIAS
+        function toggleObs(key, isNegative) {
+            const box = document.getElementById('obs_' + key);
+            if (isNegative) {
+                box.classList.remove('hidden');
+            } else {
+                box.classList.add('hidden');
+                fotosEvidencia[key] = null;
+                document.getElementById(`input_file_${key}`).value = '';
+                document.getElementById(`preview_evidencia_${key}`).innerHTML = '';
+                document.getElementById(`preview_evidencia_${key}`).classList.add('hidden');
+            }
+        }
+
+        function carregarEvidencia(key, event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                fotosEvidencia[key] = { src: e.target.result, titulo: '', desc: '' };
+                renderizarEvidenciaUI(key);
+            }
+            reader.readAsDataURL(file);
+        }
+
+        function renderizarEvidenciaUI(key) {
+            const container = document.getElementById(`preview_evidencia_${key}`);
+            const data = fotosEvidencia[key];
+            if (!data) {
+                container.classList.add('hidden');
+                container.innerHTML = '';
+                return;
+            }
+            container.classList.remove('hidden');
+            container.innerHTML = `
+                <div class="bg-slate-900 border border-slate-700 p-2 rounded-lg flex space-x-3 items-start mt-2">
+                    <div class="w-14 h-14 shrink-0 relative rounded overflow-hidden">
+                        <img src="${data.src}" class="w-full h-full object-cover">
+                        <button onclick="removerEvidencia('${key}')" class="absolute top-0 right-0 bg-red-600 text-white rounded-bl w-4 h-4 flex items-center justify-center text-[8px]"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div class="flex-1 space-y-1.5">
+                        <input type="text" placeholder="Título da Foto *" value="${data.titulo || ''}" onchange="fotosEvidencia['${key}'].titulo = this.value" class="w-full bg-slate-800 border border-slate-700 rounded px-2 py-1 text-[11px] text-white">
+                        <input type="text" placeholder="Descrição da Foto" value="${data.desc || ''}" onchange="fotosEvidencia['${key}'].desc = this.value" class="w-full bg-slate-800 border border-slate-700 rounded px-2 py-1 text-[11px] text-white">
+                    </div>
+                </div>
+            `;
+        }
+
+        function removerEvidencia(key) {
+            fotosEvidencia[key] = null;
+            document.getElementById(`input_file_${key}`).value = '';
+            renderizarEvidenciaUI(key);
+        }
+
+        function avancarEtapa4() {
+            const checks = ['t1', 't2', 'm1'];
+            for (let id of checks) {
+                const isNao = document.querySelector(`input[name="${id}"][value="NÃO"]`).checked;
+                if (isNao) {
+                    const obsValue = document.getElementById(`input_obs_${id}`).value.trim();
+                    if (!obsValue) {
+                        alert(`Por favor, digite o motivo da não conformidade no item do checklist.`);
+                        return;
+                    }
+                    if (!fotosEvidencia[id] || !fotosEvidencia[id].src) {
+                        alert(`Por favor, anexe uma foto de evidência para as opções marcadas como "NÃO".`);
+                        return;
+                    }
+                    if (!fotosEvidencia[id].titulo || !fotosEvidencia[id].titulo.trim()) {
+                        alert(`Por favor, informe o título da foto de evidência.`);
+                        return;
+                    }
+                }
+            }
+            mudarEtapa(5);
         }
 
         function toggleConformidade(valor) {
             document.getElementById('aviso5dias').classList.toggle('hidden', valor !== 'Parcial');
         }
 
+        // CANVAS
         function redimensionarCanvas(id) {
             const canvas = document.getElementById(id);
             if (!canvas) return;
@@ -694,92 +783,166 @@
             canvas.addEventListener('mousedown', start); canvas.addEventListener('mousemove', draw); canvas.addEventListener('mouseup', stop); canvas.addEventListener('mouseleave', stop);
             canvas.addEventListener('touchstart', start, {passive: false}); canvas.addEventListener('touchmove', draw, {passive: false}); canvas.addEventListener('touchend', stop);
         }
+
         function limparCanvas(id) {
             const canvas = document.getElementById(id);
             canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
         }
 
-        // ====================================
-        // GERAÇÃO DE PDF COM HTML2PDF
-        // ====================================
+        function canvasEstaVazio(id) {
+            const canvas = document.getElementById(id);
+            const ctx = canvas.getContext('2d');
+            const pixelBuffer = new Uint32Array(
+                ctx.getImageData(0, 0, canvas.width, canvas.height).data.buffer
+            );
+            return !pixelBuffer.some(color => color !== 0);
+        }
+
+        // GERAÇÃO DE PDF E VALIDAÇÕES RIGOROSAS
         function gerarPDF() {
-            // Validações Báiscas
-            const pedido = document.getElementById('inputNrPedido').value;
-            const cliente = document.getElementById('inputCliente').value;
-            if (!pedido || !cliente) { alert('Faltam os dados básicos no Passo 1.'); return; }
-            
-            // Popula os dados no Template HTML Oculto
-            document.getElementById('pdf-num').innerText = pedido;
+            // 1. Validação do Passo 1
+            const nrPedido = document.getElementById('inputNrPedido').value.trim();
+            const cliente = document.getElementById('inputCliente').value.trim();
+            const endereco = document.getElementById('inputEndereco').value.trim();
+
+            if (!nrPedido || !cliente || !endereco) {
+                alert('Atenção: Preencha todos os dados do Pedido (Número, Cliente e Endereço) no Passo 1.');
+                mudarEtapa(1);
+                return;
+            }
+
+            // 2. Validação do Passo 5 (Cliente)
+            const clienteNome = document.getElementById('clienteNome').value.trim();
+            const clienteTel = document.getElementById('clienteTel').value.trim();
+            const clienteEmail = document.getElementById('clienteEmail').value.trim();
+
+            if (!clienteNome || !clienteTel || !clienteEmail) {
+                alert('Atenção: Preencha todos os dados do Cliente (Nome, Telefone e E-mail) no Passo 5.');
+                return;
+            }
+
+            // 3. Validação do Passo 5 (Montador)
+            const montadorNome = document.getElementById('montadorNome').value.trim();
+            if (!montadorNome) {
+                alert('Atenção: Preencha o Nome do Montador no Passo 5.');
+                return;
+            }
+
+            // 4. Validação das Assinaturas
+            if (canvasEstaVazio('canvasCliente')) {
+                alert('Atenção: A assinatura do Cliente é obrigatória para gerar o relatório!');
+                return;
+            }
+
+            if (canvasEstaVazio('canvasMontador')) {
+                alert('Atenção: A assinatura do Montador é obrigatória para gerar o relatório!');
+                return;
+            }
+
+            // Montagem dos Dados no PDF Template
+            document.getElementById('pdf-num').innerText = nrPedido;
             document.getElementById('pdf-cli').innerText = cliente;
-            document.getElementById('pdf-end').innerText = document.getElementById('inputEndereco').value;
+            document.getElementById('pdf-end').innerText = endereco;
             
             const dataHoje = new Date().toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: 'numeric' });
             document.getElementById('pdf-data').innerText = dataHoje;
 
             // Checklist
             document.getElementById('pdf-t1').innerText = document.querySelector('input[name="t1"]:checked').value;
-            document.getElementById('pdf-obs-t1').innerText = document.getElementById('input_obs_t1').value ? `Obs: ${document.getElementById('input_obs_t1').value}` : '';
+            document.getElementById('pdf-obs-t1').innerText = document.getElementById('input_obs_t1').value ? `Motivo/Obs: ${document.getElementById('input_obs_t1').value}` : '';
             
             document.getElementById('pdf-t2').innerText = document.querySelector('input[name="t2"]:checked').value;
-            document.getElementById('pdf-obs-t2').innerText = document.getElementById('input_obs_t2').value ? `Obs: ${document.getElementById('input_obs_t2').value}` : '';
+            document.getElementById('pdf-obs-t2').innerText = document.getElementById('input_obs_t2').value ? `Motivo/Obs: ${document.getElementById('input_obs_t2').value}` : '';
             
             document.getElementById('pdf-m1').innerText = document.querySelector('input[name="m1"]:checked').value;
-            document.getElementById('pdf-obs-m1').innerText = document.getElementById('input_obs_m1').value ? `Obs: ${document.getElementById('input_obs_m1').value}` : '';
+            document.getElementById('pdf-obs-m1').innerText = document.getElementById('input_obs_m1').value ? `Motivo/Obs: ${document.getElementById('input_obs_m1').value}` : '';
             
             const notaElement = document.querySelector('input[name="notaMontagem"]:checked');
             document.getElementById('pdf-nota').innerText = notaElement ? notaElement.value : 'N/A';
             document.getElementById('pdf-obs-nota').innerText = document.getElementById('obs_montagem').value ? `Obs: ${document.getElementById('obs_montagem').value}` : '';
 
-            // Conformidade e Assinaturas
+            // Conformidade e Pessoas
             const status = document.querySelector('input[name="conformidade"]:checked').value;
             document.getElementById('pdf-status').innerText = status;
             
-            document.getElementById('pdf-nomecli').innerText = document.getElementById('clienteNome').value || "Não informado";
-            document.getElementById('pdf-contatocli').innerText = `${document.getElementById('clienteTel').value} / ${document.getElementById('clienteEmail').value}`;
-            document.getElementById('pdf-nomemont').innerText = document.getElementById('montadorNome').value || "Não informado";
+            document.getElementById('pdf-nomecli').innerText = clienteNome;
+            document.getElementById('pdf-contatocli').innerText = `${clienteTel} | ${clienteEmail}`;
+            document.getElementById('pdf-nomemont').innerText = montadorNome;
 
-            // Captura Canvases de Assinatura para imagem base64
+            // Assinaturas base64
             document.getElementById('pdf-sig-cliente').src = document.getElementById('canvasCliente').toDataURL("image/png");
             document.getElementById('pdf-sig-montador').src = document.getElementById('canvasMontador').toDataURL("image/png");
 
-            // Insere Imagens no Template PDF
+            // Imagens do PDF (Gerais + Evidências do Checklist)
             const pdfFotosContainer = document.getElementById('pdf-fotos-container');
             const pdfGrid = document.getElementById('pdf-grid');
             pdfGrid.innerHTML = '';
-            if (fotosGerais.length > 0) {
-                pdfFotosContainer.style.display = 'block';
-                fotosGerais.forEach(foto => {
-                    pdfGrid.innerHTML += `<div class="pdf-img-card"><img src="${foto.src}"><br>${foto.titulo || 'Foto anexada'}</div>`;
-                });
-            } else {
-                pdfFotosContainer.style.display = 'none';
-            }
+            
+            let temFotos = false;
 
-            // Configurações do HTML2PDF
+            // Anexa fotos gerais
+            fotosGerais.forEach(foto => {
+                temFotos = true;
+                pdfGrid.innerHTML += `
+                    <div class="pdf-img-card">
+                        <img src="${foto.src}">
+                        <div style="font-weight:bold; margin-top:2px;">${foto.titulo || 'Sem Título'}</div>
+                        <div style="color:#666;">${foto.desc || ''}</div>
+                    </div>`;
+            });
+
+            // Anexa evidências de Checklist
+            ['t1', 't2', 'm1'].forEach(key => {
+                if (fotosEvidencia[key]) {
+                    temFotos = true;
+                    pdfGrid.innerHTML += `
+                        <div class="pdf-img-card" style="border: 1px solid #f59e0b;">
+                            <img src="${fotosEvidencia[key].src}">
+                            <div style="font-weight:bold; color:#f59e0b; margin-top:2px;">[Evidência] ${fotosEvidencia[key].titulo}</div>
+                            <div style="color:#666;">${fotosEvidencia[key].desc || ''}</div>
+                        </div>`;
+                }
+            });
+
+            pdfFotosContainer.style.display = temFotos ? 'block' : 'none';
+
+            // Configuração do html2pdf
             const element = document.getElementById('pdf-content');
             const opt = {
                 margin:       [0, 0, 0, 0],
-                filename:     `Aceite_Obra_${pedido}_${cliente}.pdf`.replace(/\s+/g, '_'),
+                filename:     `Aceite_Obra_${nrPedido}_${cliente}.pdf`.replace(/\s+/g, '_'),
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { scale: 2, useCORS: true },
                 jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
             };
 
-            // Gera e Salva o PDF
+            // Processa o PDF
             html2pdf().set(opt).from(element).save().then(() => {
-                // Guarda no Histórico do App
-                relatoriosSalvos.unshift({ pedido, cliente, tipo: status });
+                // Salva apenas histórico do pedido (sem salvar imagens pesadas no LocalStorage)
+                relatoriosSalvos.unshift({ pedido: nrPedido, cliente, tipo: status });
                 localStorage.setItem('relatoriosSalvos', JSON.stringify(relatoriosSalvos));
                 atualizarAdminUI();
-                alert(`PDF gerado com sucesso! Cópia pronta para envio a: ${document.getElementById('clienteEmail').value} e ${emailSistema}`);
+
+                alert(`PDF gerado e baixado com sucesso!\nCópia pronta para envio para:\n- Cliente: ${clienteEmail}\n- Empresa: ${emailSistema}`);
                 
-                // Reseta tudo e volta pro passo 1
+                // LIMPEZA COMPLETA DE MEMÓRIA (Liberando Banco e Memória RAM)
                 fotosGerais = [];
+                fotosEvidencia = { t1: null, t2: null, m1: null };
                 atualizarListaFotos();
+                
+                ['t1', 't2', 'm1'].forEach(key => {
+                    document.getElementById(`input_obs_${key}`).value = '';
+                    toggleObs(key, false);
+                });
+
                 limparCanvas('canvasCliente');
                 document.getElementById('inputNrPedido').value = '';
                 document.getElementById('inputCliente').value = '';
                 document.getElementById('inputEndereco').value = '';
+                document.getElementById('clienteNome').value = '';
+                document.getElementById('clienteTel').value = '';
+                document.getElementById('clienteEmail').value = '';
+
                 mudarEtapa(1);
             });
         }
