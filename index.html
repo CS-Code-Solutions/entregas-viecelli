@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Viecelli - Termo de Aceite de Entrega de Obra</title>
+    <!-- Ícone da página -->
+    <link rel="icon" type="image/png" href="ico.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -15,12 +17,11 @@
 </head>
 <body class="bg-slate-900 text-slate-100 h-full flex flex-col font-sans">
 
-    <!-- Top Bar / Header institucional -->
+    <!-- Top Bar / Header institucional com cabe.png -->
     <header class="bg-slate-800 border-b border-slate-700 py-3 px-6 flex justify-between items-center shadow-md">
         <div class="flex items-center space-x-3">
-            <div class="text-amber-400 font-black tracking-wider text-base flex items-center">
-                <i class="fa-solid fa-sun mr-2 text-xl"></i> VIECELLI
-            </div>
+            <!-- Logótipo do cabeçalho -->
+            <img src="cabe.png" alt="Logo Viecelli" class="h-8 w-auto object-contain">
             <div>
                 <h1 class="font-bold text-sm text-white leading-tight">Aceite de Entrega de Obra</h1>
                 <p class="text-[11px] text-slate-400">Sistema oficial de validação em campo</p>
@@ -296,13 +297,11 @@
         ];
 
         function mudarEtapa(etapaDestino) {
-            // Oculta todas as etapas
             for (let i = 1; i <= 5; i++) {
                 document.getElementById(`etapa${i}`).classList.add('hidden');
                 document.getElementById(`dot${i}`).classList.remove('bg-amber-500');
                 document.getElementById(`dot${i}`).classList.add('bg-slate-700');
             }
-            // Mostra a etapa escolhida
             document.getElementById(`etapa${etapaDestino}`).classList.remove('hidden');
             document.getElementById(`dot${etapaDestino}`).classList.remove('bg-slate-700');
             document.getElementById(`dot${etapaDestino}`).classList.add('bg-amber-500');
