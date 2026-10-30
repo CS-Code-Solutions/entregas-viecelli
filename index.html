@@ -2,270 +2,259 @@
 <html lang="pt-PT" class="h-full">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Viecelli - Termo de Aceite de Entrega de Obra</title>
-    <!-- Ícone personalizado -->
     <link rel="icon" type="image/png" href="ico.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .signature-canvas {
-            touch-action: none;
-            cursor: crosshair;
-        }
+        /* Otimização de espaço para mobile */
+        body { font-size: 14px; }
+        .signature-canvas { touch-action: none; cursor: crosshair; }
+        .etapa-form { width: 100%; box-sizing: border-box; }
+        input[type="text"], input[type="email"] { font-size: 16px; /* Evita zoom automático no iOS/Android */ }
     </style>
 </head>
 <body class="bg-slate-900 text-slate-100 h-full flex flex-col font-sans">
 
-    <!-- Top Bar / Header institucional com cabe.png -->
-    <header class="bg-slate-800 border-b border-slate-700 py-3 px-6 flex justify-between items-center shadow-md">
-        <div class="flex items-center space-x-3">
-            <img src="login.png" alt="Logo Viecelli" class="h-8 w-auto object-contain">
+    <!-- Top Bar -->
+    <header class="bg-slate-800 border-b border-slate-700 py-3 px-4 sm:px-6 flex justify-between items-center shadow-md shrink-0">
+        <div class="flex items-center space-x-2 sm:space-x-3">
+            <img src="cabe.png" alt="Logo Viecelli" class="h-7 sm:h-8 w-auto object-contain">
             <div>
-                <h1 class="font-bold text-sm text-white leading-tight">Aceite de Entrega de Obra</h1>
-                <p class="text-[11px] text-slate-400">Sistema oficial de validação em campo</p>
+                <h1 class="font-bold text-xs sm:text-sm text-white leading-tight">Aceite de Entrega</h1>
+                <p class="text-[10px] sm:text-[11px] text-slate-400">Validação em campo</p>
             </div>
         </div>
-        <div class="flex items-center space-x-2">
-            <span class="text-xs bg-slate-700 text-slate-300 px-3 py-1 rounded-full border border-slate-600 hidden sm:inline-block">
-                <i class="fa-solid fa-envelope text-amber-400 mr-1"></i> entregas@viecelli.com.br
-            </span>
-            <button onclick="alternarVisao()" id="btnAlternarPerfil" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-semibold px-3 py-1.5 rounded-lg text-xs transition flex items-center shadow">
-                <i class="fa-solid fa-user-gear mr-1.5"></i> Painel Admin
-            </button>
-        </div>
+        <button onclick="alternarVisao()" id="btnAlternarPerfil" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-semibold px-2 sm:px-3 py-1.5 rounded-lg text-[10px] sm:text-xs transition flex items-center shadow">
+            <i class="fa-solid fa-user-gear mr-1"></i> Admin
+        </button>
     </header>
 
     <!-- Main Container -->
-    <main class="flex-1 overflow-y-auto p-4 sm:p-6 max-w-3xl mx-auto w-full">
+    <main class="flex-1 overflow-y-auto p-3 sm:p-6 max-w-2xl mx-auto w-full">
 
-        <!-- FORMULÁRIO DE CAMPO EM ETAPAS -->
-        <div id="viewUsuario" class="space-y-6">
+        <div id="viewUsuario" class="space-y-4">
 
             <!-- Barra de Progresso Visual -->
-            <div class="bg-slate-800 p-3 rounded-xl border border-slate-700 flex justify-between items-center text-xs">
-                <span id="labelEtapa" class="font-bold text-amber-400">Passo 1 de 5: Identificação do Pedido</span>
-                <div class="flex space-x-1">
-                    <div id="dot1" class="w-2.5 h-2.5 rounded-full bg-amber-500"></div>
-                    <div id="dot2" class="w-2.5 h-2.5 rounded-full bg-slate-700"></div>
-                    <div id="dot3" class="w-2.5 h-2.5 rounded-full bg-slate-700"></div>
-                    <div id="dot4" class="w-2.5 h-2.5 rounded-full bg-slate-700"></div>
-                    <div id="dot5" class="w-2.5 h-2.5 rounded-full bg-slate-700"></div>
+            <div class="bg-slate-800 p-3 rounded-xl border border-slate-700 flex justify-between items-center text-[11px] sm:text-xs">
+                <span id="labelEtapa" class="font-bold text-amber-400 truncate mr-2">Passo 1 de 5: Pedido</span>
+                <div class="flex space-x-1 shrink-0">
+                    <div id="dot1" class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-amber-500"></div>
+                    <div id="dot2" class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-slate-700"></div>
+                    <div id="dot3" class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-slate-700"></div>
+                    <div id="dot4" class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-slate-700"></div>
+                    <div id="dot5" class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-slate-700"></div>
                 </div>
             </div>
 
-            <!-- ETAPA 1: Identificação do Pedido -->
-            <div id="etapa1" class="etapa-form space-y-4 bg-slate-800 border border-slate-700 rounded-xl p-5 shadow-lg">
-                <h2 class="text-xs font-bold text-amber-400 uppercase tracking-wider pb-2 border-b border-slate-700 flex items-center">
+            <!-- ETAPA 1 -->
+            <div id="etapa1" class="etapa-form space-y-4 bg-slate-800 border border-slate-700 rounded-xl p-4 sm:p-5 shadow-lg">
+                <h2 class="text-[11px] sm:text-xs font-bold text-amber-400 uppercase tracking-wider pb-2 border-b border-slate-700 flex items-center">
                     <i class="fa-solid fa-file-lines mr-2"></i> 1. Identificação do Pedido
                 </h2>
                 <div class="space-y-3">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Nr. do Pedido</label>
+                        <label class="block text-[11px] sm:text-xs font-semibold text-slate-300 mb-1">Nr. do Pedido</label>
                         <div class="flex space-x-2">
-                            <input type="text" id="inputNrPedido" placeholder="Ex: 10203 ou A-902" class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
-                            <button onclick="buscarPedido()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-xs font-semibold transition flex items-center">
+                            <input type="text" id="inputNrPedido" placeholder="Ex: 10203" class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-500">
+                            <button onclick="buscarPedido()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-lg text-xs font-semibold transition flex items-center">
                                 <i class="fa-solid fa-search mr-1"></i> Procurar
                             </button>
                         </div>
-                        <p class="text-[11px] text-slate-400 mt-1">Dica: Introduza <span class="text-amber-400 font-mono">10203</span> para preenchimento automático.</p>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Nome do Cliente / Marca</label>
-                        <input type="text" id="inputCliente" placeholder="Ex: Arezzo, Carolina Herrera" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
+                        <label class="block text-[11px] sm:text-xs font-semibold text-slate-300 mb-1">Cliente / Marca</label>
+                        <input type="text" id="inputCliente" placeholder="Ex: Arezzo" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-500">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Endereço da Obra</label>
-                        <input type="text" id="inputEndereco" placeholder="Ex: Iguatemi Faria Lima ou La Vela" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
+                        <label class="block text-[11px] sm:text-xs font-semibold text-slate-300 mb-1">Endereço da Obra</label>
+                        <input type="text" id="inputEndereco" placeholder="Ex: Iguatemi" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-500">
                     </div>
                 </div>
-                <div class="flex justify-end pt-3">
-                    <button onclick="mudarEtapa(2)" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-6 py-2.5 rounded-xl text-xs transition flex items-center shadow">
+                <div class="flex justify-end pt-2">
+                    <button onclick="mudarEtapa(2)" class="w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-6 py-3 rounded-xl text-xs transition flex justify-center items-center shadow">
                         Avançar <i class="fa-solid fa-arrow-right ml-2"></i>
                     </button>
                 </div>
             </div>
 
-            <!-- ETAPA 2: Termo de Aceite Institucional -->
-            <div id="etapa2" class="etapa-form hidden space-y-4 bg-slate-800 border border-slate-700 rounded-xl p-5 shadow-lg">
-                <h2 class="text-xs font-bold text-amber-400 uppercase tracking-wider pb-2 border-b border-slate-700 flex items-center">
+            <!-- ETAPA 2 -->
+            <div id="etapa2" class="etapa-form hidden space-y-4 bg-slate-800 border border-slate-700 rounded-xl p-4 sm:p-5 shadow-lg">
+                <h2 class="text-[11px] sm:text-xs font-bold text-amber-400 uppercase tracking-wider pb-2 border-b border-slate-700 flex items-center">
                     <i class="fa-solid fa-circle-info mr-2"></i> 2. Termo de Aceite de Entrega
                 </h2>
-                <div class="bg-slate-900 p-4 rounded-lg border border-slate-700/80 text-xs text-slate-300 space-y-2.5 leading-relaxed">
+                <div class="bg-slate-900 p-3 sm:p-4 rounded-lg border border-slate-700/80 text-[11px] sm:text-xs text-slate-300 space-y-2 leading-relaxed h-48 sm:h-auto overflow-y-auto">
                     <p class="font-semibold text-white">Este documento formaliza a entrega do projeto executado, considerando os requisitos, cronograma e os critérios de aceitação previamente relacionados e acordados através de um contrato entre o cliente e a Viecelli Móveis S/A.</p>
                     <ul class="list-disc list-inside space-y-1 text-slate-400">
-                        <li>A partir da assinatura deste Termo de Entrega, será considerada como encerrada a etapa de montagem dos móveis.</li>
-                        <li>Qualquer problema relacionado aos procedimentos realizados no projeto, dentro do prazo estipulado, será resolvido sob critério de garantia.</li>
-                        <li>A garantia não é estendida a produtos e serviços fornecidos por outros envolvidos no projeto, não contratados pela Viecelli Móveis S/A.</li>
+                        <li>A partir da assinatura deste Termo, será considerada como encerrada a etapa de montagem.</li>
+                        <li>Qualquer problema relacionado aos procedimentos, dentro do prazo, será resolvido sob garantia.</li>
+                        <li>A garantia não é estendida a produtos/serviços de terceiros não contratados pela Viecelli.</li>
                     </ul>
-                    <p class="text-white pt-1">O Cliente, através de seu representante, declara que a empresa Viecelli Móveis S/A entregou os produtos e/ou serviços de acordo com os requisitos e prazos estabelecidos.</p>
+                    <p class="text-white pt-1">O Cliente declara que a Viecelli Móveis S/A entregou os produtos/serviços de acordo com os requisitos e prazos.</p>
                 </div>
-                <div class="flex justify-between pt-3">
-                    <button onclick="mudarEtapa(1)" class="bg-slate-700 hover:bg-slate-600 text-white font-semibold px-5 py-2.5 rounded-xl text-xs transition flex items-center">
+                
+                <!-- Checkbox Passo 2 -->
+                <div class="bg-slate-900 p-3 rounded-xl border border-amber-500/50 flex items-start space-x-3">
+                    <input type="checkbox" id="checkTermo" class="mt-0.5 w-4 h-4 accent-amber-500 cursor-pointer shrink-0">
+                    <label for="checkTermo" class="text-[11px] sm:text-xs text-slate-200 cursor-pointer leading-tight">
+                        Estou de acordo com o termo de aceite de entrega.
+                    </label>
+                </div>
+
+                <div class="flex space-x-2 pt-2">
+                    <button onclick="mudarEtapa(1)" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-semibold py-3 rounded-xl text-xs transition flex justify-center items-center">
                         <i class="fa-solid fa-arrow-left mr-2"></i> Voltar
                     </button>
-                    <button onclick="mudarEtapa(3)" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-6 py-2.5 rounded-xl text-xs transition flex items-center shadow">
+                    <button onclick="avancarEtapa2()" class="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-3 rounded-xl text-xs transition flex justify-center items-center shadow">
                         Avançar <i class="fa-solid fa-arrow-right ml-2"></i>
                     </button>
                 </div>
             </div>
 
-            <!-- ETAPA 3: Checklist de Avaliação -->
-            <div id="etapa3" class="etapa-form hidden space-y-4 bg-slate-800 border border-slate-700 rounded-xl p-5 shadow-lg">
-                <h2 class="text-xs font-bold text-amber-400 uppercase tracking-wider pb-2 border-b border-slate-700 flex items-center">
+            <!-- ETAPA 3 -->
+            <div id="etapa3" class="etapa-form hidden space-y-4 bg-slate-800 border border-slate-700 rounded-xl p-4 sm:p-5 shadow-lg">
+                <h2 class="text-[11px] sm:text-xs font-bold text-amber-400 uppercase tracking-wider pb-2 border-b border-slate-700 flex items-center">
                     <i class="fa-solid fa-clipboard-question mr-2"></i> 3. Checklist de Avaliação
                 </h2>
-
-                <div class="space-y-4">
+                
+                <div class="space-y-3 h-[60vh] sm:h-auto overflow-y-auto pr-1">
                     <!-- Transporte -->
-                    <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-700 space-y-2">
-                        <h3 class="text-xs font-bold text-amber-300 uppercase"><i class="fa-solid fa-truck-fast mr-1"></i> Transporte / Embalagem</h3>
-                        <p class="text-xs text-white">O mobiliário foi devidamente embalado e transportado?</p>
-                        <div class="flex space-x-4"><label><input type="radio" name="t1" value="SIM" checked class="accent-amber-500"> SIM</label><label><input type="radio" name="t1" value="NÃO" class="accent-amber-500"> NÃO</label></div>
-                        <input type="text" placeholder="Observações (opcional)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
+                    <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-700 space-y-2">
+                        <h3 class="text-[11px] font-bold text-amber-300 uppercase"><i class="fa-solid fa-truck-fast mr-1"></i> Transporte / Embalagem</h3>
+                        <p class="text-[11px] text-white">Mobiliário devidamente embalado/transportado?</p>
+                        <div class="flex space-x-4"><label class="text-xs"><input type="radio" name="t1" value="SIM" checked class="accent-amber-500"> SIM</label><label class="text-xs"><input type="radio" name="t1" value="NÃO" class="accent-amber-500"> NÃO</label></div>
                         
-                        <p class="text-xs text-white pt-2">A obra foi entregue limpa, sem restos de embalagens?</p>
-                        <div class="flex space-x-4"><label><input type="radio" name="t3" value="SIM" checked class="accent-amber-500"> SIM</label><label><input type="radio" name="t3" value="NÃO" class="accent-amber-500"> NÃO</label></div>
-                        <input type="text" placeholder="Observações (opcional)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
+                        <p class="text-[11px] text-white pt-2">Obra entregue limpa (sem embalagens)?</p>
+                        <div class="flex space-x-4"><label class="text-xs"><input type="radio" name="t3" value="SIM" checked class="accent-amber-500"> SIM</label><label class="text-xs"><input type="radio" name="t3" value="NÃO" class="accent-amber-500"> NÃO</label></div>
+                        <input type="text" placeholder="Observações (opcional)" class="w-full mt-2 bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs text-white">
                     </div>
 
                     <!-- Mobiliário -->
-                    <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-700 space-y-2">
-                        <h3 class="text-xs font-bold text-amber-300 uppercase"><i class="fa-solid fa-couch mr-1"></i> Mobiliário</h3>
-                        <p class="text-xs text-white">Os móveis foram entregues de acordo com o contrato? (*Cor *Quantidade *Acabamento)</p>
-                        <div class="flex space-x-4"><label><input type="radio" name="m2" value="SIM" checked class="accent-amber-500"> SIM</label><label><input type="radio" name="m2" value="NÃO" class="accent-amber-500"> NÃO</label></div>
-                        <input type="text" placeholder="Observações (opcional)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
+                    <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-700 space-y-2">
+                        <h3 class="text-[11px] font-bold text-amber-300 uppercase"><i class="fa-solid fa-couch mr-1"></i> Mobiliário</h3>
+                        <p class="text-[11px] text-white">Móveis entregues conforme contrato (Cor/Qtd)?</p>
+                        <div class="flex space-x-4"><label class="text-xs"><input type="radio" name="m2" value="SIM" checked class="accent-amber-500"> SIM</label><label class="text-xs"><input type="radio" name="m2" value="NÃO" class="accent-amber-500"> NÃO</label></div>
                     </div>
 
                     <!-- Montagem -->
-                    <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-700 space-y-2">
-                        <h3 class="text-xs font-bold text-amber-300 uppercase"><i class="fa-solid fa-hammer mr-1"></i> Montagem</h3>
-                        <p class="text-xs text-white">De 01 a 10, qual nota dá para nossa equipe de montagem?</p>
-                        <div class="flex flex-wrap gap-2">
-                            <label class="bg-slate-800 px-2.5 py-1 rounded text-xs cursor-pointer border border-slate-700"><input type="radio" name="notaMontagem" value="8"> 8</label>
-                            <label class="bg-slate-800 px-2.5 py-1 rounded text-xs cursor-pointer border border-slate-700"><input type="radio" name="notaMontagem" value="9"> 9</label>
-                            <label class="bg-slate-800 px-2.5 py-1 rounded text-xs cursor-pointer border border-slate-700"><input type="radio" name="notaMontagem" value="10" checked> 10</label>
+                    <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-700 space-y-2">
+                        <h3 class="text-[11px] font-bold text-amber-300 uppercase"><i class="fa-solid fa-hammer mr-1"></i> Montagem</h3>
+                        <p class="text-[11px] text-white">Nota para nossa equipa de montagem?</p>
+                        <div class="flex flex-wrap gap-1.5">
+                            <label class="bg-slate-800 px-2 py-1 rounded text-xs cursor-pointer border border-slate-700"><input type="radio" name="notaMontagem" value="8"> 8</label>
+                            <label class="bg-slate-800 px-2 py-1 rounded text-xs cursor-pointer border border-slate-700"><input type="radio" name="notaMontagem" value="9"> 9</label>
+                            <label class="bg-slate-800 px-2 py-1 rounded text-xs cursor-pointer border border-slate-700"><input type="radio" name="notaMontagem" value="10" checked> 10</label>
                         </div>
-                        <input type="text" placeholder="Observações (opcional)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
                     </div>
                 </div>
 
-                <div class="flex justify-between pt-3">
-                    <button onclick="mudarEtapa(2)" class="bg-slate-700 hover:bg-slate-600 text-white font-semibold px-5 py-2.5 rounded-xl text-xs transition flex items-center">
+                <div class="flex space-x-2 pt-2">
+                    <button onclick="mudarEtapa(2)" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-semibold py-3 rounded-xl text-xs transition flex justify-center items-center">
                         <i class="fa-solid fa-arrow-left mr-2"></i> Voltar
                     </button>
-                    <button onclick="mudarEtapa(4)" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-6 py-2.5 rounded-xl text-xs transition flex items-center shadow">
+                    <button onclick="mudarEtapa(4)" class="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-3 rounded-xl text-xs transition flex justify-center items-center shadow">
                         Avançar <i class="fa-solid fa-arrow-right ml-2"></i>
                     </button>
                 </div>
             </div>
 
-            <!-- ETAPA 4: Anexo de Imagens -->
-            <div id="etapa4" class="etapa-form hidden space-y-4 bg-slate-800 border border-slate-700 rounded-xl p-5 shadow-lg">
+            <!-- ETAPA 4 -->
+            <div id="etapa4" class="etapa-form hidden space-y-4 bg-slate-800 border border-slate-700 rounded-xl p-4 sm:p-5 shadow-lg">
                 <div class="flex items-center justify-between pb-2 border-b border-slate-700">
-                    <h2 class="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center">
-                        <i class="fa-solid fa-camera mr-2"></i> 4. Anexar Imagens (Máx. 20 fotos)
+                    <h2 class="text-[11px] sm:text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center">
+                        <i class="fa-solid fa-camera mr-2"></i> 4. Imagens
                     </h2>
-                    <span id="contadorFotos" class="text-xs text-slate-400">0 de 20 fotos</span>
+                    <span id="contadorFotos" class="text-[10px] sm:text-xs text-slate-400">0 / 20 fotos</span>
                 </div>
                 <div class="flex items-center justify-center w-full">
-                    <label class="flex flex-col items-center justify-center w-full h-24 border-2 border-slate-600 border-dashed rounded-lg cursor-pointer bg-slate-900 hover:bg-slate-950 transition">
+                    <label class="flex flex-col items-center justify-center w-full h-24 sm:h-32 border-2 border-slate-600 border-dashed rounded-lg cursor-pointer bg-slate-900 hover:bg-slate-950 transition">
                         <div class="flex flex-col items-center justify-center pt-4 pb-5">
-                            <i class="fa-solid fa-plus text-amber-400 text-xl mb-1"></i>
-                            <p class="text-xs text-slate-300 font-semibold">Clique para anexar imagens da obra</p>
+                            <i class="fa-solid fa-plus text-amber-400 text-xl sm:text-2xl mb-1"></i>
+                            <p class="text-[11px] sm:text-xs text-slate-300 font-semibold">Tocar para anexar fotos</p>
                         </div>
                         <input type="file" id="inputFotos" accept="image/*" multiple class="hidden" onchange="adicionarFotos(event)">
                     </label>
                 </div>
-                <div id="gridFotos" class="grid grid-cols-2 sm:grid-cols-5 gap-2"></div>
+                <div id="gridFotos" class="grid grid-cols-3 sm:grid-cols-5 gap-2 max-h-48 overflow-y-auto"></div>
 
-                <div class="flex justify-between pt-3">
-                    <button onclick="mudarEtapa(3)" class="bg-slate-700 hover:bg-slate-600 text-white font-semibold px-5 py-2.5 rounded-xl text-xs transition flex items-center">
+                <div class="flex space-x-2 pt-2">
+                    <button onclick="mudarEtapa(3)" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-semibold py-3 rounded-xl text-xs transition flex justify-center items-center">
                         <i class="fa-solid fa-arrow-left mr-2"></i> Voltar
                     </button>
-                    <button onclick="mudarEtapa(5)" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-6 py-2.5 rounded-xl text-xs transition flex items-center shadow">
+                    <button onclick="mudarEtapa(5)" class="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-3 rounded-xl text-xs transition flex justify-center items-center shadow">
                         Avançar <i class="fa-solid fa-arrow-right ml-2"></i>
                     </button>
                 </div>
             </div>
 
-            <!-- ETAPA 5: Identificação, Declaração e Assinaturas Finais -->
-            <div id="etapa5" class="etapa-form hidden space-y-4 bg-slate-800 border border-slate-700 rounded-xl p-5 shadow-lg">
-                <h2 class="text-xs font-bold text-amber-400 uppercase tracking-wider pb-2 border-b border-slate-700 flex items-center">
-                    <i class="fa-solid fa-file-signature mr-2"></i> 5. Identificação e Assinaturas Finais
+            <!-- ETAPA 5 -->
+            <div id="etapa5" class="etapa-form hidden space-y-4 bg-slate-800 border border-slate-700 rounded-xl p-4 sm:p-5 shadow-lg">
+                <h2 class="text-[11px] sm:text-xs font-bold text-amber-400 uppercase tracking-wider pb-2 border-b border-slate-700 flex items-center">
+                    <i class="fa-solid fa-file-signature mr-2"></i> 5. Assinaturas Finais
                 </h2>
 
-                <!-- Caixa de Confirmação / Checkbox Obrigatório -->
-                <div class="bg-slate-900 p-3.5 rounded-xl border border-amber-500/50 flex items-start space-x-3">
-                    <input type="checkbox" id="checkConcordo" class="mt-0.5 w-4 h-4 accent-amber-500 cursor-pointer">
-                    <label for="checkConcordo" class="text-xs text-slate-200 cursor-pointer leading-relaxed">
-                        Declaro que estou ciente e de acordo com os termos de aceite e informações contidas neste relatório de entrega de obra.
+                <!-- Checkbox Passo 5 -->
+                <div class="bg-slate-900 p-3 rounded-xl border border-amber-500/50 flex items-start space-x-3">
+                    <input type="checkbox" id="checkRelatorio" class="mt-0.5 w-4 h-4 accent-amber-500 cursor-pointer shrink-0">
+                    <label for="checkRelatorio" class="text-[11px] sm:text-xs text-slate-200 cursor-pointer leading-tight">
+                        Estou de acordo com as informações contidas neste relatório.
                     </label>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="space-y-4 h-[50vh] sm:h-auto overflow-y-auto pr-1">
                     <!-- Cliente -->
-                    <div class="bg-slate-900 p-4 rounded-xl border border-slate-700 space-y-3">
-                        <h3 class="text-xs font-bold text-amber-300 uppercase"><i class="fa-solid fa-user mr-1"></i> Cliente</h3>
-                        <input type="text" id="clienteNome" placeholder="Nome completo" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
-                        <input type="text" id="clienteTel" placeholder="Fone" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
-                        <input type="email" id="clienteEmail" placeholder="E-mail" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
+                    <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-700 space-y-2.5">
+                        <h3 class="text-[11px] font-bold text-amber-300 uppercase"><i class="fa-solid fa-user mr-1"></i> Cliente</h3>
+                        <input type="text" id="clienteNome" placeholder="Nome completo" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-sm text-white">
                         <div>
-                            <label class="block text-[11px] text-slate-400 mb-1">Assinatura do Cliente</label>
+                            <label class="block text-[10px] text-slate-400 mb-1">Assinatura</label>
                             <div class="bg-white rounded border border-slate-600 relative overflow-hidden">
-                                <canvas id="canvasCliente" height="90" class="signature-canvas w-full block"></canvas>
-                                <button onclick="limparCanvas('canvasCliente')" class="absolute top-1 right-1 bg-slate-200 text-slate-800 text-[10px] px-1.5 py-0.5 rounded">Limpar</button>
+                                <canvas id="canvasCliente" height="80" class="signature-canvas w-full block"></canvas>
+                                <button onclick="limparCanvas('canvasCliente')" class="absolute top-1 right-1 bg-slate-200 text-slate-800 text-[9px] px-1.5 py-0.5 rounded">Limpar</button>
                             </div>
                         </div>
                     </div>
 
                     <!-- Montador -->
-                    <div class="bg-slate-900 p-4 rounded-xl border border-slate-700 space-y-3">
-                        <h3 class="text-xs font-bold text-indigo-400 uppercase"><i class="fa-solid fa-screwdriver-wrench mr-1"></i> Montador (VIECELLI)</h3>
-                        <input type="text" id="montadorNome" placeholder="Nome do Montador" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
-                        <input type="text" id="montadorTel" placeholder="Fone / WhatsApp" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
-                        <input type="email" id="montadorEmail" placeholder="E-mail" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
+                    <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-700 space-y-2.5">
+                        <h3 class="text-[11px] font-bold text-indigo-400 uppercase"><i class="fa-solid fa-screwdriver-wrench mr-1"></i> Montador</h3>
+                        <input type="text" id="montadorNome" placeholder="Nome do Montador" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-sm text-white">
                         <div>
-                            <label class="block text-[11px] text-slate-400 mb-1">Assinatura do Montador</label>
+                            <label class="block text-[10px] text-slate-400 mb-1">Assinatura</label>
                             <div class="bg-white rounded border border-slate-600 relative overflow-hidden">
-                                <canvas id="canvasMontador" height="90" class="signature-canvas w-full block"></canvas>
-                                <button onclick="limparCanvas('canvasMontador')" class="absolute top-1 right-1 bg-slate-200 text-slate-800 text-[10px] px-1.5 py-0.5 rounded">Limpar</button>
+                                <canvas id="canvasMontador" height="80" class="signature-canvas w-full block"></canvas>
+                                <button onclick="limparCanvas('canvasMontador')" class="absolute top-1 right-1 bg-slate-200 text-slate-800 text-[9px] px-1.5 py-0.5 rounded">Limpar</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="flex justify-between pt-3">
-                    <button onclick="mudarEtapa(4)" class="bg-slate-700 hover:bg-slate-600 text-white font-semibold px-5 py-2.5 rounded-xl text-xs transition flex items-center">
-                        <i class="fa-solid fa-arrow-left mr-2"></i> Voltar
+                <div class="flex space-x-2 pt-2">
+                    <button onclick="mudarEtapa(4)" class="w-1/3 bg-slate-700 hover:bg-slate-600 text-white font-semibold py-3 rounded-xl text-xs transition flex justify-center items-center">
+                        <i class="fa-solid fa-arrow-left mr-1"></i> Voltar
                     </button>
-                    <button onclick="finalizarEGerarPDF()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-6 py-3 rounded-xl text-sm transition shadow-lg flex items-center">
+                    <button onclick="finalizarEGerarPDF()" class="w-2/3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl text-xs transition shadow-lg flex justify-center items-center">
                         <i class="fa-solid fa-paper-plane mr-2"></i> Finalizar & Enviar
                     </button>
                 </div>
             </div>
-
         </div>
 
         <!-- MODO ADMIN -->
         <div id="viewAdmin" class="hidden space-y-6">
-            <div class="bg-slate-800 border border-slate-700 rounded-xl p-5 shadow-lg space-y-4">
-                <div class="flex justify-between items-center">
-                    <div>
-                        <h2 class="text-base font-bold text-white"><i class="fa-solid fa-chart-line text-amber-400 mr-2"></i> Painel Administrativo</h2>
-                        <p class="text-xs text-slate-400">Relatórios enviados automaticamente para <strong class="text-amber-400">entregas@viecelli.com.br</strong></p>
-                    </div>
+            <div class="bg-slate-800 border border-slate-700 rounded-xl p-4 shadow-lg space-y-4">
+                <div>
+                    <h2 class="text-sm font-bold text-white"><i class="fa-solid fa-chart-line text-amber-400 mr-2"></i> Painel Admin</h2>
+                    <p class="text-[10px] text-slate-400">Relatórios enviados (entregas@viecelli.com.br)</p>
                 </div>
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse text-xs">
+                    <table class="w-full text-left border-collapse text-[11px] whitespace-nowrap">
                         <thead>
                             <tr class="border-b border-slate-700 text-slate-400 bg-slate-900/50">
-                                <th class="p-3">Pedido</th>
-                                <th class="p-3">Cliente</th>
-                                <th class="p-3">Endereço</th>
-                                <th class="p-3">Montador</th>
-                                <th class="p-3">Status</th>
-                                <th class="p-3 text-right">PDF</th>
+                                <th class="p-2">Pedido</th>
+                                <th class="p-2">Cliente</th>
+                                <th class="p-2 text-right">PDF</th>
                             </tr>
                         </thead>
                         <tbody id="tabelaRelatorios" class="divide-y divide-slate-700/60"></tbody>
@@ -278,50 +267,58 @@
 
     <!-- Modal de Sucesso -->
     <div id="modalSucesso" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-        <div class="bg-slate-800 border border-slate-700 rounded-2xl max-w-md w-full p-6 text-center space-y-4 shadow-2xl">
-            <div class="w-16 h-16 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center mx-auto text-3xl">
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl w-full max-w-sm p-6 text-center space-y-4 shadow-2xl">
+            <div class="w-14 h-14 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center mx-auto text-2xl">
                 <i class="fa-solid fa-circle-check"></i>
             </div>
-            <h3 class="text-lg font-bold text-white">Relatório Concluído com Sucesso!</h3>
-            <p class="text-xs text-slate-300 leading-relaxed">O PDF foi gerado e enviado com sucesso para <strong class="text-amber-400">entregas@viecelli.com.br</strong>.</p>
-            <div class="flex space-x-2 pt-2">
-                <button onclick="baixarPDFSimulado()" class="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-semibold py-2.5 rounded-xl text-xs transition">Descarregar PDF</button>
-                <button onclick="fecharModal()" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-semibold py-2.5 rounded-xl text-xs transition">Novo Relatório</button>
+            <h3 class="text-base font-bold text-white">Concluído!</h3>
+            <p class="text-xs text-slate-300">PDF gerado e enviado para o email fixo.</p>
+            <div class="flex flex-col space-y-2 pt-2">
+                <button onclick="fecharModal()" class="w-full bg-slate-700 hover:bg-slate-600 text-white font-semibold py-3 rounded-xl text-xs transition">Novo Relatório</button>
             </div>
         </div>
     </div>
 
-    <!-- Script de Gestão de Etapas e Funcionalidades -->
+    <!-- Script -->
     <script>
-        const pedidosBase = {
-            "10203": { cliente: "Arezzo", endereco: "Iguatemi Faria Lima" },
-            "55412": { cliente: "Carolina Herrera", endereco: "Shopping Cidade Jardim" }
-        };
-
+        const pedidosBase = { "10203": { cliente: "Arezzo", endereco: "Iguatemi Faria Lima" } };
         let fotosLista = [];
-        let relatoriosSalvos = [
-            { pedido: "10203", cliente: "Arezzo", endereco: "Iguatemi Faria Lima", montador: "Carlos Eduardo", fotos: 3, status: "Enviado" }
-        ];
+        let relatoriosSalvos = [{ pedido: "10203", cliente: "Arezzo", status: "Enviado" }];
 
         function mudarEtapa(etapaDestino) {
             for (let i = 1; i <= 5; i++) {
                 document.getElementById(`etapa${i}`).classList.add('hidden');
-                document.getElementById(`dot${i}`).classList.remove('bg-amber-500');
-                document.getElementById(`dot${i}`).classList.add('bg-slate-700');
+                document.getElementById(`dot${i}`).classList.replace('bg-amber-500', 'bg-slate-700');
             }
             document.getElementById(`etapa${etapaDestino}`).classList.remove('hidden');
-            document.getElementById(`dot${etapaDestino}`).classList.remove('bg-slate-700');
-            document.getElementById(`dot${etapaDestino}`).classList.add('bg-amber-500');
+            document.getElementById(`dot${etapaDestino}`).classList.replace('bg-slate-700', 'bg-amber-500');
 
-            const titulos = [
-                "Passo 1 de 5: Identificação do Pedido",
-                "Passo 2 de 5: Termo de Aceite",
-                "Passo 3 de 5: Checklist de Avaliação",
-                "Passo 4 de 5: Registo Fotográfico",
-                "Passo 5 de 5: Identificação e Assinaturas"
-            ];
+            const titulos = ["Passo 1 de 5: Pedido", "Passo 2 de 5: Termo", "Passo 3 de 5: Checklist", "Passo 4 de 5: Imagens", "Passo 5 de 5: Assinaturas"];
             document.getElementById('labelEtapa').innerText = titulos[etapaDestino - 1];
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Redimensiona o canvas quando a aba fica visível para evitar distorção
+            if(etapaDestino === 5) {
+                redimensionarCanvas('canvasCliente');
+                redimensionarCanvas('canvasMontador');
+            }
+        }
+
+        function avancarEtapa2() {
+            if(!document.getElementById('checkTermo').checked) {
+                alert('Deve marcar a caixa confirmando que está de acordo com o Termo de Aceite.');
+                return;
+            }
+            mudarEtapa(3);
+        }
+
+        function redimensionarCanvas(id) {
+            const canvas = document.getElementById(id);
+            if (!canvas) return;
+            const ratio = Math.max(window.devicePixelRatio || 1, 1);
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * ratio;
+            canvas.height = rect.height * ratio;
+            canvas.getContext("2d").scale(ratio, ratio);
         }
 
         function setupCanvas(id) {
@@ -335,7 +332,7 @@
             function stop() { isDrawing = false; }
 
             canvas.addEventListener('mousedown', start); canvas.addEventListener('mousemove', draw); canvas.addEventListener('mouseup', stop); canvas.addEventListener('mouseleave', stop);
-            canvas.addEventListener('touchstart', start); canvas.addEventListener('touchmove', draw); canvas.addEventListener('touchend', stop);
+            canvas.addEventListener('touchstart', start, {passive: false}); canvas.addEventListener('touchmove', draw, {passive: false}); canvas.addEventListener('touchend', stop);
         }
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -354,9 +351,8 @@
             if (pedidosBase[num]) {
                 document.getElementById('inputCliente').value = pedidosBase[num].cliente;
                 document.getElementById('inputEndereco').value = pedidosBase[num].endereco;
-                alert('Pedido localizado e preenchido com sucesso!');
             } else {
-                alert('Pedido não encontrado na base. Preencha os campos manualmente.');
+                alert('Pedido não encontrado.');
             }
         }
 
@@ -372,33 +368,25 @@
 
         function atualizarGridFotos() {
             const grid = document.getElementById('gridFotos');
-            document.getElementById('contadorFotos').innerText = `${fotosLista.length} de 20 fotos`;
+            document.getElementById('contadorFotos').innerText = `${fotosLista.length} / 20 fotos`;
             grid.innerHTML = '';
             fotosLista.forEach((src, index) => {
-                grid.innerHTML += `<div class="relative bg-slate-900 border border-slate-700 rounded-lg overflow-hidden h-20"><img src="${src}" class="w-full h-full object-cover"><button onclick="removerFoto(${index})" class="absolute top-1 right-1 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px]"><i class="fa-solid fa-xmark"></i></button></div>`;
+                grid.innerHTML += `<div class="relative bg-slate-900 border border-slate-700 rounded-lg overflow-hidden h-16"><img src="${src}" class="w-full h-full object-cover"><button onclick="removerFoto(${index})" class="absolute top-1 right-1 bg-red-600 text-white rounded-full w-4 h-4 flex items-center justify-center text-[8px]"><i class="fa-solid fa-xmark"></i></button></div>`;
             });
         }
 
         function removerFoto(index) { fotosLista.splice(index, 1); atualizarGridFotos(); }
 
         function finalizarEGerarPDF() {
+            if(!document.getElementById('checkRelatorio').checked) {
+                alert('Deve confirmar que está de acordo com as informações contidas no relatório.');
+                return;
+            }
             const pedido = document.getElementById('inputNrPedido').value.trim();
             const cliente = document.getElementById('inputCliente').value.trim();
-            const clienteNome = document.getElementById('clienteNome').value.trim();
-            const montadorNome = document.getElementById('montadorNome').value.trim();
-            const concordou = document.getElementById('checkConcordo').checked;
+            if (!pedido || !cliente) { alert('Preencha os dados do pedido e cliente.'); return; }
 
-            if (!concordou) {
-                alert('Deve marcar a caixa de confirmação declarando estar ciente dos termos de aceite para finalizar.');
-                return;
-            }
-
-            if (!pedido || !cliente || !clienteNome || !montadorNome) {
-                alert('Por favor, certifique-se de que preencheu o pedido, cliente e os campos de identificação nas assinaturas.');
-                return;
-            }
-
-            relatoriosSalvos.unshift({ pedido, cliente, endereco: document.getElementById('inputEndereco').value || 'N/A', montador: montadorNome, fotos: fotosLista.length, status: 'Enviado' });
+            relatoriosSalvos.unshift({ pedido, cliente, status: 'Enviado' });
             renderizarTabelaAdmin();
             document.getElementById('modalSucesso').classList.remove('hidden');
             document.getElementById('modalSucesso').classList.add('flex');
@@ -410,29 +398,19 @@
             fotosLista = []; atualizarGridFotos(); mudarEtapa(1);
         }
 
-        function baixarPDFSimulado() { alert('A descarregar PDF consolidado...'); }
-
         let isAdmin = false;
         function alternarVisao() {
             isAdmin = !isAdmin;
-            const viewU = document.getElementById('viewUsuario');
-            const viewA = document.getElementById('viewAdmin');
-            const btn = document.getElementById('btnAlternarPerfil');
-
-            if (isAdmin) {
-                viewU.classList.add('hidden'); viewA.classList.remove('hidden');
-                btn.innerHTML = `<i class="fa-solid fa-mobile-screen mr-1.5"></i> Voltar ao App`;
-            } else {
-                viewA.classList.add('hidden'); viewU.classList.remove('hidden');
-                btn.innerHTML = `<i class="fa-solid fa-user-gear mr-1.5"></i> Painel Admin`;
-            }
+            document.getElementById('viewUsuario').classList.toggle('hidden', isAdmin);
+            document.getElementById('viewAdmin').classList.toggle('hidden', !isAdmin);
+            document.getElementById('btnAlternarPerfil').innerHTML = isAdmin ? `<i class="fa-solid fa-mobile-screen mr-1"></i> App` : `<i class="fa-solid fa-user-gear mr-1"></i> Admin`;
         }
 
         function renderizarTabelaAdmin() {
             const tbody = document.getElementById('tabelaRelatorios');
             tbody.innerHTML = '';
             relatoriosSalvos.forEach(item => {
-                tbody.innerHTML += `<tr class="hover:bg-slate-900/30 transition"><td class="p-3 font-semibold text-amber-400">#${item.pedido}</td><td class="p-3 text-white">${item.cliente}</td><td class="p-3 text-slate-300">${item.endereco}</td><td class="p-3 text-slate-300">${item.montador}</td><td class="p-3"><span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded text-[10px]">${item.status}</span></td><td class="p-3 text-right"><button onclick="baixarPDFSimulado()" class="bg-slate-700 hover:bg-amber-500 hover:text-slate-950 text-slate-200 px-2.5 py-1 rounded text-xs transition"><i class="fa-solid fa-file-pdf"></i></button></td></tr>`;
+                tbody.innerHTML += `<tr class="hover:bg-slate-900/30"><td class="p-2 font-semibold text-amber-400">#${item.pedido}</td><td class="p-2 text-white">${item.cliente}</td><td class="p-2 text-right"><button class="bg-slate-700 px-2 py-1 rounded text-[10px]"><i class="fa-solid fa-file-pdf"></i></button></td></tr>`;
             });
         }
     </script>
