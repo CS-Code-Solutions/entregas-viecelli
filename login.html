@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <!-- Configurações para PWA e iOS -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Aceite Obra">
+  <link rel="apple-touch-icon" href="ico.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Viecelli - Entrar</title>
+  <link rel="icon" href="ico.png" type="image/png">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: url('fundo.jpg') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .login-card {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 40px;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+    .login-logo {
+      max-width: 180px;
+      height: auto;
+      margin-bottom: 24px;
+      object-fit: contain;
+    }
+    .form-group {
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      text-align: left;
+    }
+    .form-group label {
+      font-weight: 600;
+      font-size: 13px;
+      color: #334155;
+    }
+    .form-group input {
+      padding: 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+    }
+    .form-group input:focus {
+      border-color: #f59e0b;
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+    }
+    .btn-login {
+      width: 100%;
+      padding: 12px;
+      background: #f59e0b; /* Laranja da Viecelli */
+      color: #0f172a;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background 0.3s;
+    }
+    .btn-login:hover {
+      background: #d97706;
+    }
+  </style>
+
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+</head>
+<body>
+  <div class="login-card">
+    <img src="cabe.png" alt="Logo Viecelli" class="login-logo">
+    
+    <div class="form-group">
+      <label>E-mail</label>
+      <input type="email" id="emailLogin" placeholder="entregas@viecelli.com.br" required>
+    </div>
+    <div class="form-group">
+      <label>Senha</label>
+      <input type="password" id="senhaLogin" placeholder="••••••••" required>
+    </div>
+    <button class="btn-login" onclick="fazerLogin()">Entrar no Sistema</button>
+  </div>
+
+  <script>
+    // Atenção: Mantenha as credenciais do seu próprio projeto Firebase.
+    const firebaseConfig = {
+      apiKey: "AIzaSyDa9ztrK6VxFVeLbP0ge6-31V05gnztjJw",
+      authDomain: "reuniao-d1b29.firebaseapp.com",
+      projectId: "reuniao-d1b29",
+      storageBucket: "reuniao-d1b29.firebasestorage.app",
+      messagingSenderId: "887897617950",
+      appId: "1:887897617950:web:e96cf3cce4792e7e2b600f"
+    };
+
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+
+    function fazerLogin() {
+      const email = document.getElementById("emailLogin").value.trim();
+      const senha = document.getElementById("senhaLogin").value.trim();
+
+      if (!email || !senha) {
+        alert("Por favor, preencha o e-mail e a senha.");
+        return;
+      }
+
+      firebase.auth().signInWithEmailAndPassword(email, senha)
+        .then(() => {
+          // Redireciona para o formulário principal
+          window.location.href = "index.html";
+        })
+        .catch((error) => {
+          console.error("Erro no login:", error);
+          alert("Erro ao entrar (" + error.code + "): " + error.message);
+        });
+    }
+  </script>
+</body>
+</html>
