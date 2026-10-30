@@ -25,14 +25,12 @@
         body.light-theme input.bg-slate-800, body.light-theme input.bg-slate-900 { background-color: #ffffff !important; border-color: #cbd5e1 !important; color: #0f172a !important; }
         body.light-theme .border-slate-700 { border-color: #cbd5e1 !important; }
 
-        /* CORREÇÃO CRÍTICA: Posicionamento Off-screen em vez de display:none */
+        /* Template PDF Oculto por Padrão */
         #pdf-template {
-            position: absolute;
-            left: -9999px;
-            top: 0;
-            width: 794px; /* Largura padrão A4 em pixels */
+            display: none;
+            width: 794px;
             background: #ffffff;
-            z-index: -1000;
+            margin: 0 auto;
         }
         .pdf-page { padding: 25px; font-family: Arial, sans-serif; color: #111; font-size: 11px; line-height: 1.4; background: #fff; }
         .pdf-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f59e0b; padding-bottom: 8px; margin-bottom: 15px; }
@@ -402,7 +400,7 @@
         </div>
     </div>
 
-    <!-- Template PDF Escondido -->
+    <!-- Template PDF -->
     <div id="pdf-template">
         <div class="pdf-page" id="pdf-content">
             <div class="pdf-header">
@@ -941,7 +939,11 @@
                 pdfFotosContainer.innerHTML = htmlPaginas;
             }
 
-            // GARANTIA DE CARREGAMENTO TOTAL DAS IMAGENS NO DOM
+            // EXIBIÇÃO TEMPORÁRIA DO TEMPLATE PARA RENDERIZAÇÃO
+            const pdfTemplate = document.getElementById('pdf-template');
+            pdfTemplate.style.display = 'block';
+
+            // Aguarda a renderização completa das imagens no DOM
             const imgs = document.querySelectorAll('#pdf-content img');
             await Promise.all(Array.from(imgs).map(img => {
                 if (img.complete && img.naturalHeight !== 0) return Promise.resolve();
@@ -963,6 +965,9 @@
 
             // Processa o PDF
             html2pdf().set(opt).from(element).save().then(() => {
+                // Oculta novamente o template PDF
+                pdfTemplate.style.display = 'none';
+
                 relatoriosSalvos.unshift({ pedido: nrPedido, cliente, tipo: status });
                 localStorage.setItem('relatoriosSalvos', JSON.stringify(relatoriosSalvos));
                 atualizarAdminUI();
