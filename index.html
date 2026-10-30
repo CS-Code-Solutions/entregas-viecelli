@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Viecelli - Termo de Aceite de Entrega de Obra</title>
-    <!-- Ícone da página -->
+    <!-- Ícone personalizado -->
     <link rel="icon" type="image/png" href="ico.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -20,7 +20,6 @@
     <!-- Top Bar / Header institucional com cabe.png -->
     <header class="bg-slate-800 border-b border-slate-700 py-3 px-6 flex justify-between items-center shadow-md">
         <div class="flex items-center space-x-3">
-            <!-- Logótipo do cabeçalho -->
             <img src="cabe.png" alt="Logo Viecelli" class="h-8 w-auto object-contain">
             <div>
                 <h1 class="font-bold text-sm text-white leading-tight">Aceite de Entrega de Obra</h1>
@@ -93,13 +92,13 @@
                     <i class="fa-solid fa-circle-info mr-2"></i> 2. Termo de Aceite de Entrega
                 </h2>
                 <div class="bg-slate-900 p-4 rounded-lg border border-slate-700/80 text-xs text-slate-300 space-y-2.5 leading-relaxed">
-                    <p class="font-semibold text-white">Este documento formaliza a entrega do projeto executado, considerando os requisitos, cronograma e os critérios de aceitação previamente relacionados e acordados através de um contrato entre o cliente e a Viecelli Móveis S/A[span_0](start_span)[span_0](end_span).</p>
+                    <p class="font-semibold text-white">Este documento formaliza a entrega do projeto executado, considerando os requisitos, cronograma e os critérios de aceitação previamente relacionados e acordados através de um contrato entre o cliente e a Viecelli Móveis S/A.</p>
                     <ul class="list-disc list-inside space-y-1 text-slate-400">
-                        <li>A partir da assinatura deste Termo de Entrega, será considerada como encerrada a etapa de montagem dos móveis[span_1](start_span)[span_1](end_span).</li>
-                        <li>Qualquer problema relacionado aos procedimentos realizados no projeto, dentro do prazo estipulado, será resolvido sob critério de garantia[span_2](start_span)[span_2](end_span).</li>
-                        <li>A garantia não é estendida a produtos e serviços fornecidos por outros envolvidos no projeto, não contratados pela Viecelli Móveis S/A[span_3](start_span)[span_3](end_span).</li>
+                        <li>A partir da assinatura deste Termo de Entrega, será considerada como encerrada a etapa de montagem dos móveis.</li>
+                        <li>Qualquer problema relacionado aos procedimentos realizados no projeto, dentro do prazo estipulado, será resolvido sob critério de garantia.</li>
+                        <li>A garantia não é estendida a produtos e serviços fornecidos por outros envolvidos no projeto, não contratados pela Viecelli Móveis S/A.</li>
                     </ul>
-                    <p class="text-white pt-1">O Cliente, através de seu representante, declara que a empresa Viecelli Móveis S/A entregou os produtos e/ou serviços de acordo com os requisitos e prazos estabelecidos[span_4](start_span)[span_4](end_span).</p>
+                    <p class="text-white pt-1">O Cliente, através de seu representante, declara que a empresa Viecelli Móveis S/A entregou os produtos e/ou serviços de acordo com os requisitos e prazos estabelecidos.</p>
                 </div>
                 <div class="flex justify-between pt-3">
                     <button onclick="mudarEtapa(1)" class="bg-slate-700 hover:bg-slate-600 text-white font-semibold px-5 py-2.5 rounded-xl text-xs transition flex items-center">
@@ -120,34 +119,34 @@
                 <div class="space-y-4">
                     <!-- Transporte -->
                     <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-700 space-y-2">
-                        <h3 class="text-xs font-bold text-amber-300 uppercase"><i class="fa-solid fa-truck-fast mr-1"></i> Transporte / Embalagem[span_5](start_span)[span_5](end_span)</h3>
-                        <p class="text-xs text-white">O mobiliário foi devidamente embalado e transportado?[span_6](start_span)[span_6](end_span)</p>
+                        <h3 class="text-xs font-bold text-amber-300 uppercase"><i class="fa-solid fa-truck-fast mr-1"></i> Transporte / Embalagem</h3>
+                        <p class="text-xs text-white">O mobiliário foi devidamente embalado e transportado?</p>
                         <div class="flex space-x-4"><label><input type="radio" name="t1" value="SIM" checked class="accent-amber-500"> SIM</label><label><input type="radio" name="t1" value="NÃO" class="accent-amber-500"> NÃO</label></div>
-                        <input type="text" placeholder="Observações (opcional)[span_7](start_span)[span_7](end_span)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
+                        <input type="text" placeholder="Observações (opcional)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
                         
-                        <p class="text-xs text-white pt-2">A obra foi entregue limpa, sem restos de embalagens?[span_8](start_span)[span_8](end_span)</p>
+                        <p class="text-xs text-white pt-2">A obra foi entregue limpa, sem restos de embalagens?</p>
                         <div class="flex space-x-4"><label><input type="radio" name="t3" value="SIM" checked class="accent-amber-500"> SIM</label><label><input type="radio" name="t3" value="NÃO" class="accent-amber-500"> NÃO</label></div>
-                        <input type="text" placeholder="Observações (opcional)[span_9](start_span)[span_9](end_span)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
+                        <input type="text" placeholder="Observações (opcional)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
                     </div>
 
                     <!-- Mobiliário -->
                     <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-700 space-y-2">
-                        <h3 class="text-xs font-bold text-amber-300 uppercase"><i class="fa-solid fa-couch mr-1"></i> Mobiliário[span_10](start_span)[span_10](end_span)</h3>
-                        <p class="text-xs text-white">Os móveis foram entregues de acordo com o contrato? (*Cor *Quantidade *Acabamento)[span_11](start_span)[span_11](end_span)</p>
+                        <h3 class="text-xs font-bold text-amber-300 uppercase"><i class="fa-solid fa-couch mr-1"></i> Mobiliário</h3>
+                        <p class="text-xs text-white">Os móveis foram entregues de acordo com o contrato? (*Cor *Quantidade *Acabamento)</p>
                         <div class="flex space-x-4"><label><input type="radio" name="m2" value="SIM" checked class="accent-amber-500"> SIM</label><label><input type="radio" name="m2" value="NÃO" class="accent-amber-500"> NÃO</label></div>
-                        <input type="text" placeholder="Observações (opcional)[span_12](start_span)[span_12](end_span)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
+                        <input type="text" placeholder="Observações (opcional)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
                     </div>
 
                     <!-- Montagem -->
                     <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-700 space-y-2">
-                        <h3 class="text-xs font-bold text-amber-300 uppercase"><i class="fa-solid fa-hammer mr-1"></i> Montagem[span_13](start_span)[span_13](end_span)</h3>
-                        <p class="text-xs text-white">De 01 a 10, qual nota dá para nossa equipe de montagem?[span_14](start_span)[span_14](end_span)</p>
+                        <h3 class="text-xs font-bold text-amber-300 uppercase"><i class="fa-solid fa-hammer mr-1"></i> Montagem</h3>
+                        <p class="text-xs text-white">De 01 a 10, qual nota dá para nossa equipe de montagem?</p>
                         <div class="flex flex-wrap gap-2">
                             <label class="bg-slate-800 px-2.5 py-1 rounded text-xs cursor-pointer border border-slate-700"><input type="radio" name="notaMontagem" value="8"> 8</label>
                             <label class="bg-slate-800 px-2.5 py-1 rounded text-xs cursor-pointer border border-slate-700"><input type="radio" name="notaMontagem" value="9"> 9</label>
                             <label class="bg-slate-800 px-2.5 py-1 rounded text-xs cursor-pointer border border-slate-700"><input type="radio" name="notaMontagem" value="10" checked> 10</label>
                         </div>
-                        <input type="text" placeholder="Observações (opcional)[span_15](start_span)[span_15](end_span)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
+                        <input type="text" placeholder="Observações (opcional)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
                     </div>
                 </div>
 
@@ -165,7 +164,7 @@
             <div id="etapa4" class="etapa-form hidden space-y-4 bg-slate-800 border border-slate-700 rounded-xl p-5 shadow-lg">
                 <div class="flex items-center justify-between pb-2 border-b border-slate-700">
                     <h2 class="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center">
-                        <i class="fa-solid fa-camera mr-2"></i> 4. Anexar Imagens (Máx. 20 fotos)[span_16](start_span)[span_16](end_span)
+                        <i class="fa-solid fa-camera mr-2"></i> 4. Anexar Imagens (Máx. 20 fotos)
                     </h2>
                     <span id="contadorFotos" class="text-xs text-slate-400">0 de 20 fotos</span>
                 </div>
@@ -173,7 +172,7 @@
                     <label class="flex flex-col items-center justify-center w-full h-24 border-2 border-slate-600 border-dashed rounded-lg cursor-pointer bg-slate-900 hover:bg-slate-950 transition">
                         <div class="flex flex-col items-center justify-center pt-4 pb-5">
                             <i class="fa-solid fa-plus text-amber-400 text-xl mb-1"></i>
-                            <p class="text-xs text-slate-300 font-semibold">Clique para anexar imagens da obra[span_17](start_span)[span_17](end_span)</p>
+                            <p class="text-xs text-slate-300 font-semibold">Clique para anexar imagens da obra</p>
                         </div>
                         <input type="file" id="inputFotos" accept="image/*" multiple class="hidden" onchange="adicionarFotos(event)">
                     </label>
@@ -190,19 +189,27 @@
                 </div>
             </div>
 
-            <!-- ETAPA 5: Identificação e Assinaturas Finais -->
+            <!-- ETAPA 5: Identificação, Declaração e Assinaturas Finais -->
             <div id="etapa5" class="etapa-form hidden space-y-4 bg-slate-800 border border-slate-700 rounded-xl p-5 shadow-lg">
                 <h2 class="text-xs font-bold text-amber-400 uppercase tracking-wider pb-2 border-b border-slate-700 flex items-center">
                     <i class="fa-solid fa-file-signature mr-2"></i> 5. Identificação e Assinaturas Finais
                 </h2>
 
+                <!-- Caixa de Confirmação / Checkbox Obrigatório -->
+                <div class="bg-slate-900 p-3.5 rounded-xl border border-amber-500/50 flex items-start space-x-3">
+                    <input type="checkbox" id="checkConcordo" class="mt-0.5 w-4 h-4 accent-amber-500 cursor-pointer">
+                    <label for="checkConcordo" class="text-xs text-slate-200 cursor-pointer leading-relaxed">
+                        Declaro que estou ciente e de acordo com os termos de aceite e informações contidas neste relatório de entrega de obra.
+                    </label>
+                </div>
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <!-- Cliente -->
                     <div class="bg-slate-900 p-4 rounded-xl border border-slate-700 space-y-3">
-                        <h3 class="text-xs font-bold text-amber-300 uppercase"><i class="fa-solid fa-user mr-1"></i> Cliente[span_18](start_span)[span_18](end_span)</h3>
-                        <input type="text" id="clienteNome" placeholder="Nome completo[span_19](start_span)[span_19](end_span)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
-                        <input type="text" id="clienteTel" placeholder="Fone[span_20](start_span)[span_20](end_span)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
-                        <input type="email" id="clienteEmail" placeholder="E-mail[span_21](start_span)[span_21](end_span)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
+                        <h3 class="text-xs font-bold text-amber-300 uppercase"><i class="fa-solid fa-user mr-1"></i> Cliente</h3>
+                        <input type="text" id="clienteNome" placeholder="Nome completo" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
+                        <input type="text" id="clienteTel" placeholder="Fone" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
+                        <input type="email" id="clienteEmail" placeholder="E-mail" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
                         <div>
                             <label class="block text-[11px] text-slate-400 mb-1">Assinatura do Cliente</label>
                             <div class="bg-white rounded border border-slate-600 relative overflow-hidden">
@@ -214,8 +221,8 @@
 
                     <!-- Montador -->
                     <div class="bg-slate-900 p-4 rounded-xl border border-slate-700 space-y-3">
-                        <h3 class="text-xs font-bold text-indigo-400 uppercase"><i class="fa-solid fa-screwdriver-wrench mr-1"></i> Montador (VIECELLI)[span_22](start_span)[span_22](end_span)</h3>
-                        <input type="text" id="montadorNome" placeholder="Nome do Montador[span_23](start_span)[span_23](end_span)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
+                        <h3 class="text-xs font-bold text-indigo-400 uppercase"><i class="fa-solid fa-screwdriver-wrench mr-1"></i> Montador (VIECELLI)</h3>
+                        <input type="text" id="montadorNome" placeholder="Nome do Montador" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
                         <input type="text" id="montadorTel" placeholder="Fone / WhatsApp" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
                         <input type="email" id="montadorEmail" placeholder="E-mail" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
                         <div>
@@ -379,6 +386,12 @@
             const cliente = document.getElementById('inputCliente').value.trim();
             const clienteNome = document.getElementById('clienteNome').value.trim();
             const montadorNome = document.getElementById('montadorNome').value.trim();
+            const concordou = document.getElementById('checkConcordo').checked;
+
+            if (!concordou) {
+                alert('Deve marcar a caixa de confirmação declarando estar ciente dos termos de aceite para finalizar.');
+                return;
+            }
 
             if (!pedido || !cliente || !clienteNome || !montadorNome) {
                 alert('Por favor, certifique-se de que preencheu o pedido, cliente e os campos de identificação nas assinaturas.');
