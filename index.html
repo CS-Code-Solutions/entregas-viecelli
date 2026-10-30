@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt" class="h-full">
+<html lang="pt-PT" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,7 +28,7 @@
         </div>
         <div class="flex items-center space-x-2">
             <span class="text-xs bg-slate-700 text-slate-300 px-3 py-1 rounded-full border border-slate-600 hidden sm:inline-block">
-                <i class="fa-solid fa-envelope text-amber-400 mr-1"></i> E-mail Fixo: entregas@viecelli.com.br
+                <i class="fa-solid fa-envelope text-amber-400 mr-1"></i> entregas@viecelli.com.br
             </span>
             <button onclick="alternarVisao()" id="btnAlternarPerfil" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-semibold px-3 py-1.5 rounded-lg text-xs transition flex items-center shadow">
                 <i class="fa-solid fa-user-gear mr-1.5"></i> Painel Admin
@@ -39,214 +39,169 @@
     <!-- Main Container -->
     <main class="flex-1 overflow-y-auto p-4 sm:p-6 max-w-3xl mx-auto w-full">
 
-        <!-- FORMULÁRIO DE CAMPO -->
+        <!-- FORMULÁRIO DE CAMPO EM ETAPAS -->
         <div id="viewUsuario" class="space-y-6">
 
-            <!-- 1. Cabeçalho & Busca de Pedido -->
-            <section class="bg-slate-800 border border-slate-700 rounded-xl p-5 shadow-lg space-y-4">
-                <div class="flex items-center justify-between pb-2 border-b border-slate-700">
-                    <h2 class="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center">
-                        <i class="fa-solid fa-file-lines mr-2"></i> 1. Identificação do Pedido
-                    </h2>
+            <!-- Barra de Progresso Visual -->
+            <div class="bg-slate-800 p-3 rounded-xl border border-slate-700 flex justify-between items-center text-xs">
+                <span id="labelEtapa" class="font-bold text-amber-400">Passo 1 de 5: Identificação do Pedido</span>
+                <div class="flex space-x-1">
+                    <div id="dot1" class="w-2.5 h-2.5 rounded-full bg-amber-500"></div>
+                    <div id="dot2" class="w-2.5 h-2.5 rounded-full bg-slate-700"></div>
+                    <div id="dot3" class="w-2.5 h-2.5 rounded-full bg-slate-700"></div>
+                    <div id="dot4" class="w-2.5 h-2.5 rounded-full bg-slate-700"></div>
+                    <div id="dot5" class="w-2.5 h-2.5 rounded-full bg-slate-700"></div>
                 </div>
-                
+            </div>
+
+            <!-- ETAPA 1: Identificação do Pedido -->
+            <div id="etapa1" class="etapa-form space-y-4 bg-slate-800 border border-slate-700 rounded-xl p-5 shadow-lg">
+                <h2 class="text-xs font-bold text-amber-400 uppercase tracking-wider pb-2 border-b border-slate-700 flex items-center">
+                    <i class="fa-solid fa-file-lines mr-2"></i> 1. Identificação do Pedido
+                </h2>
                 <div class="space-y-3">
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1">Nr. do Pedido</label>
                         <div class="flex space-x-2">
                             <input type="text" id="inputNrPedido" placeholder="Ex: 10203 ou A-902" class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
                             <button onclick="buscarPedido()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-xs font-semibold transition flex items-center">
-                                <i class="fa-solid fa-search mr-1"></i> Buscar
+                                <i class="fa-solid fa-search mr-1"></i> Procurar
                             </button>
                         </div>
-                        <p class="text-[11px] text-slate-400 mt-1">Dica: Teste digitar <span class="text-amber-400 font-mono">10203</span> para preenchimento automático.</p>
+                        <p class="text-[11px] text-slate-400 mt-1">Dica: Introduza <span class="text-amber-400 font-mono">10203</span> para preenchimento automático.</p>
                     </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-300 mb-1">Nome do Cliente / Marca</label>
-                            <input type="text" id="inputCliente" placeholder="Ex: Arezzo, Carolina Herrera, Track & Field" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-300 mb-1">Endereço da Obra</label>
-                            <input type="text" id="inputEndereco" placeholder="Ex: Iguatemi Faria Lima ou La Vela" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
-                        </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Nome do Cliente / Marca</label>
+                        <input type="text" id="inputCliente" placeholder="Ex: Arezzo, Carolina Herrera" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Endereço da Obra</label>
+                        <input type="text" id="inputEndereco" placeholder="Ex: Iguatemi Faria Lima ou La Vela" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
                     </div>
                 </div>
-            </section>
+                <div class="flex justify-end pt-3">
+                    <button onclick="mudarEtapa(2)" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-6 py-2.5 rounded-xl text-xs transition flex items-center shadow">
+                        Avançar <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
 
-            <!-- 2. Termo de Aceite (Texto Institucional) -->
-            <section class="bg-slate-800 border border-slate-700 rounded-xl p-5 shadow-lg space-y-3">
-                <h2 class="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center pb-2 border-b border-slate-700">
+            <!-- ETAPA 2: Termo de Aceite Institucional -->
+            <div id="etapa2" class="etapa-form hidden space-y-4 bg-slate-800 border border-slate-700 rounded-xl p-5 shadow-lg">
+                <h2 class="text-xs font-bold text-amber-400 uppercase tracking-wider pb-2 border-b border-slate-700 flex items-center">
                     <i class="fa-solid fa-circle-info mr-2"></i> 2. Termo de Aceite de Entrega
                 </h2>
                 <div class="bg-slate-900 p-4 rounded-lg border border-slate-700/80 text-xs text-slate-300 space-y-2.5 leading-relaxed">
                     <p class="font-semibold text-white">Este documento formaliza a entrega do projeto executado, considerando os requisitos, cronograma e os critérios de aceitação previamente relacionados e acordados através de um contrato entre o cliente e a Viecelli Móveis S/A[span_0](start_span)[span_0](end_span).</p>
                     <ul class="list-disc list-inside space-y-1 text-slate-400">
                         <li>A partir da assinatura deste Termo de Entrega, será considerada como encerrada a etapa de montagem dos móveis[span_1](start_span)[span_1](end_span).</li>
-                        <li>Qualquer problema que estiver relacionado aos procedimentos realizados no projeto, dentro do prazo estipulado, será resolvido sob critério de garantia[span_2](start_span)[span_2](end_span).</li>
-                        <li>A garantia não é estendida a produtos e serviços fornecidos por outros envolvidos no projeto, que não tenham sido contratados pela Viecelli Móveis S/A[span_3](start_span)[span_3](end_span).</li>
+                        <li>Qualquer problema relacionado aos procedimentos realizados no projeto, dentro do prazo estipulado, será resolvido sob critério de garantia[span_2](start_span)[span_2](end_span).</li>
+                        <li>A garantia não é estendida a produtos e serviços fornecidos por outros envolvidos no projeto, não contratados pela Viecelli Móveis S/A[span_3](start_span)[span_3](end_span).</li>
                     </ul>
-                    <p class="text-white pt-1">O Cliente, através de seu representante, declara que a empresa Viecelli Móveis S/A entregou os produtos e/ou serviços de acordo com os requisitos, bem como com os prazos estabelecidos[span_4](start_span)[span_4](end_span).</p>
+                    <p class="text-white pt-1">O Cliente, através de seu representante, declara que a empresa Viecelli Móveis S/A entregou os produtos e/ou serviços de acordo com os requisitos e prazos estabelecidos[span_4](start_span)[span_4](end_span).</p>
                 </div>
-            </section>
+                <div class="flex justify-between pt-3">
+                    <button onclick="mudarEtapa(1)" class="bg-slate-700 hover:bg-slate-600 text-white font-semibold px-5 py-2.5 rounded-xl text-xs transition flex items-center">
+                        <i class="fa-solid fa-arrow-left mr-2"></i> Voltar
+                    </button>
+                    <button onclick="mudarEtapa(3)" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-6 py-2.5 rounded-xl text-xs transition flex items-center shadow">
+                        Avançar <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
 
-            <!-- 3. Perguntas de Avaliação (Transporte, Mobiliário, Montagem) -->
-            <section class="bg-slate-800 border border-slate-700 rounded-xl p-5 shadow-lg space-y-5">
+            <!-- ETAPA 3: Checklist de Avaliação -->
+            <div id="etapa3" class="etapa-form hidden space-y-4 bg-slate-800 border border-slate-700 rounded-xl p-5 shadow-lg">
                 <h2 class="text-xs font-bold text-amber-400 uppercase tracking-wider pb-2 border-b border-slate-700 flex items-center">
-                    <i class="fa-solid fa-clipboard-question mr-2"></i> 3. Checklist de Avaliação (Viecelli Móveis S/A)
+                    <i class="fa-solid fa-clipboard-question mr-2"></i> 3. Checklist de Avaliação
                 </h2>
 
-                <!-- Grupo A: Transporte / Embalagem -->
-                <div class="space-y-3 bg-slate-900/60 p-4 rounded-xl border border-slate-700">
-                    <h3 class="text-xs font-bold text-amber-300 uppercase"><i class="fa-solid fa-truck-fast mr-1"></i> Transporte / Embalagem[span_5](start_span)[span_5](end_span)</h3>
-                    
-                    <div class="space-y-3">
-                        <div>
-                            <p class="text-xs text-white mb-1.5">O mobiliário foi devidamente embalado e transportado[span_6](start_span)[span_6](end_span)?</p>
-                            <div class="flex space-x-4 mb-1.5">
-                                <label class="flex items-center text-xs text-slate-300 cursor-pointer"><input type="radio" name="t1" value="SIM" checked class="mr-1 accent-amber-500"> SIM</label>
-                                <label class="flex items-center text-xs text-slate-300 cursor-pointer"><input type="radio" name="t1" value="NÃO" class="mr-1 accent-amber-500"> NÃO</label>
-                            </div>
-                            <input type="text" placeholder="Observações (opcional)[span_7](start_span)[span_7](end_span)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
-                        </div>
+                <div class="space-y-4">
+                    <!-- Transporte -->
+                    <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-700 space-y-2">
+                        <h3 class="text-xs font-bold text-amber-300 uppercase"><i class="fa-solid fa-truck-fast mr-1"></i> Transporte / Embalagem[span_5](start_span)[span_5](end_span)</h3>
+                        <p class="text-xs text-white">O mobiliário foi devidamente embalado e transportado?[span_6](start_span)[span_6](end_span)</p>
+                        <div class="flex space-x-4"><label><input type="radio" name="t1" value="SIM" checked class="accent-amber-500"> SIM</label><label><input type="radio" name="t1" value="NÃO" class="accent-amber-500"> NÃO</label></div>
+                        <input type="text" placeholder="Observações (opcional)[span_7](start_span)[span_7](end_span)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
+                        
+                        <p class="text-xs text-white pt-2">A obra foi entregue limpa, sem restos de embalagens?[span_8](start_span)[span_8](end_span)</p>
+                        <div class="flex space-x-4"><label><input type="radio" name="t3" value="SIM" checked class="accent-amber-500"> SIM</label><label><input type="radio" name="t3" value="NÃO" class="accent-amber-500"> NÃO</label></div>
+                        <input type="text" placeholder="Observações (opcional)[span_9](start_span)[span_9](end_span)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
+                    </div>
 
-                        <div>
-                            <p class="text-xs text-white mb-1.5">O transporte ocorreu de acordo com o prazo contratado[span_8](start_span)[span_8](end_span)?</p>
-                            <div class="flex space-x-4 mb-1.5">
-                                <label class="flex items-center text-xs text-slate-300 cursor-pointer"><input type="radio" name="t2" value="SIM" checked class="mr-1 accent-amber-500"> SIM</label>
-                                <label class="flex items-center text-xs text-slate-300 cursor-pointer"><input type="radio" name="t2" value="NÃO" class="mr-1 accent-amber-500"> NÃO</label>
-                            </div>
-                            <input type="text" placeholder="Observações (opcional)[span_9](start_span)[span_9](end_span)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
-                        </div>
+                    <!-- Mobiliário -->
+                    <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-700 space-y-2">
+                        <h3 class="text-xs font-bold text-amber-300 uppercase"><i class="fa-solid fa-couch mr-1"></i> Mobiliário[span_10](start_span)[span_10](end_span)</h3>
+                        <p class="text-xs text-white">Os móveis foram entregues de acordo com o contrato? (*Cor *Quantidade *Acabamento)[span_11](start_span)[span_11](end_span)</p>
+                        <div class="flex space-x-4"><label><input type="radio" name="m2" value="SIM" checked class="accent-amber-500"> SIM</label><label><input type="radio" name="m2" value="NÃO" class="accent-amber-500"> NÃO</label></div>
+                        <input type="text" placeholder="Observações (opcional)[span_12](start_span)[span_12](end_span)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
+                    </div>
 
-                        <div>
-                            <p class="text-xs text-white mb-1.5">A obra foi entregue limpa, sem restos de embalagens[span_10](start_span)[span_10](end_span)?</p>
-                            <div class="flex space-x-4 mb-1.5">
-                                <label class="flex items-center text-xs text-slate-300 cursor-pointer"><input type="radio" name="t3" value="SIM" checked class="mr-1 accent-amber-500"> SIM</label>
-                                <label class="flex items-center text-xs text-slate-300 cursor-pointer"><input type="radio" name="t3" value="NÃO" class="mr-1 accent-amber-500"> NÃO</label>
-                            </div>
-                            <input type="text" placeholder="Observações (opcional)[span_11](start_span)[span_11](end_span)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
+                    <!-- Montagem -->
+                    <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-700 space-y-2">
+                        <h3 class="text-xs font-bold text-amber-300 uppercase"><i class="fa-solid fa-hammer mr-1"></i> Montagem[span_13](start_span)[span_13](end_span)</h3>
+                        <p class="text-xs text-white">De 01 a 10, qual nota dá para nossa equipe de montagem?[span_14](start_span)[span_14](end_span)</p>
+                        <div class="flex flex-wrap gap-2">
+                            <label class="bg-slate-800 px-2.5 py-1 rounded text-xs cursor-pointer border border-slate-700"><input type="radio" name="notaMontagem" value="8"> 8</label>
+                            <label class="bg-slate-800 px-2.5 py-1 rounded text-xs cursor-pointer border border-slate-700"><input type="radio" name="notaMontagem" value="9"> 9</label>
+                            <label class="bg-slate-800 px-2.5 py-1 rounded text-xs cursor-pointer border border-slate-700"><input type="radio" name="notaMontagem" value="10" checked> 10</label>
                         </div>
+                        <input type="text" placeholder="Observações (opcional)[span_15](start_span)[span_15](end_span)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
                     </div>
                 </div>
 
-                <!-- Grupo B: Mobiliário -->
-                <div class="space-y-3 bg-slate-900/60 p-4 rounded-xl border border-slate-700">
-                    <h3 class="text-xs font-bold text-amber-300 uppercase"><i class="fa-solid fa-couch mr-1"></i> Mobiliário[span_12](start_span)[span_12](end_span)</h3>
-                    
-                    <div class="space-y-3">
-                        <div>
-                            <p class="text-xs text-white mb-1.5">O mobiliário foi inspecionado pelo cliente ou representante seu[span_13](start_span)[span_13](end_span)?</p>
-                            <div class="flex space-x-4 mb-1.5">
-                                <label class="flex items-center text-xs text-slate-300 cursor-pointer"><input type="radio" name="m1" value="SIM" checked class="mr-1 accent-amber-500"> SIM</label>
-                                <label class="flex items-center text-xs text-slate-300 cursor-pointer"><input type="radio" name="m1" value="NÃO" class="mr-1 accent-amber-500"> NÃO</label>
-                            </div>
-                            <input type="text" placeholder="Observações (opcional)[span_14](start_span)[span_14](end_span)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
-                        </div>
-
-                        <div>
-                            <p class="text-xs text-white mb-1.5">Os móveis foram entregues de acordo com o contrato? *Cor *Quantidade *Acabamento[span_15](start_span)[span_15](end_span)</p>
-                            <div class="flex space-x-4 mb-1.5">
-                                <label class="flex items-center text-xs text-slate-300 cursor-pointer"><input type="radio" name="m2" value="SIM" checked class="mr-1 accent-amber-500"> SIM</label>
-                                <label class="flex items-center text-xs text-slate-300 cursor-pointer"><input type="radio" name="m2" value="NÃO" class="mr-1 accent-amber-500"> NÃO</label>
-                            </div>
-                            <input type="text" placeholder="Observações (opcional)[span_16](start_span)[span_16](end_span)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
-                        </div>
-
-                        <div>
-                            <p class="text-xs text-white mb-1.5">O padrão dos móveis atende os requisitos negociados em contrato[span_17](start_span)[span_17](end_span)?</p>
-                            <div class="flex space-x-4 mb-1.5">
-                                <label class="flex items-center text-xs text-slate-300 cursor-pointer"><input type="radio" name="m3" value="SIM" checked class="mr-1 accent-amber-500"> SIM</label>
-                                <label class="flex items-center text-xs text-slate-300 cursor-pointer"><input type="radio" name="m3" value="NÃO" class="mr-1 accent-amber-500"> NÃO</label>
-                            </div>
-                            <input type="text" placeholder="Observações (opcional)[span_18](start_span)[span_18](end_span)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
-                        </div>
-                    </div>
+                <div class="flex justify-between pt-3">
+                    <button onclick="mudarEtapa(2)" class="bg-slate-700 hover:bg-slate-600 text-white font-semibold px-5 py-2.5 rounded-xl text-xs transition flex items-center">
+                        <i class="fa-solid fa-arrow-left mr-2"></i> Voltar
+                    </button>
+                    <button onclick="mudarEtapa(4)" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-6 py-2.5 rounded-xl text-xs transition flex items-center shadow">
+                        Avançar <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </button>
                 </div>
+            </div>
 
-                <!-- Grupo C: Montagem -->
-                <div class="space-y-3 bg-slate-900/60 p-4 rounded-xl border border-slate-700">
-                    <h3 class="text-xs font-bold text-amber-300 uppercase"><i class="fa-solid fa-hammer mr-1"></i> Montagem[span_19](start_span)[span_19](end_span)</h3>
-                    
-                    <div class="space-y-3">
-                        <div>
-                            <p class="text-xs text-white mb-1.5">A obra foi iniciada e finalizada nos prazos acordados, sem atrasos[span_20](start_span)[span_20](end_span)?</p>
-                            <div class="flex space-x-4 mb-1.5">
-                                <label class="flex items-center text-xs text-slate-300 cursor-pointer"><input type="radio" name="mo1" value="SIM" checked class="mr-1 accent-amber-500"> SIM</label>
-                                <label class="flex items-center text-xs text-slate-300 cursor-pointer"><input type="radio" name="mo1" value="NÃO" class="mr-1 accent-amber-500"> NÃO</label>
-                            </div>
-                            <input type="text" placeholder="Observações (opcional)[span_21](start_span)[span_21](end_span)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
-                        </div>
-
-                        <div>
-                            <p class="text-xs text-white mb-1.5">O processo de montagem dos móveis correu de acordo com o negociado[span_22](start_span)[span_22](end_span)?</p>
-                            <div class="flex space-x-4 mb-1.5">
-                                <label class="flex items-center text-xs text-slate-300 cursor-pointer"><input type="radio" name="mo2" value="SIM" checked class="mr-1 accent-amber-500"> SIM</label>
-                                <label class="flex items-center text-xs text-slate-300 cursor-pointer"><input type="radio" name="mo2" value="NÃO" class="mr-1 accent-amber-500"> NÃO</label>
-                            </div>
-                            <input type="text" placeholder="Observações (opcional)[span_23](start_span)[span_23](end_span)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
-                        </div>
-
-                        <div>
-                            <p class="text-xs text-white mb-1.5">De 01 a 10, qual nota você dá para nossa equipe de montagem[span_24](start_span)[span_24](end_span)?</p>
-                            <div class="flex flex-wrap gap-2 mb-2">
-                                <label class="bg-slate-800 px-3 py-1 rounded text-xs cursor-pointer border border-slate-700 hover:border-amber-500"><input type="radio" name="notaMontagem" value="1" class="mr-1"> 1</label>
-                                <label class="bg-slate-800 px-3 py-1 rounded text-xs cursor-pointer border border-slate-700 hover:border-amber-500"><input type="radio" name="notaMontagem" value="2" class="mr-1"> 2</label>
-                                <label class="bg-slate-800 px-3 py-1 rounded text-xs cursor-pointer border border-slate-700 hover:border-amber-500"><input type="radio" name="notaMontagem" value="3" class="mr-1"> 3</label>
-                                <label class="bg-slate-800 px-3 py-1 rounded text-xs cursor-pointer border border-slate-700 hover:border-amber-500"><input type="radio" name="notaMontagem" value="4" class="mr-1"> 4</label>
-                                <label class="bg-slate-800 px-3 py-1 rounded text-xs cursor-pointer border border-slate-700 hover:border-amber-500"><input type="radio" name="notaMontagem" value="5" class="mr-1"> 5</label>
-                                <label class="bg-slate-800 px-3 py-1 rounded text-xs cursor-pointer border border-slate-700 hover:border-amber-500"><input type="radio" name="notaMontagem" value="6" class="mr-1"> 6</label>
-                                <label class="bg-slate-800 px-3 py-1 rounded text-xs cursor-pointer border border-slate-700 hover:border-amber-500"><input type="radio" name="notaMontagem" value="7" class="mr-1"> 7</label>
-                                <label class="bg-slate-800 px-3 py-1 rounded text-xs cursor-pointer border border-slate-700 hover:border-amber-500"><input type="radio" name="notaMontagem" value="8" class="mr-1"> 8</label>
-                                <label class="bg-slate-800 px-3 py-1 rounded text-xs cursor-pointer border border-slate-700 hover:border-amber-500"><input type="radio" name="notaMontagem" value="9" class="mr-1"> 9</label>
-                                <label class="bg-slate-800 px-3 py-1 rounded text-xs cursor-pointer border border-slate-700 hover:border-amber-500"><input type="radio" name="notaMontagem" value="10" checked class="mr-1"> 10</label>
-                            </div>
-                            <input type="text" placeholder="Observações (opcional)[span_25](start_span)[span_25](end_span)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 4. Anexo de Imagens (Até 20 fotos) -->
-            <section class="bg-slate-800 border border-slate-700 rounded-xl p-5 shadow-lg space-y-3">
+            <!-- ETAPA 4: Anexo de Imagens -->
+            <div id="etapa4" class="etapa-form hidden space-y-4 bg-slate-800 border border-slate-700 rounded-xl p-5 shadow-lg">
                 <div class="flex items-center justify-between pb-2 border-b border-slate-700">
                     <h2 class="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center">
-                        <i class="fa-solid fa-camera mr-2"></i> 4. Anexar Imagens (Máx. 20 fotos)[span_26](start_span)[span_26](end_span)
+                        <i class="fa-solid fa-camera mr-2"></i> 4. Anexar Imagens (Máx. 20 fotos)[span_16](start_span)[span_16](end_span)
                     </h2>
                     <span id="contadorFotos" class="text-xs text-slate-400">0 de 20 fotos</span>
                 </div>
-
                 <div class="flex items-center justify-center w-full">
                     <label class="flex flex-col items-center justify-center w-full h-24 border-2 border-slate-600 border-dashed rounded-lg cursor-pointer bg-slate-900 hover:bg-slate-950 transition">
                         <div class="flex flex-col items-center justify-center pt-4 pb-5">
                             <i class="fa-solid fa-plus text-amber-400 text-xl mb-1"></i>
-                            <p class="text-xs text-slate-300 font-semibold">Clique para anexar imagens da obra[span_27](start_span)[span_27](end_span)</p>
+                            <p class="text-xs text-slate-300 font-semibold">Clique para anexar imagens da obra[span_17](start_span)[span_17](end_span)</p>
                         </div>
                         <input type="file" id="inputFotos" accept="image/*" multiple class="hidden" onchange="adicionarFotos(event)">
                     </label>
                 </div>
                 <div id="gridFotos" class="grid grid-cols-2 sm:grid-cols-5 gap-2"></div>
-            </section>
 
-            <!-- 5. Identificação e Assinaturas (Cliente e Montador separadas) -->
-            <section class="bg-slate-800 border border-slate-700 rounded-xl p-5 shadow-lg space-y-4">
+                <div class="flex justify-between pt-3">
+                    <button onclick="mudarEtapa(3)" class="bg-slate-700 hover:bg-slate-600 text-white font-semibold px-5 py-2.5 rounded-xl text-xs transition flex items-center">
+                        <i class="fa-solid fa-arrow-left mr-2"></i> Voltar
+                    </button>
+                    <button onclick="mudarEtapa(5)" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-6 py-2.5 rounded-xl text-xs transition flex items-center shadow">
+                        Avançar <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ETAPA 5: Identificação e Assinaturas Finais -->
+            <div id="etapa5" class="etapa-form hidden space-y-4 bg-slate-800 border border-slate-700 rounded-xl p-5 shadow-lg">
                 <h2 class="text-xs font-bold text-amber-400 uppercase tracking-wider pb-2 border-b border-slate-700 flex items-center">
                     <i class="fa-solid fa-file-signature mr-2"></i> 5. Identificação e Assinaturas Finais
                 </h2>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <!-- Bloco do Cliente -->
+                    <!-- Cliente -->
                     <div class="bg-slate-900 p-4 rounded-xl border border-slate-700 space-y-3">
-                        <h3 class="text-xs font-bold text-amber-300 uppercase"><i class="fa-solid fa-user mr-1"></i> Identificação do Cliente[span_28](start_span)[span_28](end_span)</h3>
-                        <p class="text-[11px] text-slate-400">Declaro que as informações contidas neste Termo de Aceite de Entrega de Projeto são verdadeiras[span_29](start_span)[span_29](end_span).</p>
-                        
-                        <div class="space-y-2">
-                            <input type="text" id="clienteNome" placeholder="Nome completo[span_30](start_span)[span_30](end_span)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
-                            <input type="text" id="clienteTel" placeholder="Fone[span_31](start_span)[span_31](end_span)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
-                            <input type="email" id="clienteEmail" placeholder="E-mail[span_32](start_span)[span_32](end_span)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
-                        </div>
-
+                        <h3 class="text-xs font-bold text-amber-300 uppercase"><i class="fa-solid fa-user mr-1"></i> Cliente[span_18](start_span)[span_18](end_span)</h3>
+                        <input type="text" id="clienteNome" placeholder="Nome completo[span_19](start_span)[span_19](end_span)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
+                        <input type="text" id="clienteTel" placeholder="Fone[span_20](start_span)[span_20](end_span)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
+                        <input type="email" id="clienteEmail" placeholder="E-mail[span_21](start_span)[span_21](end_span)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
                         <div>
                             <label class="block text-[11px] text-slate-400 mb-1">Assinatura do Cliente</label>
                             <div class="bg-white rounded border border-slate-600 relative overflow-hidden">
@@ -256,17 +211,12 @@
                         </div>
                     </div>
 
-                    <!-- Bloco do Montador / Viecelli -->
+                    <!-- Montador -->
                     <div class="bg-slate-900 p-4 rounded-xl border border-slate-700 space-y-3">
-                        <h3 class="text-xs font-bold text-indigo-400 uppercase"><i class="fa-solid fa-screwdriver-wrench mr-1"></i> Responsável pela Entrega (VIECELLI)[span_33](start_span)[span_33](end_span)</h3>
-                        <p class="text-[11px] text-slate-400">Declaro que as informações contidas neste Termo de Aceite de Entrega de Projeto são verdadeiras[span_34](start_span)[span_34](end_span).</p>
-                        
-                        <div class="space-y-2">
-                            <input type="text" id="montadorNome" placeholder="Nome do Montador[span_35](start_span)[span_35](end_span)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
-                            <input type="text" id="montadorTel" placeholder="Fone / WhatsApp" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
-                            <input type="email" id="montadorEmail" placeholder="E-mail" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
-                        </div>
-
+                        <h3 class="text-xs font-bold text-indigo-400 uppercase"><i class="fa-solid fa-screwdriver-wrench mr-1"></i> Montador (VIECELLI)[span_22](start_span)[span_22](end_span)</h3>
+                        <input type="text" id="montadorNome" placeholder="Nome do Montador[span_23](start_span)[span_23](end_span)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
+                        <input type="text" id="montadorTel" placeholder="Fone / WhatsApp" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
+                        <input type="email" id="montadorEmail" placeholder="E-mail" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white">
                         <div>
                             <label class="block text-[11px] text-slate-400 mb-1">Assinatura do Montador</label>
                             <div class="bg-white rounded border border-slate-600 relative overflow-hidden">
@@ -276,17 +226,20 @@
                         </div>
                     </div>
                 </div>
-            </section>
 
-            <!-- Botão Enviar / Finalizar -->
-            <div class="flex justify-end pt-2">
-                <button onclick="finalizarEGerarPDF()" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-8 py-3.5 rounded-xl text-sm transition shadow-lg flex items-center justify-center">
-                    <i class="fa-solid fa-paper-plane mr-2"></i> Enviar & Gerar PDF (E-mail Fixo)
-                </button>
+                <div class="flex justify-between pt-3">
+                    <button onclick="mudarEtapa(4)" class="bg-slate-700 hover:bg-slate-600 text-white font-semibold px-5 py-2.5 rounded-xl text-xs transition flex items-center">
+                        <i class="fa-solid fa-arrow-left mr-2"></i> Voltar
+                    </button>
+                    <button onclick="finalizarEGerarPDF()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-6 py-3 rounded-xl text-sm transition shadow-lg flex items-center">
+                        <i class="fa-solid fa-paper-plane mr-2"></i> Finalizar & Enviar
+                    </button>
+                </div>
             </div>
+
         </div>
 
-        <!-- MODO ADMIN / PAINEL -->
+        <!-- MODO ADMIN -->
         <div id="viewAdmin" class="hidden space-y-6">
             <div class="bg-slate-800 border border-slate-700 rounded-xl p-5 shadow-lg space-y-4">
                 <div class="flex justify-between items-center">
@@ -295,17 +248,16 @@
                         <p class="text-xs text-slate-400">Relatórios enviados automaticamente para <strong class="text-amber-400">entregas@viecelli.com.br</strong></p>
                     </div>
                 </div>
-
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse text-xs">
                         <thead>
                             <tr class="border-b border-slate-700 text-slate-400 bg-slate-900/50">
                                 <th class="p-3">Pedido</th>
-                                <th class="p-3">Cliente / Marca</th>
+                                <th class="p-3">Cliente</th>
                                 <th class="p-3">Endereço</th>
                                 <th class="p-3">Montador</th>
                                 <th class="p-3">Status</th>
-                                <th class="p-3 text-right">Ação / PDF</th>
+                                <th class="p-3 text-right">PDF</th>
                             </tr>
                         </thead>
                         <tbody id="tabelaRelatorios" class="divide-y divide-slate-700/60"></tbody>
@@ -323,69 +275,61 @@
                 <i class="fa-solid fa-circle-check"></i>
             </div>
             <h3 class="text-lg font-bold text-white">Relatório Concluído com Sucesso!</h3>
-            <p class="text-xs text-slate-300 leading-relaxed">
-                O PDF unificando cabeçalho, termos, respostas do checklist, fotos e assinaturas foi gerado e enviado para o e-mail fixo <strong class="text-amber-400">entregas@viecelli.com.br</strong>.
-            </p>
+            <p class="text-xs text-slate-300 leading-relaxed">O PDF foi gerado e enviado com sucesso para <strong class="text-amber-400">entregas@viecelli.com.br</strong>.</p>
             <div class="flex space-x-2 pt-2">
-                <button onclick="baixarPDFSimulado()" class="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-semibold py-2.5 rounded-xl text-xs transition flex items-center justify-center">
-                    <i class="fa-solid fa-download mr-1.5"></i> Baixar PDF
-                </button>
-                <button onclick="fecharModal()" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-semibold py-2.5 rounded-xl text-xs transition">
-                    Novo Relatório
-                </button>
+                <button onclick="baixarPDFSimulado()" class="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-semibold py-2.5 rounded-xl text-xs transition">Descarregar PDF</button>
+                <button onclick="fecharModal()" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-semibold py-2.5 rounded-xl text-xs transition">Novo Relatório</button>
             </div>
         </div>
     </div>
 
-    <!-- Script de Interatividade -->
+    <!-- Script de Gestão de Etapas e Funcionalidades -->
     <script>
         const pedidosBase = {
             "10203": { cliente: "Arezzo", endereco: "Iguatemi Faria Lima" },
-            "55412": { cliente: "Carolina Herrera", endereco: "Shopping Cidade Jardim" },
-            "99810": { cliente: "Track & Field", endereco: "La Vela - Venezuela" }
+            "55412": { cliente: "Carolina Herrera", endereco: "Shopping Cidade Jardim" }
         };
 
         let fotosLista = [];
         let relatoriosSalvos = [
-            { pedido: "10203", cliente: "Arezzo", endereco: "Iguatemi Faria Lima", montador: "Carlos Eduardo", fotos: 3, status: "Enviado e Aprovado" }
+            { pedido: "10203", cliente: "Arezzo", endereco: "Iguatemi Faria Lima", montador: "Carlos Eduardo", fotos: 3, status: "Enviado" }
         ];
+
+        function mudarEtapa(etapaDestino) {
+            // Oculta todas as etapas
+            for (let i = 1; i <= 5; i++) {
+                document.getElementById(`etapa${i}`).classList.add('hidden');
+                document.getElementById(`dot${i}`).classList.remove('bg-amber-500');
+                document.getElementById(`dot${i}`).classList.add('bg-slate-700');
+            }
+            // Mostra a etapa escolhida
+            document.getElementById(`etapa${etapaDestino}`).classList.remove('hidden');
+            document.getElementById(`dot${etapaDestino}`).classList.remove('bg-slate-700');
+            document.getElementById(`dot${etapaDestino}`).classList.add('bg-amber-500');
+
+            const titulos = [
+                "Passo 1 de 5: Identificação do Pedido",
+                "Passo 2 de 5: Termo de Aceite",
+                "Passo 3 de 5: Checklist de Avaliação",
+                "Passo 4 de 5: Registo Fotográfico",
+                "Passo 5 de 5: Identificação e Assinaturas"
+            ];
+            document.getElementById('labelEtapa').innerText = titulos[etapaDestino - 1];
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
         function setupCanvas(id) {
             const canvas = document.getElementById(id);
+            if (!canvas) return;
             const ctx = canvas.getContext('2d');
             let isDrawing = false;
 
-            function start(e) {
-                isDrawing = true;
-                ctx.beginPath();
-                const rect = canvas.getBoundingClientRect();
-                const x = (e.clientX || e.touches[0].clientX) - rect.left;
-                const y = (e.clientY || e.touches[0].clientY) - rect.top;
-                ctx.moveTo(x, y);
-            }
-
-            function draw(e) {
-                if (!isDrawing) return;
-                e.preventDefault();
-                const rect = canvas.getBoundingClientRect();
-                const x = (e.clientX || e.touches[0].clientX) - rect.left;
-                const y = (e.clientY || e.touches[0].clientY) - rect.top;
-                ctx.lineTo(x, y);
-                ctx.strokeStyle = '#0f172a';
-                ctx.lineWidth = 2;
-                ctx.lineCap = 'round';
-                ctx.stroke();
-            }
-
+            function start(e) { isDrawing = true; ctx.beginPath(); const rect = canvas.getBoundingClientRect(); ctx.moveTo((e.clientX || e.touches[0].clientX) - rect.left, (e.clientY || e.touches[0].clientY) - rect.top); }
+            function draw(e) { if (!isDrawing) return; e.preventDefault(); const rect = canvas.getBoundingClientRect(); ctx.lineTo((e.clientX || e.touches[0].clientX) - rect.left, (e.clientY || e.touches[0].clientY) - rect.top); ctx.strokeStyle = '#0f172a'; ctx.lineWidth = 2; ctx.stroke(); }
             function stop() { isDrawing = false; }
 
-            canvas.addEventListener('mousedown', start);
-            canvas.addEventListener('mousemove', draw);
-            canvas.addEventListener('mouseup', stop);
-            canvas.addEventListener('mouseleave', stop);
-            canvas.addEventListener('touchstart', start);
-            canvas.addEventListener('touchmove', draw);
-            canvas.addEventListener('touchend', stop);
+            canvas.addEventListener('mousedown', start); canvas.addEventListener('mousemove', draw); canvas.addEventListener('mouseup', stop); canvas.addEventListener('mouseleave', stop);
+            canvas.addEventListener('touchstart', start); canvas.addEventListener('touchmove', draw); canvas.addEventListener('touchend', stop);
         }
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -396,8 +340,7 @@
 
         function limparCanvas(id) {
             const canvas = document.getElementById(id);
-            const ctx = canvas.getContext('2d');
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
         }
 
         function buscarPedido() {
@@ -407,24 +350,16 @@
                 document.getElementById('inputEndereco').value = pedidosBase[num].endereco;
                 alert('Pedido localizado e preenchido com sucesso!');
             } else {
-                alert('Pedido não encontrado na base pré-carregada. Preencha os campos manualmente.');
-                document.getElementById('inputCliente').value = '';
-                document.getElementById('inputEndereco').value = '';
+                alert('Pedido não encontrado na base. Preencha os campos manualmente.');
             }
         }
 
         function adicionarFotos(event) {
             const files = event.target.files;
             for (let i = 0; i < files.length; i++) {
-                if (fotosLista.length >= 20) {
-                    alert('Limite máximo de 20 fotos atingido.');
-                    break;
-                }
+                if (fotosLista.length >= 20) { alert('Limite de 20 fotos atingido.'); break; }
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    fotosLista.push(e.target.result);
-                    atualizarGridFotos();
-                }
+                reader.onload = function(e) { fotosLista.push(e.target.result); atualizarGridFotos(); }
                 reader.readAsDataURL(files[i]);
             }
         }
@@ -434,21 +369,11 @@
             document.getElementById('contadorFotos').innerText = `${fotosLista.length} de 20 fotos`;
             grid.innerHTML = '';
             fotosLista.forEach((src, index) => {
-                grid.innerHTML += `
-                    <div class="relative bg-slate-900 border border-slate-700 rounded-lg overflow-hidden h-20">
-                        <img src="${src}" class="w-full h-full object-cover">
-                        <button onclick="removerFoto(${index})" class="absolute top-1 right-1 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px]">
-                            <i class="fa-solid fa-xmark"></i>
-                        </button>
-                    </div>
-                `;
+                grid.innerHTML += `<div class="relative bg-slate-900 border border-slate-700 rounded-lg overflow-hidden h-20"><img src="${src}" class="w-full h-full object-cover"><button onclick="removerFoto(${index})" class="absolute top-1 right-1 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px]"><i class="fa-solid fa-xmark"></i></button></div>`;
             });
         }
 
-        function removerFoto(index) {
-            fotosLista.splice(index, 1);
-            atualizarGridFotos();
-        }
+        function removerFoto(index) { fotosLista.splice(index, 1); atualizarGridFotos(); }
 
         function finalizarEGerarPDF() {
             const pedido = document.getElementById('inputNrPedido').value.trim();
@@ -457,20 +382,12 @@
             const montadorNome = document.getElementById('montadorNome').value.trim();
 
             if (!pedido || !cliente || !clienteNome || !montadorNome) {
-                alert('Por favor, preencha o número do pedido, o cliente e os dados/identificação nas assinaturas.');
+                alert('Por favor, certifique-se de que preencheu o pedido, cliente e os campos de identificação nas assinaturas.');
                 return;
             }
 
-            relatoriosSalvos.unshift({
-                pedido: pedido,
-                cliente: cliente,
-                endereco: document.getElementById('inputEndereco').value || 'Não informado',
-                montador: montadorNome,
-                fotos: fotosLista.length,
-                status: 'Enviado (E-mail Fixo)'
-            });
+            relatoriosSalvos.unshift({ pedido, cliente, endereco: document.getElementById('inputEndereco').value || 'N/A', montador: montadorNome, fotos: fotosLista.length, status: 'Enviado' });
             renderizarTabelaAdmin();
-
             document.getElementById('modalSucesso').classList.remove('hidden');
             document.getElementById('modalSucesso').classList.add('flex');
         }
@@ -478,13 +395,10 @@
         function fecharModal() {
             document.getElementById('modalSucesso').classList.remove('flex');
             document.getElementById('modalSucesso').classList.add('hidden');
-            fotosLista = [];
-            atualizarGridFotos();
+            fotosLista = []; atualizarGridFotos(); mudarEtapa(1);
         }
 
-        function baixarPDFSimulado() {
-            alert('Baixando PDF consolidado contendo cabeçalho, termo, perguntas respondidas, assinaturas e fotos!');
-        }
+        function baixarPDFSimulado() { alert('A descarregar PDF consolidado...'); }
 
         let isAdmin = false;
         function alternarVisao() {
@@ -494,15 +408,11 @@
             const btn = document.getElementById('btnAlternarPerfil');
 
             if (isAdmin) {
-                viewU.classList.add('hidden');
-                viewA.classList.remove('hidden');
+                viewU.classList.add('hidden'); viewA.classList.remove('hidden');
                 btn.innerHTML = `<i class="fa-solid fa-mobile-screen mr-1.5"></i> Voltar ao App`;
-                btn.className = "bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-3 py-1.5 rounded-lg text-xs transition flex items-center shadow";
             } else {
-                viewA.classList.add('hidden');
-                viewU.classList.remove('hidden');
+                viewA.classList.add('hidden'); viewU.classList.remove('hidden');
                 btn.innerHTML = `<i class="fa-solid fa-user-gear mr-1.5"></i> Painel Admin`;
-                btn.className = "bg-amber-500 hover:bg-amber-600 text-slate-950 font-semibold px-3 py-1.5 rounded-lg text-xs transition flex items-center shadow";
             }
         }
 
@@ -510,20 +420,7 @@
             const tbody = document.getElementById('tabelaRelatorios');
             tbody.innerHTML = '';
             relatoriosSalvos.forEach(item => {
-                tbody.innerHTML += `
-                    <tr class="hover:bg-slate-900/30 transition">
-                        <td class="p-3 font-semibold text-amber-400">#${item.pedido}</td>
-                        <td class="p-3 text-white font-medium">${item.cliente}</td>
-                        <td class="p-3 text-slate-300">${item.endereco}</td>
-                        <td class="p-3 text-slate-300">${item.montador}</td>
-                        <td class="p-3"><span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded text-[10px]">${item.status}</span></td>
-                        <td class="p-3 text-right">
-                            <button onclick="baixarPDFSimulado()" class="bg-slate-700 hover:bg-amber-500 hover:text-slate-950 text-slate-200 px-2.5 py-1 rounded text-xs transition">
-                                <i class="fa-solid fa-file-pdf mr-1"></i> PDF (${item.fotos} fotos)
-                            </button>
-                        </td>
-                    </tr>
-                `;
+                tbody.innerHTML += `<tr class="hover:bg-slate-900/30 transition"><td class="p-3 font-semibold text-amber-400">#${item.pedido}</td><td class="p-3 text-white">${item.cliente}</td><td class="p-3 text-slate-300">${item.endereco}</td><td class="p-3 text-slate-300">${item.montador}</td><td class="p-3"><span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded text-[10px]">${item.status}</span></td><td class="p-3 text-right"><button onclick="baixarPDFSimulado()" class="bg-slate-700 hover:bg-amber-500 hover:text-slate-950 text-slate-200 px-2.5 py-1 rounded text-xs transition"><i class="fa-solid fa-file-pdf"></i></button></td></tr>`;
             });
         }
     </script>
