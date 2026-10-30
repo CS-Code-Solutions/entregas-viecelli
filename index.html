@@ -25,21 +25,19 @@
         body.light-theme input.bg-slate-800, body.light-theme input.bg-slate-900 { background-color: #ffffff !important; border-color: #cbd5e1 !important; color: #0f172a !important; }
         body.light-theme .border-slate-700 { border-color: #cbd5e1 !important; }
 
-        /* Estilos Exclusivos para o PDF Gerado */
+        /* Estilos do Template PDF */
         #pdf-template { display: none; }
-        .pdf-page { padding: 30px; font-family: Arial, sans-serif; color: #111; font-size: 12px; line-height: 1.5; background: #fff; }
-        .pdf-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f59e0b; padding-bottom: 10px; margin-bottom: 20px; }
-        .pdf-title { font-size: 18px; font-weight: bold; color: #333; }
-        .pdf-section { margin-bottom: 15px; border: 1px solid #ddd; padding: 10px; border-radius: 5px; }
-        .pdf-section h3 { margin: 0 0 10px 0; font-size: 13px; color: #f59e0b; border-bottom: 1px solid #eee; padding-bottom: 5px; }
-        .pdf-row { display: flex; justify-content: space-between; margin-bottom: 5px; }
+        .pdf-page { padding: 25px; font-family: Arial, sans-serif; color: #111; font-size: 11px; line-height: 1.4; background: #fff; }
+        .pdf-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f59e0b; padding-bottom: 8px; margin-bottom: 15px; }
+        .pdf-title { font-size: 16px; font-weight: bold; color: #111; }
+        .pdf-section { margin-bottom: 12px; border: 1px solid #e2e8f0; padding: 10px; border-radius: 6px; }
+        .pdf-section h3 { margin: 0 0 8px 0; font-size: 12px; color: #d97706; border-bottom: 1px solid #f1f5f9; padding-bottom: 4px; }
+        .pdf-row { display: flex; justify-content: space-between; margin-bottom: 4px; }
         .pdf-label { font-weight: bold; }
-        .pdf-img-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
-        .pdf-img-card { width: 31%; text-align: center; font-size: 10px; border: 1px solid #eee; padding: 4px; border-radius: 4px; }
-        .pdf-img-card img { width: 100%; height: 110px; object-fit: cover; border-radius: 3px; }
-        .pdf-signatures { display: flex; justify-content: space-between; margin-top: 30px; }
+        
+        .pdf-signatures { display: flex; justify-content: space-between; margin-top: 20px; }
         .pdf-sig-box { width: 45%; text-align: center; }
-        .pdf-sig-box img { max-width: 100%; height: 80px; border-bottom: 1px solid #000; margin-bottom: 5px; }
+        .pdf-sig-box img { width: 100%; max-height: 70px; object-fit: contain; border-bottom: 1px solid #000; margin-bottom: 4px; display: block; margin-left: auto; margin-right: auto; }
     </style>
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-300">
@@ -50,7 +48,6 @@
             <button onclick="toggleMenu()" class="text-slate-300 hover:text-amber-500 text-xl focus:outline-none mr-2">
                 <i class="fa-solid fa-bars"></i>
             </button>
-            <!-- Logo Alterada para login.png -->
             <img src="login.png" alt="Logo Viecelli" class="h-7 sm:h-8 w-auto object-contain">
             <div>
                 <h1 class="font-bold text-xs sm:text-sm text-white leading-tight">Aceite de Entrega</h1>
@@ -105,7 +102,7 @@
                 </div>
             </div>
 
-            <!-- ETAPA 1: Pedido -->
+            <!-- ETAPA 1 -->
             <div id="etapa1" class="etapa-form space-y-4 bg-slate-800 border border-slate-700 rounded-xl p-4 shadow-lg">
                 <h2 class="text-[11px] sm:text-xs font-bold text-amber-400 uppercase tracking-wider pb-2 border-b border-slate-700 flex items-center">
                     <i class="fa-solid fa-file-lines mr-2"></i> 1. Identificação do Pedido
@@ -164,7 +161,7 @@
                 </div>
             </div>
 
-            <!-- ETAPA 3: Termo de Aceite ÍNTEGRA -->
+            <!-- ETAPA 3: Termo de Aceite -->
             <div id="etapa3" class="etapa-form hidden space-y-4 bg-slate-800 border border-slate-700 rounded-xl p-4 shadow-lg">
                 <div class="bg-indigo-500/10 border border-indigo-500/30 p-3 rounded-xl flex items-center space-x-3 mb-2">
                     <div class="bg-indigo-500 text-white rounded-full w-8 h-8 flex items-center justify-center shrink-0"><i class="fa-solid fa-handshake"></i></div>
@@ -174,7 +171,6 @@
                     <i class="fa-solid fa-circle-info mr-2"></i> 3. Termo de Aceite de Entrega
                 </h2>
                 
-                <!-- TEXTO COMPLETO RESTAURADO -->
                 <div class="bg-slate-900 p-4 rounded-lg border border-slate-700/80 text-[11px] sm:text-xs text-slate-300 space-y-2 leading-relaxed">
                     <p class="font-semibold text-white">Este documento formaliza a entrega do projeto executado, considerando os requisitos, cronograma e os critérios de aceitação previamente relacionados e acordados através de um contrato entre o cliente e a Viecelli Móveis S/A.</p>
                     <ul class="list-disc list-inside space-y-1 text-slate-400">
@@ -195,7 +191,7 @@
                 </div>
             </div>
 
-            <!-- ETAPA 4: Checklist com Evidência Obrigatoria se "NÃO" -->
+            <!-- ETAPA 4: Checklist com Evidências -->
             <div id="etapa4" class="etapa-form hidden space-y-4 bg-slate-800 border border-slate-700 rounded-xl p-4 shadow-lg">
                 <h2 class="text-[11px] sm:text-xs font-bold text-amber-400 uppercase tracking-wider pb-2 border-b border-slate-700 flex items-center">
                     <i class="fa-solid fa-clipboard-question mr-2"></i> 4. Checklist de Avaliação
@@ -264,10 +260,6 @@
                             <p class="text-[11px] text-white">De 1 a 10, qual a nota para a equipa de montagem?</p>
                             <div class="flex flex-wrap gap-1.5 mt-2">
                                 <script>
-if (localStorage.getItem('usuarioAutenticado') !== 'true') {
-    window.location.href = 'login.html';
-}
-
                                     for(let i=1; i<=10; i++){
                                         document.write(`<label class="bg-slate-800 px-2.5 py-1.5 rounded text-xs cursor-pointer border border-slate-700 flex items-center justify-center min-w-[32px] hover:bg-amber-500 hover:text-slate-900 transition-colors"><input type="radio" name="notaMontagem" value="${i}" ${i===10?'checked':''} class="accent-amber-500 mr-1"> ${i}</label>`);
                                     }
@@ -283,7 +275,7 @@ if (localStorage.getItem('usuarioAutenticado') !== 'true') {
                 </div>
             </div>
 
-            <!-- ETAPA 5: Assinaturas e Validação Estrita -->
+            <!-- ETAPA 5: Assinaturas -->
             <div id="etapa5" class="etapa-form hidden space-y-4 bg-slate-800 border border-slate-700 rounded-xl p-4 shadow-lg">
                 <h2 class="text-[11px] sm:text-xs font-bold text-amber-400 uppercase tracking-wider pb-2 border-b border-slate-700 flex items-center">
                     <i class="fa-solid fa-file-signature mr-2"></i> 5. Conformidade e Assinaturas
@@ -414,7 +406,7 @@ if (localStorage.getItem('usuarioAutenticado') !== 'true') {
             <div class="pdf-header">
                 <div>
                     <h1 class="pdf-title">TERMO DE ACEITE DE ENTREGA</h1>
-                    <p style="color: #666; margin-top:3px;">Viecelli Móveis S/A</p>
+                    <p style="color: #666; margin-top:2px;">Viecelli Móveis S/A</p>
                 </div>
                 <div style="font-weight:bold; font-size: 16px; color: #f59e0b;">VIECELLI</div>
             </div>
@@ -424,34 +416,34 @@ if (localStorage.getItem('usuarioAutenticado') !== 'true') {
                 <div class="pdf-row"><span class="pdf-label">Nº Pedido:</span> <span id="pdf-num"></span></div>
                 <div class="pdf-row"><span class="pdf-label">Cliente / Marca:</span> <span id="pdf-cli"></span></div>
                 <div class="pdf-row"><span class="pdf-label">Endereço da Obra:</span> <span id="pdf-end"></span></div>
-                <div class="pdf-row" style="margin-top:5px;"><span class="pdf-label">Data:</span> <span id="pdf-data"></span></div>
+                <div class="pdf-row" style="margin-top:3px;"><span class="pdf-label">Data:</span> <span id="pdf-data"></span></div>
             </div>
 
             <div class="pdf-section">
                 <h3>2. Avaliação de Conformidade (Checklist)</h3>
                 <div class="pdf-row"><span class="pdf-label">Transporte Adequado?</span> <span id="pdf-t1"></span></div>
-                <div class="pdf-row" style="margin-bottom:6px; font-style:italic; color:#555;" id="pdf-obs-t1"></div>
+                <div class="pdf-row" style="margin-bottom:4px; font-style:italic; color:#555;" id="pdf-obs-t1"></div>
                 
                 <div class="pdf-row"><span class="pdf-label">Obra limpa (sem embalagens)?</span> <span id="pdf-t2"></span></div>
-                <div class="pdf-row" style="margin-bottom:6px; font-style:italic; color:#555;" id="pdf-obs-t2"></div>
+                <div class="pdf-row" style="margin-bottom:4px; font-style:italic; color:#555;" id="pdf-obs-t2"></div>
                 
                 <div class="pdf-row"><span class="pdf-label">Móveis conforme contrato?</span> <span id="pdf-m1"></span></div>
-                <div class="pdf-row" style="margin-bottom:6px; font-style:italic; color:#555;" id="pdf-obs-m1"></div>
+                <div class="pdf-row" style="margin-bottom:4px; font-style:italic; color:#555;" id="pdf-obs-m1"></div>
                 
                 <div class="pdf-row"><span class="pdf-label">Nota da Montagem (1-10):</span> <span id="pdf-nota"></span></div>
-                <div class="pdf-row" style="margin-bottom:6px; font-style:italic; color:#555;" id="pdf-obs-nota"></div>
+                <div class="pdf-row" style="margin-bottom:4px; font-style:italic; color:#555;" id="pdf-obs-nota"></div>
             </div>
 
             <div class="pdf-section">
                 <h3>3. Termo de Aceite e Conformidade</h3>
-                <p style="margin-bottom: 8px; font-size: 10px; color:#333; line-height: 1.4;">
+                <p style="margin-bottom: 6px; font-size: 9.5px; color:#333; line-height: 1.35;">
                     Este documento formaliza a entrega do projeto executado, considerando os requisitos, cronograma e os critérios de aceitação previamente relacionados e acordados através de um contrato entre o cliente e a Viecelli Móveis S/A.<br>
                     • A partir da assinatura deste Termo, será considerada como encerrada a etapa de montagem.<br>
                     • Qualquer problema relacionado aos procedimentos, dentro do prazo, será resolvido sob garantia.<br>
                     • A garantia não é estendida a produtos/serviços de terceiros não contratados pela Viecelli.<br>
                     O Cliente declara que a Viecelli Móveis S/A entregou os produtos/serviços de acordo com os requisitos e prazos.
                 </p>
-                <p style="margin-bottom: 10px; font-size: 11px;"><strong>Status Final:</strong> <span id="pdf-status" style="color: #f59e0b; font-weight:bold;"></span></p>
+                <p style="margin-bottom: 8px; font-size: 10.5px;"><strong>Status Final:</strong> <span id="pdf-status" style="color: #f59e0b; font-weight:bold;"></span></p>
                 
                 <div class="pdf-row"><span class="pdf-label">Nome do Cliente:</span> <span id="pdf-nomecli"></span></div>
                 <div class="pdf-row"><span class="pdf-label">Contato / E-mail:</span> <span id="pdf-contatocli"></span></div>
@@ -469,10 +461,8 @@ if (localStorage.getItem('usuarioAutenticado') !== 'true') {
                 </div>
             </div>
 
-            <div class="pdf-section" id="pdf-fotos-container" style="display:none; page-break-before: always;">
-                <h3>4. Registo Fotográfico e Evidências</h3>
-                <div class="pdf-img-grid" id="pdf-grid"></div>
-            </div>
+            <!-- Content Container Dinâmico de Fotos (Grelha de 4 por Página) -->
+            <div id="pdf-fotos-container"></div>
         </div>
     </div>
 
@@ -481,7 +471,6 @@ if (localStorage.getItem('usuarioAutenticado') !== 'true') {
         let pedidosBase = JSON.parse(localStorage.getItem('pedidosBase')) || { "10203": { cliente: "Arezzo", endereco: "Iguatemi Faria Lima" } };
         let emailSistema = localStorage.getItem('emailPadrao') || "entregas@viecelli.com.br";
         
-        // Memória Temporária (NÃO Persiste no Banco/LocalStorage)
         let fotosGerais = [];
         let fotosEvidencia = { t1: null, t2: null, m1: null };
         let relatoriosSalvos = JSON.parse(localStorage.getItem('relatoriosSalvos')) || [];
@@ -501,6 +490,39 @@ if (localStorage.getItem('usuarioAutenticado') !== 'true') {
                 document.getElementById('themeToggle').checked = true;
             }
         });
+
+        // OTIMIZADOR DE IMAGENS (-85% de peso)
+        function otimizarImagem(file, callback) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    let width = img.width;
+                    let height = img.height;
+                    const maxDim = 1000; 
+
+                    if (width > height && width > maxDim) {
+                        height = Math.round((height * maxDim) / width);
+                        width = maxDim;
+                    } else if (height > maxDim) {
+                        width = Math.round((width * maxDim) / height);
+                        height = maxDim;
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    // Comprime para JPEG com 50% de qualidade (-85% peso)
+                    const dataUrl = canvas.toDataURL('image/jpeg', 0.5);
+                    callback(dataUrl);
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
 
         // ADMIN
         function alternarVisao() {
@@ -602,6 +624,7 @@ if (localStorage.getItem('usuarioAutenticado') !== 'true') {
             document.getElementById('modalConfig').classList.remove('flex');
             document.getElementById('modalConfig').classList.add('hidden');
         }
+
         function salvarAssinaturaLocal() {
             const canvas = document.getElementById('canvasConfigAssinatura');
             localStorage.setItem('assinaturaMontadorLocal', canvas.toDataURL("image/png"));
@@ -615,11 +638,16 @@ if (localStorage.getItem('usuarioAutenticado') !== 'true') {
             const assinaturaSalva = localStorage.getItem('assinaturaMontadorLocal');
             if (assinaturaSalva) {
                 const canvas = document.getElementById('canvasMontador');
+                if (!canvas) return;
+                
+                redimensionarCanvas('canvasMontador');
                 const ctx = canvas.getContext('2d');
                 const img = new Image();
                 img.onload = function() {
                     limparCanvas('canvasMontador');
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    const rect = canvas.getBoundingClientRect();
+                    // Desenha nas dimensões lógicas para não distorcer com o scale()
+                    ctx.drawImage(img, 0, 0, rect.width, rect.height);
                 };
                 img.src = assinaturaSalva;
             }
@@ -650,17 +678,15 @@ if (localStorage.getItem('usuarioAutenticado') !== 'true') {
             mudarEtapa(4);
         }
 
-        // FOTOS PASSO 2 (COM TÍTULO E DESCRIÇÃO)
+        // FOTOS PASSO 2 (COM OTIMIZAÇÃO)
         function adicionarFotosGerais(event) {
             const files = event.target.files;
             for (let i = 0; i < files.length; i++) {
                 if (fotosGerais.length >= 20) break;
-                const reader = new FileReader();
-                reader.onload = function(e) { 
-                    fotosGerais.push({ src: e.target.result, titulo: "", desc: "" });
+                otimizarImagem(files[i], function(dataUrl) {
+                    fotosGerais.push({ src: dataUrl, titulo: "", desc: "" });
                     atualizarListaFotos(); 
-                }
-                reader.readAsDataURL(files[i]);
+                });
             }
         }
 
@@ -701,12 +727,10 @@ if (localStorage.getItem('usuarioAutenticado') !== 'true') {
         function carregarEvidencia(key, event) {
             const file = event.target.files[0];
             if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                fotosEvidencia[key] = { src: e.target.result, titulo: '', desc: '' };
+            otimizarImagem(file, function(dataUrl) {
+                fotosEvidencia[key] = { src: dataUrl, titulo: '', desc: '' };
                 renderizarEvidenciaUI(key);
-            }
-            reader.readAsDataURL(file);
+            });
         }
 
         function renderizarEvidenciaUI(key) {
@@ -773,7 +797,8 @@ if (localStorage.getItem('usuarioAutenticado') !== 'true') {
             const rect = canvas.getBoundingClientRect();
             canvas.width = rect.width * ratio;
             canvas.height = rect.height * ratio;
-            canvas.getContext("2d").scale(ratio, ratio);
+            const ctx = canvas.getContext("2d");
+            ctx.scale(ratio, ratio);
         }
 
         function setupCanvas(id) {
@@ -790,7 +815,8 @@ if (localStorage.getItem('usuarioAutenticado') !== 'true') {
 
         function limparCanvas(id) {
             const canvas = document.getElementById(id);
-            canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
 
         function canvasEstaVazio(id) {
@@ -802,48 +828,45 @@ if (localStorage.getItem('usuarioAutenticado') !== 'true') {
             return !pixelBuffer.some(color => color !== 0);
         }
 
-        // GERAÇÃO DE PDF E VALIDAÇÕES RIGOROSAS
-        function gerarPDF() {
-            // 1. Validação do Passo 1
+        // GERAÇÃO DE PDF
+        async function gerarPDF() {
+            // 1. Validações
             const nrPedido = document.getElementById('inputNrPedido').value.trim();
             const cliente = document.getElementById('inputCliente').value.trim();
             const endereco = document.getElementById('inputEndereco').value.trim();
 
             if (!nrPedido || !cliente || !endereco) {
-                alert('Atenção: Preencha todos os dados do Pedido (Número, Cliente e Endereço) no Passo 1.');
+                alert('Atenção: Preencha os dados do Pedido no Passo 1.');
                 mudarEtapa(1);
                 return;
             }
 
-            // 2. Validação do Passo 5 (Cliente)
             const clienteNome = document.getElementById('clienteNome').value.trim();
             const clienteTel = document.getElementById('clienteTel').value.trim();
             const clienteEmail = document.getElementById('clienteEmail').value.trim();
 
             if (!clienteNome || !clienteTel || !clienteEmail) {
-                alert('Atenção: Preencha todos os dados do Cliente (Nome, Telefone e E-mail) no Passo 5.');
+                alert('Atenção: Preencha todos os dados do Cliente no Passo 5.');
                 return;
             }
 
-            // 3. Validação do Passo 5 (Montador)
             const montadorNome = document.getElementById('montadorNome').value.trim();
             if (!montadorNome) {
                 alert('Atenção: Preencha o Nome do Montador no Passo 5.');
                 return;
             }
 
-            // 4. Validação das Assinaturas
             if (canvasEstaVazio('canvasCliente')) {
-                alert('Atenção: A assinatura do Cliente é obrigatória para gerar o relatório!');
+                alert('Atenção: A assinatura do Cliente é obrigatória!');
                 return;
             }
 
             if (canvasEstaVazio('canvasMontador')) {
-                alert('Atenção: A assinatura do Montador é obrigatória para gerar o relatório!');
+                alert('Atenção: A assinatura do Montador é obrigatória!');
                 return;
             }
 
-            // Montagem dos Dados no PDF Template
+            // Popula Dados do PDF
             document.getElementById('pdf-num').innerText = nrPedido;
             document.getElementById('pdf-cli').innerText = cliente;
             document.getElementById('pdf-end').innerText = endereco;
@@ -865,7 +888,7 @@ if (localStorage.getItem('usuarioAutenticado') !== 'true') {
             document.getElementById('pdf-nota').innerText = notaElement ? notaElement.value : 'N/A';
             document.getElementById('pdf-obs-nota').innerText = document.getElementById('obs_montagem').value ? `Obs: ${document.getElementById('obs_montagem').value}` : '';
 
-            // Conformidade e Pessoas
+            // Conformidade e Assinaturas
             const status = document.querySelector('input[name="conformidade"]:checked').value;
             document.getElementById('pdf-status').innerText = status;
             
@@ -873,63 +896,73 @@ if (localStorage.getItem('usuarioAutenticado') !== 'true') {
             document.getElementById('pdf-contatocli').innerText = `${clienteTel} | ${clienteEmail}`;
             document.getElementById('pdf-nomemont').innerText = montadorNome;
 
-            // Assinaturas base64
             document.getElementById('pdf-sig-cliente').src = document.getElementById('canvasCliente').toDataURL("image/png");
             document.getElementById('pdf-sig-montador').src = document.getElementById('canvasMontador').toDataURL("image/png");
 
-            // Imagens do PDF (Gerais + Evidências do Checklist)
-            const pdfFotosContainer = document.getElementById('pdf-fotos-container');
-            const pdfGrid = document.getElementById('pdf-grid');
-            pdfGrid.innerHTML = '';
+            // MONTAGEM DA GRELHA DE FOTOS (4 POR PÁGINA)
+            let todasFotosPDF = [];
+            fotosGerais.forEach(f => todasFotosPDF.push({ src: f.src, titulo: f.titulo, desc: f.desc }));
             
-            let temFotos = false;
-
-            // Anexa fotos gerais
-            fotosGerais.forEach(foto => {
-                temFotos = true;
-                pdfGrid.innerHTML += `
-                    <div class="pdf-img-card">
-                        <img src="${foto.src}">
-                        <div style="font-weight:bold; margin-top:2px;">${foto.titulo || 'Sem Título'}</div>
-                        <div style="color:#666;">${foto.desc || ''}</div>
-                    </div>`;
-            });
-
-            // Anexa evidências de Checklist
             ['t1', 't2', 'm1'].forEach(key => {
                 if (fotosEvidencia[key]) {
-                    temFotos = true;
-                    pdfGrid.innerHTML += `
-                        <div class="pdf-img-card" style="border: 1px solid #f59e0b;">
-                            <img src="${fotosEvidencia[key].src}">
-                            <div style="font-weight:bold; color:#f59e0b; margin-top:2px;">[Evidência] ${fotosEvidencia[key].titulo}</div>
-                            <div style="color:#666;">${fotosEvidencia[key].desc || ''}</div>
-                        </div>`;
+                    todasFotosPDF.push({ src: fotosEvidencia[key].src, titulo: `[Evidência] ${fotosEvidencia[key].titulo}`, desc: fotosEvidencia[key].desc || '' });
                 }
             });
 
-            pdfFotosContainer.style.display = temFotos ? 'block' : 'none';
+            const pdfFotosContainer = document.getElementById('pdf-fotos-container');
+            pdfFotosContainer.innerHTML = '';
 
-            // Configuração do html2pdf
+            if (todasFotosPDF.length > 0) {
+                let htmlPaginas = '';
+                for (let i = 0; i < todasFotosPDF.length; i += 4) {
+                    const chunk = todasFotosPDF.slice(i, i + 4);
+                    const numPaginaFoto = Math.floor(i / 4) + 1;
+                    
+                    htmlPaginas += `
+                        <div style="page-break-before: always;" class="pdf-section">
+                            <h3>4. Registo Fotográfico e Evidências (Página ${numPaginaFoto})</h3>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px;">`;
+                    
+                    chunk.forEach(f => {
+                        htmlPaginas += `
+                            <div style="border: 1px solid #e2e8f0; padding: 6px; border-radius: 6px; text-align: center; background: #fafafa; box-sizing: border-box; height: 300px; display: flex; flex-direction: column; justify-content: space-between;">
+                                <div style="height: 220px; display: flex; align-items: center; justify-content: center; background: #f1f5f9; border-radius: 4px; overflow: hidden;">
+                                    <img src="${f.src}" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                                </div>
+                                <div style="margin-top: 4px; text-align: left;">
+                                    <div style="font-weight: bold; font-size: 10.5px; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${f.titulo || 'Sem Título'}</div>
+                                    <div style="font-size: 9.5px; color: #64748b; margin-top: 1px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${f.desc || ''}</div>
+                                </div>
+                            </div>`;
+                    });
+
+                    htmlPaginas += `</div></div>`;
+                }
+                pdfFotosContainer.innerHTML = htmlPaginas;
+            }
+
+            // Aguarda meio segundo para garantir que as imagens base64 renderizaram no DOM
+            await new Promise(resolve => setTimeout(resolve, 400));
+
+            // Configuração html2pdf
             const element = document.getElementById('pdf-content');
             const opt = {
                 margin:       [0, 0, 0, 0],
                 filename:     `Aceite_Obra_${nrPedido}_${cliente}.pdf`.replace(/\s+/g, '_'),
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true },
+                html2canvas:  { scale: 2, useCORS: true, allowTaint: true },
                 jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
             };
 
             // Processa o PDF
             html2pdf().set(opt).from(element).save().then(() => {
-                // Salva apenas histórico do pedido (sem salvar imagens pesadas no LocalStorage)
                 relatoriosSalvos.unshift({ pedido: nrPedido, cliente, tipo: status });
                 localStorage.setItem('relatoriosSalvos', JSON.stringify(relatoriosSalvos));
                 atualizarAdminUI();
 
-                alert(`PDF gerado e baixado com sucesso!\nCópia pronta para envio para:\n- Cliente: ${clienteEmail}\n- Empresa: ${emailSistema}`);
+                alert(`PDF gerado com sucesso!\nCópia pronta para envio para:\n- Cliente: ${clienteEmail}\n- Empresa: ${emailSistema}`);
                 
-                // LIMPEZA COMPLETA DE MEMÓRIA (Liberando Banco e Memória RAM)
+                // Limpeza completa de memória temporária
                 fotosGerais = [];
                 fotosEvidencia = { t1: null, t2: null, m1: null };
                 atualizarListaFotos();
