@@ -11,7 +11,7 @@
         body { font-size: 14px; overflow-x: hidden; }
         .signature-canvas { touch-action: none; cursor: crosshair; }
         .etapa-form { width: 100%; box-sizing: border-box; }
-        input[type="text"], input[type="email"] { font-size: 16px; } /* Previne zoom no mobile */
+        input[type="text"], input[type="email"], input[type="tel"] { font-size: 16px; } /* Previne zoom no mobile */
     </style>
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col font-sans">
@@ -47,7 +47,7 @@
                 </div>
             </div>
 
-            <!-- ETAPA 1 -->
+            <!-- ETAPA 1: Identificação -->
             <div id="etapa1" class="etapa-form space-y-4 bg-slate-800 border border-slate-700 rounded-xl p-4 shadow-lg">
                 <h2 class="text-[11px] sm:text-xs font-bold text-amber-400 uppercase tracking-wider pb-2 border-b border-slate-700 flex items-center">
                     <i class="fa-solid fa-file-lines mr-2"></i> 1. Identificação do Pedido
@@ -78,10 +78,51 @@
                 </div>
             </div>
 
-            <!-- ETAPA 2 (Sem overflow vertical, ajusta-se ao conteúdo) -->
-            <div id="etapa2" class="etapa-form hidden space-y-4 bg-slate-800 border border-slate-700 rounded-xl p-4 shadow-lg">
+            <!-- ETAPA 2: Imagens (Entregador) -->
+            <div id="etapa4" class="etapa-form hidden space-y-4 bg-slate-800 border border-slate-700 rounded-xl p-4 shadow-lg" id="etapa2">
+                <div class="flex items-center justify-between pb-2 border-b border-slate-700">
+                    <h2 class="text-[11px] sm:text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center">
+                        <i class="fa-solid fa-camera mr-2"></i> 2. Registo Fotográfico
+                    </h2>
+                    <span id="contadorFotosGerais" class="text-[10px] sm:text-xs text-slate-400">0 / 20 fotos</span>
+                </div>
+                <div class="flex items-center justify-center w-full">
+                    <label class="flex flex-col items-center justify-center w-full h-24 border-2 border-slate-600 border-dashed rounded-lg cursor-pointer bg-slate-900 hover:bg-slate-950 transition">
+                        <div class="flex flex-col items-center justify-center pt-3 pb-4">
+                            <i class="fa-solid fa-plus text-amber-400 text-xl mb-1"></i>
+                            <p class="text-[11px] sm:text-xs text-slate-300 font-semibold">Tocar para anexar fotos da obra</p>
+                        </div>
+                        <input type="file" id="inputFotosGerais" accept="image/*" multiple class="hidden" onchange="adicionarFotosGerais(event)">
+                    </label>
+                </div>
+                
+                <!-- Lista de fotos com campos de título/descrição -->
+                <div id="listaFotosGerais" class="space-y-3"></div>
+
+                <div class="flex space-x-2 pt-2">
+                    <button onclick="mudarEtapa(1)" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-semibold py-3 rounded-xl text-xs transition flex justify-center items-center">
+                        <i class="fa-solid fa-arrow-left mr-2"></i> Voltar
+                    </button>
+                    <button onclick="mudarEtapa(3)" class="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-3 rounded-xl text-xs transition flex justify-center items-center shadow">
+                        Avançar <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ETAPA 3: Termo de Aceite (Início da área do Cliente) -->
+            <div id="etapa3" class="etapa-form hidden space-y-4 bg-slate-800 border border-slate-700 rounded-xl p-4 shadow-lg">
+                <!-- Alerta de transição para o cliente -->
+                <div class="bg-indigo-500/10 border border-indigo-500/30 p-3 rounded-xl flex items-center space-x-3 mb-2">
+                    <div class="bg-indigo-500 text-white rounded-full w-8 h-8 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-handshake"></i>
+                    </div>
+                    <p class="text-[11px] sm:text-xs text-indigo-200 leading-tight">
+                        <strong>Atenção Entregador:</strong> A partir desta etapa, passe o dispositivo para o <strong>Cliente</strong> realizar a conferência.
+                    </p>
+                </div>
+
                 <h2 class="text-[11px] sm:text-xs font-bold text-amber-400 uppercase tracking-wider pb-2 border-b border-slate-700 flex items-center">
-                    <i class="fa-solid fa-circle-info mr-2"></i> 2. Termo de Aceite de Entrega
+                    <i class="fa-solid fa-circle-info mr-2"></i> 3. Termo de Aceite de Entrega
                 </h2>
                 <div class="bg-slate-900 p-4 rounded-lg border border-slate-700/80 text-[11px] sm:text-xs text-slate-300 space-y-2 leading-relaxed">
                     <p class="font-semibold text-white">Este documento formaliza a entrega do projeto executado, considerando os requisitos, cronograma e os critérios de aceitação previamente relacionados e acordados através de um contrato entre o cliente e a Viecelli Móveis S/A.</p>
@@ -101,19 +142,19 @@
                 </div>
 
                 <div class="flex space-x-2 pt-2">
-                    <button onclick="mudarEtapa(1)" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-semibold py-3 rounded-xl text-xs transition flex justify-center items-center">
+                    <button onclick="mudarEtapa(2)" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-semibold py-3 rounded-xl text-xs transition flex justify-center items-center">
                         <i class="fa-solid fa-arrow-left mr-2"></i> Voltar
                     </button>
-                    <button onclick="avancarEtapa2()" class="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-3 rounded-xl text-xs transition flex justify-center items-center shadow">
+                    <button onclick="avancarEtapa3()" class="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-3 rounded-xl text-xs transition flex justify-center items-center shadow">
                         Avançar <i class="fa-solid fa-arrow-right ml-2"></i>
                     </button>
                 </div>
             </div>
 
-            <!-- ETAPA 3 (Checklist dinâmico, sem overflow, com observações e fotos por item) -->
-            <div id="etapa3" class="etapa-form hidden space-y-4 bg-slate-800 border border-slate-700 rounded-xl p-4 shadow-lg">
+            <!-- ETAPA 4: Checklist (Cliente) -->
+            <div id="etapa4_checklist" class="etapa-form hidden space-y-4 bg-slate-800 border border-slate-700 rounded-xl p-4 shadow-lg">
                 <h2 class="text-[11px] sm:text-xs font-bold text-amber-400 uppercase tracking-wider pb-2 border-b border-slate-700 flex items-center">
-                    <i class="fa-solid fa-clipboard-question mr-2"></i> 3. Checklist de Avaliação
+                    <i class="fa-solid fa-clipboard-question mr-2"></i> 4. Checklist de Avaliação
                 </h2>
                 
                 <div class="space-y-4">
@@ -121,7 +162,6 @@
                     <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-700 space-y-3">
                         <h3 class="text-[11px] font-bold text-amber-300 uppercase"><i class="fa-solid fa-truck-fast mr-1"></i> Transporte / Embalagem</h3>
                         
-                        <!-- Pergunta T1 -->
                         <div>
                             <p class="text-[11px] text-white">Mobiliário devidamente embalado/transportado?</p>
                             <div class="flex space-x-4 mt-1">
@@ -139,7 +179,6 @@
                             </div>
                         </div>
 
-                        <!-- Pergunta T2 -->
                         <div class="pt-2 border-t border-slate-700/50">
                             <p class="text-[11px] text-white">Obra entregue limpa (sem embalagens)?</p>
                             <div class="flex space-x-4 mt-1">
@@ -195,53 +234,21 @@
                 </div>
 
                 <div class="flex space-x-2 pt-2">
-                    <button onclick="mudarEtapa(2)" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-semibold py-3 rounded-xl text-xs transition flex justify-center items-center">
-                        <i class="fa-solid fa-arrow-left mr-2"></i> Voltar
-                    </button>
-                    <button onclick="avancarEtapa3()" class="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-3 rounded-xl text-xs transition flex justify-center items-center shadow">
-                        Avançar <i class="fa-solid fa-arrow-right ml-2"></i>
-                    </button>
-                </div>
-            </div>
-
-            <!-- ETAPA 4 (Com título e descrição nas fotos) -->
-            <div id="etapa4" class="etapa-form hidden space-y-4 bg-slate-800 border border-slate-700 rounded-xl p-4 shadow-lg">
-                <div class="flex items-center justify-between pb-2 border-b border-slate-700">
-                    <h2 class="text-[11px] sm:text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center">
-                        <i class="fa-solid fa-camera mr-2"></i> 4. Imagens Gerais
-                    </h2>
-                    <span id="contadorFotosGerais" class="text-[10px] sm:text-xs text-slate-400">0 / 20 fotos</span>
-                </div>
-                <div class="flex items-center justify-center w-full">
-                    <label class="flex flex-col items-center justify-center w-full h-24 border-2 border-slate-600 border-dashed rounded-lg cursor-pointer bg-slate-900 hover:bg-slate-950 transition">
-                        <div class="flex flex-col items-center justify-center pt-3 pb-4">
-                            <i class="fa-solid fa-plus text-amber-400 text-xl mb-1"></i>
-                            <p class="text-[11px] sm:text-xs text-slate-300 font-semibold">Tocar para anexar fotos da obra</p>
-                        </div>
-                        <input type="file" id="inputFotosGerais" accept="image/*" multiple class="hidden" onchange="adicionarFotosGerais(event)">
-                    </label>
-                </div>
-                
-                <!-- Lista de fotos com campos de título/descrição -->
-                <div id="listaFotosGerais" class="space-y-3"></div>
-
-                <div class="flex space-x-2 pt-2">
                     <button onclick="mudarEtapa(3)" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-semibold py-3 rounded-xl text-xs transition flex justify-center items-center">
                         <i class="fa-solid fa-arrow-left mr-2"></i> Voltar
                     </button>
-                    <button onclick="mudarEtapa(5)" class="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-3 rounded-xl text-xs transition flex justify-center items-center shadow">
+                    <button onclick="avancarEtapa4()" class="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-3 rounded-xl text-xs transition flex justify-center items-center shadow">
                         Avançar <i class="fa-solid fa-arrow-right ml-2"></i>
                     </button>
                 </div>
             </div>
 
-            <!-- ETAPA 5 (Condicional 5 dias) -->
+            <!-- ETAPA 5: Assinaturas -->
             <div id="etapa5" class="etapa-form hidden space-y-4 bg-slate-800 border border-slate-700 rounded-xl p-4 shadow-lg">
                 <h2 class="text-[11px] sm:text-xs font-bold text-amber-400 uppercase tracking-wider pb-2 border-b border-slate-700 flex items-center">
                     <i class="fa-solid fa-file-signature mr-2"></i> 5. Conformidade e Assinaturas
                 </h2>
 
-                <!-- Novas opções de rádio de Conformidade -->
                 <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-700 space-y-3">
                     <label class="flex items-start space-x-2 cursor-pointer">
                         <input type="radio" name="conformidade" value="completa" checked onchange="toggleConformidade(this.value)" class="mt-0.5 accent-amber-500 shrink-0">
@@ -261,9 +268,16 @@
                     <!-- Cliente -->
                     <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-700 space-y-2.5">
                         <h3 class="text-[11px] font-bold text-amber-300 uppercase"><i class="fa-solid fa-user mr-1"></i> Cliente</h3>
-                        <input type="text" id="clienteNome" placeholder="Nome completo" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-sm text-white">
-                        <div>
-                            <label class="block text-[10px] text-slate-400 mb-1">Assinatura</label>
+                        
+                        <div class="space-y-2">
+                            <input type="text" id="clienteNome" placeholder="Nome completo" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-sm text-white">
+                            <!-- Adicionados Telefone e Email do cliente -->
+                            <input type="tel" id="clienteTel" placeholder="Telefone / WhatsApp" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-sm text-white">
+                            <input type="email" id="clienteEmail" placeholder="E-mail" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-sm text-white">
+                        </div>
+
+                        <div class="pt-1">
+                            <label class="block text-[10px] text-slate-400 mb-1">Assinatura do Cliente</label>
                             <div class="bg-white rounded border border-slate-600 relative overflow-hidden">
                                 <canvas id="canvasCliente" height="80" class="signature-canvas w-full block"></canvas>
                                 <button onclick="limparCanvas('canvasCliente')" class="absolute top-1 right-1 bg-slate-200 text-slate-800 text-[9px] px-1.5 py-0.5 rounded">Limpar</button>
@@ -276,7 +290,7 @@
                         <h3 class="text-[11px] font-bold text-indigo-400 uppercase"><i class="fa-solid fa-screwdriver-wrench mr-1"></i> Montador</h3>
                         <input type="text" id="montadorNome" placeholder="Nome do Montador" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-sm text-white">
                         <div>
-                            <label class="block text-[10px] text-slate-400 mb-1">Assinatura</label>
+                            <label class="block text-[10px] text-slate-400 mb-1">Assinatura do Montador</label>
                             <div class="bg-white rounded border border-slate-600 relative overflow-hidden">
                                 <canvas id="canvasMontador" height="80" class="signature-canvas w-full block"></canvas>
                                 <button onclick="limparCanvas('canvasMontador')" class="absolute top-1 right-1 bg-slate-200 text-slate-800 text-[9px] px-1.5 py-0.5 rounded">Limpar</button>
@@ -342,14 +356,18 @@
         let relatoriosSalvos = [{ pedido: "10203", cliente: "Arezzo", tipo: "Completa" }];
 
         function mudarEtapa(etapaDestino) {
+            // Oculta todas as etapas. Nota: IDs ajustados para corresponder à nova ordem
+            const idsEtapas = ['etapa1', 'etapa4', 'etapa3', 'etapa4_checklist', 'etapa5']; 
+            
             for (let i = 1; i <= 5; i++) {
-                document.getElementById(`etapa${i}`).classList.add('hidden');
+                document.getElementById(idsEtapas[i-1]).classList.add('hidden');
                 document.getElementById(`dot${i}`).classList.replace('bg-amber-500', 'bg-slate-700');
             }
-            document.getElementById(`etapa${etapaDestino}`).classList.remove('hidden');
+            
+            document.getElementById(idsEtapas[etapaDestino-1]).classList.remove('hidden');
             document.getElementById(`dot${etapaDestino}`).classList.replace('bg-slate-700', 'bg-amber-500');
 
-            const titulos = ["Passo 1 de 5: Pedido", "Passo 2 de 5: Termo", "Passo 3 de 5: Checklist", "Passo 4 de 5: Imagens", "Passo 5 de 5: Assinaturas"];
+            const titulos = ["Passo 1 de 5: Pedido", "Passo 2 de 5: Imagens", "Passo 3 de 5: Termo", "Passo 4 de 5: Checklist", "Passo 5 de 5: Assinaturas"];
             document.getElementById('labelEtapa').innerText = titulos[etapaDestino - 1];
             
             if(etapaDestino === 5) {
@@ -359,16 +377,16 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Lógica Etapa 2
-        function avancarEtapa2() {
+        // Lógica Etapa 3 (Termo de Aceite)
+        function avancarEtapa3() {
             if(!document.getElementById('checkTermo').checked) {
                 alert('Confirme que está de acordo com o Termo de Aceite.');
                 return;
             }
-            mudarEtapa(3);
+            mudarEtapa(4);
         }
 
-        // Lógica Etapa 3 (Observações Dinâmicas)
+        // Lógica Etapa 4 (Checklist Dinâmico)
         function toggleObs(obsId, isNegative) {
             const inputElement = document.getElementById('input_' + obsId);
             const fotoElement = document.getElementById('foto_' + obsId.replace('obs_', ''));
@@ -386,8 +404,7 @@
             }
         }
 
-        function avancarEtapa3() {
-            // Verifica campos obrigatórios na etapa 3
+        function avancarEtapa4() {
             const checks = ['t1', 't2', 'm1'];
             for (let id of checks) {
                 const isNao = document.querySelector(`input[name="${id}"][value="NÃO"]`).checked;
@@ -397,10 +414,10 @@
                     return;
                 }
             }
-            mudarEtapa(4);
+            mudarEtapa(5);
         }
 
-        // Lógica Etapa 4 (Fotos Gerais com Título/Descrição)
+        // Lógica Etapa 2 (Fotos Gerais)
         function adicionarFotosGerais(event) {
             const files = event.target.files;
             for (let i = 0; i < files.length; i++) {
