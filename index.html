@@ -25,18 +25,18 @@
         body.light-theme input.bg-slate-800, body.light-theme input.bg-slate-900 { background-color: #ffffff !important; border-color: #cbd5e1 !important; color: #0f172a !important; }
         body.light-theme .border-slate-700 { border-color: #cbd5e1 !important; }
 
-        /* PDF TEMPLATE OFF-SCREEN FIX */
+        /* FIX DE POSICIONAMENTO PARA PDF */
         #pdf-template {
-            position: absolute;
-            left: -9999px;
+            display: none;
+            position: fixed;
             top: 0;
+            left: 0;
             width: 794px; /* A4 em pixels */
             background: #ffffff;
-            z-index: -1000;
+            z-index: 99999;
         }
-        /* Topo puxado mais para cima (10px) */
-        .pdf-page { padding: 10px 25px 20px 25px; font-family: Arial, sans-serif; color: #111; font-size: 11px; line-height: 1.35; background: #fff; }
-        .pdf-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f59e0b; padding-bottom: 6px; margin-bottom: 12px; margin-top: 0; }
+        .pdf-page { padding: 15px 25px; font-family: Arial, sans-serif; color: #111; font-size: 11px; line-height: 1.35; background: #fff; box-sizing: border-box; }
+        .pdf-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f59e0b; padding-bottom: 6px; margin-bottom: 10px; margin-top: 0; }
         .pdf-title { font-size: 16px; font-weight: bold; color: #111; margin: 0; }
         .pdf-section { margin-bottom: 10px; border: 1px solid #e2e8f0; padding: 8px 10px; border-radius: 6px; }
         .pdf-section h3 { margin: 0 0 6px 0; font-size: 12px; color: #d97706; border-bottom: 1px solid #f1f5f9; padding-bottom: 3px; }
@@ -45,7 +45,7 @@
         
         .pdf-signatures { display: flex; justify-content: space-between; margin-top: 15px; }
         .pdf-sig-box { width: 45%; text-align: center; }
-        .pdf-sig-box img { width: 100%; max-height: 70px; object-fit: contain; border-bottom: 1px solid #000; margin-bottom: 4px; display: block; margin-left: auto; margin-right: auto; }
+        .pdf-sig-box img { width: 100%; max-height: 65px; object-fit: contain; border-bottom: 1px solid #000; margin-bottom: 4px; display: block; margin-left: auto; margin-right: auto; }
     </style>
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-300">
@@ -405,66 +405,68 @@
 
     <!-- Template PDF -->
     <div id="pdf-template">
-        <div class="pdf-page" id="pdf-content">
-            <div class="pdf-header">
-                <div>
-                    <h1 class="pdf-title">TERMO DE ACEITE DE ENTREGA</h1>
-                    <p style="color: #666; margin-top:2px;">Viecelli Móveis S/A</p>
-                </div>
-                <div style="font-weight:bold; font-size: 16px; color: #f59e0b;">VIECELLI</div>
-            </div>
-
-            <div class="pdf-section">
-                <h3>1. Dados do Pedido</h3>
-                <div class="pdf-row"><span class="pdf-label">Nº Pedido:</span> <span id="pdf-num"></span></div>
-                <div class="pdf-row"><span class="pdf-label">Cliente / Marca:</span> <span id="pdf-cli"></span></div>
-                <div class="pdf-row"><span class="pdf-label">Endereço da Obra:</span> <span id="pdf-end"></span></div>
-                <div class="pdf-row" style="margin-top:3px;"><span class="pdf-label">Data:</span> <span id="pdf-data"></span></div>
-            </div>
-
-            <div class="pdf-section">
-                <h3>2. Avaliação de Conformidade (Checklist)</h3>
-                <div class="pdf-row"><span class="pdf-label">Transporte Adequado?</span> <span id="pdf-t1"></span></div>
-                <div class="pdf-row" style="margin-bottom:4px; font-style:italic; color:#555;" id="pdf-obs-t1"></div>
-                
-                <div class="pdf-row"><span class="pdf-label">Obra limpa (sem embalagens)?</span> <span id="pdf-t2"></span></div>
-                <div class="pdf-row" style="margin-bottom:4px; font-style:italic; color:#555;" id="pdf-obs-t2"></div>
-                
-                <div class="pdf-row"><span class="pdf-label">Móveis conforme contrato?</span> <span id="pdf-m1"></span></div>
-                <div class="pdf-row" style="margin-bottom:4px; font-style:italic; color:#555;" id="pdf-obs-m1"></div>
-                
-                <div class="pdf-row"><span class="pdf-label">Nota da Montagem (1-10):</span> <span id="pdf-nota"></span></div>
-                <div class="pdf-row" style="margin-bottom:4px; font-style:italic; color:#555;" id="pdf-obs-nota"></div>
-            </div>
-
-            <div class="pdf-section">
-                <h3>3. Termo de Aceite e Conformidade</h3>
-                <p style="margin-bottom: 6px; font-size: 9.5px; color:#333; line-height: 1.35;">
-                    Este documento formaliza a entrega do projeto executado, considerando os requisitos, cronograma e os critérios de aceitação previamente relacionados e acordados através de um contrato entre o cliente e a Viecelli Móveis S/A.<br>
-                    • A partir da assinatura deste Termo, será considerada como encerrada a etapa de montagem.<br>
-                    • Qualquer problema relacionado aos procedimentos, dentro do prazo, será resolvido sob garantia.<br>
-                    • A garantia não é estendida a produtos/serviços de terceiros não contratados pela Viecelli.<br>
-                    O Cliente declara que a Viecelli Móveis S/A entregou os produtos/serviços de acordo com os requisitos e prazos.
-                </p>
-                <p style="margin-bottom: 8px; font-size: 10.5px;"><strong>Status Final:</strong> <span id="pdf-status" style="color: #f59e0b; font-weight:bold;"></span></p>
-                
-                <div class="pdf-row"><span class="pdf-label">Nome do Cliente:</span> <span id="pdf-nomecli"></span></div>
-                <div class="pdf-row"><span class="pdf-label">Contato / E-mail:</span> <span id="pdf-contatocli"></span></div>
-                <div class="pdf-row"><span class="pdf-label">Montador Responsável:</span> <span id="pdf-nomemont"></span></div>
-
-                <div class="pdf-signatures">
-                    <div class="pdf-sig-box">
-                        <img id="pdf-sig-cliente" src="" alt="Assinatura Cliente">
-                        <div>Assinatura do Cliente</div>
+        <div id="pdf-content">
+            <div class="pdf-page">
+                <div class="pdf-header">
+                    <div>
+                        <h1 class="pdf-title">TERMO DE ACEITE DE ENTREGA</h1>
+                        <p style="color: #666; margin-top:2px;">Viecelli Móveis S/A</p>
                     </div>
-                    <div class="pdf-sig-box">
-                        <img id="pdf-sig-montador" src="" alt="Assinatura Montador">
-                        <div>Assinatura do Montador</div>
+                    <div style="font-weight:bold; font-size: 16px; color: #f59e0b;">VIECELLI</div>
+                </div>
+
+                <div class="pdf-section">
+                    <h3>1. Dados do Pedido</h3>
+                    <div class="pdf-row"><span class="pdf-label">Nº Pedido:</span> <span id="pdf-num"></span></div>
+                    <div class="pdf-row"><span class="pdf-label">Cliente / Marca:</span> <span id="pdf-cli"></span></div>
+                    <div class="pdf-row"><span class="pdf-label">Endereço da Obra:</span> <span id="pdf-end"></span></div>
+                    <div class="pdf-row" style="margin-top:3px;"><span class="pdf-label">Data:</span> <span id="pdf-data"></span></div>
+                </div>
+
+                <div class="pdf-section">
+                    <h3>2. Avaliação de Conformidade (Checklist)</h3>
+                    <div class="pdf-row"><span class="pdf-label">Transporte Adequado?</span> <span id="pdf-t1"></span></div>
+                    <div class="pdf-row" style="margin-bottom:4px; font-style:italic; color:#555;" id="pdf-obs-t1"></div>
+                    
+                    <div class="pdf-row"><span class="pdf-label">Obra limpa (sem embalagens)?</span> <span id="pdf-t2"></span></div>
+                    <div class="pdf-row" style="margin-bottom:4px; font-style:italic; color:#555;" id="pdf-obs-t2"></div>
+                    
+                    <div class="pdf-row"><span class="pdf-label">Móveis conforme contrato?</span> <span id="pdf-m1"></span></div>
+                    <div class="pdf-row" style="margin-bottom:4px; font-style:italic; color:#555;" id="pdf-obs-m1"></div>
+                    
+                    <div class="pdf-row"><span class="pdf-label">Nota da Montagem (1-10):</span> <span id="pdf-nota"></span></div>
+                    <div class="pdf-row" style="margin-bottom:4px; font-style:italic; color:#555;" id="pdf-obs-nota"></div>
+                </div>
+
+                <div class="pdf-section">
+                    <h3>3. Termo de Aceite e Conformidade</h3>
+                    <p style="margin-bottom: 6px; font-size: 9.5px; color:#333; line-height: 1.35;">
+                        Este documento formaliza a entrega do projeto executado, considerando os requisitos, cronograma e os critérios de aceitação previamente relacionados e acordados através de um contrato entre o cliente e a Viecelli Móveis S/A.<br>
+                        • A partir da assinatura deste Termo, será considerada como encerrada a etapa de montagem.<br>
+                        • Qualquer problema relacionado aos procedimentos, dentro do prazo, será resolvido sob garantia.<br>
+                        • A garantia não é estendida a produtos/serviços de terceiros não contratados pela Viecelli.<br>
+                        O Cliente declara que a Viecelli Móveis S/A entregou os produtos/serviços de acordo com os requisitos e prazos.
+                    </p>
+                    <p style="margin-bottom: 8px; font-size: 10.5px;"><strong>Status Final:</strong> <span id="pdf-status" style="color: #f59e0b; font-weight:bold;"></span></p>
+                    
+                    <div class="pdf-row"><span class="pdf-label">Nome do Cliente:</span> <span id="pdf-nomecli"></span></div>
+                    <div class="pdf-row"><span class="pdf-label">Contato / E-mail:</span> <span id="pdf-contatocli"></span></div>
+                    <div class="pdf-row"><span class="pdf-label">Montador Responsável:</span> <span id="pdf-nomemont"></span></div>
+
+                    <div class="pdf-signatures">
+                        <div class="pdf-sig-box">
+                            <img id="pdf-sig-cliente" src="" alt="Assinatura Cliente">
+                            <div>Assinatura do Cliente</div>
+                        </div>
+                        <div class="pdf-sig-box">
+                            <img id="pdf-sig-montador" src="" alt="Assinatura Montador">
+                            <div>Assinatura do Montador</div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Content Container Dinâmico de Fotos (Grelha de 4 por Página) -->
+            <!-- Content Container Dinâmico de Fotos -->
             <div id="pdf-fotos-container"></div>
         </div>
     </div>
@@ -829,7 +831,7 @@
             return !pixelBuffer.some(color => color !== 0);
         }
 
-        // GERAÇÃO DE PDF
+        // GERAÇÃO DE PDF COM FIX DE MARGEM SUPERIOR E IMAGENS LIMPcountdown AS
         async function gerarPDF() {
             // 1. Validações
             const nrPedido = document.getElementById('inputNrPedido').value.trim();
@@ -900,7 +902,7 @@
             document.getElementById('pdf-sig-cliente').src = document.getElementById('canvasCliente').toDataURL("image/png");
             document.getElementById('pdf-sig-montador').src = document.getElementById('canvasMontador').toDataURL("image/png");
 
-            // MONTAGEM DA GRELHA DE FOTOS (4 POR PÁGINA COM ALTURA AUMENTADA)
+            // MONTAGEM DA GRELHA DE FOTOS (LAYOUT LISPO SEM FLEXBOX PROFUNDO)
             let todasFotosPDF = [];
             fotosGerais.forEach(f => todasFotosPDF.push({ src: f.src, titulo: f.titulo, desc: f.desc }));
             
@@ -920,19 +922,25 @@
                     const numPaginaFoto = Math.floor(i / 4) + 1;
                     
                     htmlPaginas += `
-                        <div style="page-break-before: always;" class="pdf-section">
-                            <h3>4. Registo Fotográfico e Evidências (Página ${numPaginaFoto})</h3>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px;">`;
+                        <div style="page-break-before: always;" class="pdf-page">
+                            <div class="pdf-header">
+                                <div>
+                                    <h1 class="pdf-title">REGISTO FOTOGRÁFICO E EVIDÊNCIAS</h1>
+                                    <p style="color: #666; margin-top:2px;">Viecelli Móveis S/A - Página ${numPaginaFoto}</p>
+                                </div>
+                                <div style="font-weight:bold; font-size: 16px; color: #f59e0b;">VIECELLI</div>
+                            </div>
+                            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; margin-top: 10px;">`;
                     
                     chunk.forEach(f => {
                         htmlPaginas += `
-                            <div style="border: 1px solid #cbd5e1; padding: 8px; border-radius: 8px; text-align: center; background: #fafafa; box-sizing: border-box; height: 430px; display: flex; flex-direction: column; justify-content: space-between;">
-                                <div style="height: 350px; display: flex; align-items: center; justify-content: center; background: #f1f5f9; border-radius: 6px; overflow: hidden;">
-                                    <img src="${f.src}" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                            <div style="width: 48%; border: 1px solid #cbd5e1; padding: 8px; border-radius: 8px; text-align: center; background: #fafafa; box-sizing: border-box; margin-bottom: 10px;">
+                                <div style="height: 250px; background: #f1f5f9; border-radius: 6px; overflow: hidden; display: flex; align-items: center; justify-content: center; margin-bottom: 6px;">
+                                    <img src="${f.src}" style="max-width: 100%; max-height: 250px; width: auto; height: auto; display: block;">
                                 </div>
-                                <div style="margin-top: 6px; text-align: left; padding: 0 4px;">
+                                <div style="text-align: left; padding: 0 2px;">
                                     <div style="font-weight: bold; font-size: 11px; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${f.titulo || 'Sem Título'}</div>
-                                    <div style="font-size: 10px; color: #475569; margin-top: 2px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${f.desc || ''}</div>
+                                    <div style="font-size: 10px; color: #475569; margin-top: 2px; line-height: 1.25; height: 25px; overflow: hidden;">${f.desc || ''}</div>
                                 </div>
                             </div>`;
                     });
@@ -942,7 +950,12 @@
                 pdfFotosContainer.innerHTML = htmlPaginas;
             }
 
-            // GARANTIA DE CARREGAMENTO TOTAL DAS IMAGENS
+            // FORÇA ROLAGEM AO TOPO E EXIBIÇÃO TEMPORÁRIA (ELIMINA MARGEM NO TOPO)
+            window.scrollTo(0, 0);
+            const pdfTemplate = document.getElementById('pdf-template');
+            pdfTemplate.style.display = 'block';
+
+            // Aguarda imagens estarem no DOM
             const imgs = document.querySelectorAll('#pdf-content img');
             await Promise.all(Array.from(imgs).map(img => {
                 if (img.complete && img.naturalHeight !== 0) return Promise.resolve();
@@ -952,18 +965,20 @@
                 });
             }));
 
-            // Configuração html2pdf
+            // Configuração do html2pdf com Captura no Ponto 0,0
             const element = document.getElementById('pdf-content');
             const opt = {
                 margin:       [0, 0, 0, 0],
                 filename:     `Aceite_Obra_${nrPedido}_${cliente}.pdf`.replace(/\s+/g, '_'),
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true, allowTaint: true, logging: false },
+                html2canvas:  { scale: 2, useCORS: true, allowTaint: true, logging: false, scrollY: 0, scrollX: 0 },
                 jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
             };
 
-            // Processa o PDF
+            // Renderiza e guarda o PDF
             html2pdf().set(opt).from(element).save().then(() => {
+                pdfTemplate.style.display = 'none';
+
                 relatoriosSalvos.unshift({ pedido: nrPedido, cliente, tipo: status });
                 localStorage.setItem('relatoriosSalvos', JSON.stringify(relatoriosSalvos));
                 atualizarAdminUI();
