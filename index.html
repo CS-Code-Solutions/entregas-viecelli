@@ -199,7 +199,7 @@
                 </div>
             </div>
 
-            <!-- ETAPA 4 -->
+            <!-- ETAPA 4: Checklist com Observações Reativadas -->
             <div id="etapa4" class="etapa-form hidden space-y-4 bg-slate-800 border border-slate-700 rounded-xl p-4 shadow-lg">
                 <h2 class="text-[11px] sm:text-xs font-bold text-amber-400 uppercase tracking-wider pb-2 border-b border-slate-700 flex items-center">
                     <i class="fa-solid fa-clipboard-question mr-2"></i> 4. Checklist de Avaliação
@@ -207,14 +207,16 @@
                 <div class="space-y-4">
                     <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-700 space-y-3">
                         <h3 class="text-[11px] font-bold text-amber-300 uppercase"><i class="fa-solid fa-truck-fast mr-1"></i> Transporte / Embalagem</h3>
+                        
+                        <!-- Item T1 -->
                         <div>
                             <p class="text-[11px] text-white">Mobiliário devidamente embalado/transportado?</p>
-                            <div class="flex space-x-4 mt-1">
-                                <label class="text-xs"><input type="radio" name="t1" value="SIM" checked onchange="toggleObs('t1', false)" class="accent-amber-500"> SIM</label>
-                                <label class="text-xs"><input type="radio" name="t1" value="NÃO" onchange="toggleObs('t1', true)" class="accent-amber-500"> NÃO</label>
+                            <div class="flex space-x-4 mt-1 mb-2">
+                                <label class="text-xs cursor-pointer"><input type="radio" name="t1" value="SIM" checked onchange="toggleObs('t1', false)" class="accent-amber-500"> SIM</label>
+                                <label class="text-xs cursor-pointer"><input type="radio" name="t1" value="NÃO" onchange="toggleObs('t1', true)" class="accent-amber-500"> NÃO</label>
                             </div>
-                            <div id="obs_t1" class="hidden mt-2 space-y-2">
-                                <input type="text" id="input_obs_t1" placeholder="Motivo da não conformidade (obrigatório)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs text-white">
+                            <input type="text" id="input_obs_t1" placeholder="Observação (opcional)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs text-white">
+                            <div id="evidence_box_t1" class="hidden mt-2 space-y-2">
                                 <label class="flex items-center justify-center w-full h-10 border border-slate-600 border-dashed rounded cursor-pointer hover:bg-slate-800 text-[10px] text-slate-300">
                                     <i class="fa-solid fa-camera mr-2"></i> Anexar Evidência (Obrigatório)
                                     <input type="file" id="input_file_t1" accept="image/*" class="hidden" onchange="carregarEvidencia('t1', event)">
@@ -223,14 +225,15 @@
                             </div>
                         </div>
 
+                        <!-- Item T2 -->
                         <div class="pt-2 border-t border-slate-700/50">
                             <p class="text-[11px] text-white">Obra entregue limpa (sem embalagens)?</p>
-                            <div class="flex space-x-4 mt-1">
-                                <label class="text-xs"><input type="radio" name="t2" value="SIM" checked onchange="toggleObs('t2', false)" class="accent-amber-500"> SIM</label>
-                                <label class="text-xs"><input type="radio" name="t2" value="NÃO" onchange="toggleObs('t2', true)" class="accent-amber-500"> NÃO</label>
+                            <div class="flex space-x-4 mt-1 mb-2">
+                                <label class="text-xs cursor-pointer"><input type="radio" name="t2" value="SIM" checked onchange="toggleObs('t2', false)" class="accent-amber-500"> SIM</label>
+                                <label class="text-xs cursor-pointer"><input type="radio" name="t2" value="NÃO" onchange="toggleObs('t2', true)" class="accent-amber-500"> NÃO</label>
                             </div>
-                            <div id="obs_t2" class="hidden mt-2 space-y-2">
-                                <input type="text" id="input_obs_t2" placeholder="Motivo da não conformidade (obrigatório)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs text-white">
+                            <input type="text" id="input_obs_t2" placeholder="Observação (opcional)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs text-white">
+                            <div id="evidence_box_t2" class="hidden mt-2 space-y-2">
                                 <label class="flex items-center justify-center w-full h-10 border border-slate-600 border-dashed rounded cursor-pointer hover:bg-slate-800 text-[10px] text-slate-300">
                                     <i class="fa-solid fa-camera mr-2"></i> Anexar Evidência (Obrigatório)
                                     <input type="file" id="input_file_t2" accept="image/*" class="hidden" onchange="carregarEvidencia('t2', event)">
@@ -242,14 +245,16 @@
 
                     <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-700 space-y-3">
                         <h3 class="text-[11px] font-bold text-amber-300 uppercase"><i class="fa-solid fa-couch mr-1"></i> Mobiliário</h3>
+                        
+                        <!-- Item M1 -->
                         <div>
                             <p class="text-[11px] text-white">Móveis entregues conforme contrato?</p>
-                            <div class="flex space-x-4 mt-1">
-                                <label class="text-xs"><input type="radio" name="m1" value="SIM" checked onchange="toggleObs('m1', false)" class="accent-amber-500"> SIM</label>
-                                <label class="text-xs"><input type="radio" name="m1" value="NÃO" onchange="toggleObs('m1', true)" class="accent-amber-500"> NÃO</label>
+                            <div class="flex space-x-4 mt-1 mb-2">
+                                <label class="text-xs cursor-pointer"><input type="radio" name="m1" value="SIM" checked onchange="toggleObs('m1', false)" class="accent-amber-500"> SIM</label>
+                                <label class="text-xs cursor-pointer"><input type="radio" name="m1" value="NÃO" onchange="toggleObs('m1', true)" class="accent-amber-500"> NÃO</label>
                             </div>
-                            <div id="obs_m1" class="hidden mt-2 space-y-2">
-                                <input type="text" id="input_obs_m1" placeholder="Motivo da não conformidade (obrigatório)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs text-white">
+                            <input type="text" id="input_obs_m1" placeholder="Observação (opcional)" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs text-white">
+                            <div id="evidence_box_m1" class="hidden mt-2 space-y-2">
                                 <label class="flex items-center justify-center w-full h-10 border border-slate-600 border-dashed rounded cursor-pointer hover:bg-slate-800 text-[10px] text-slate-300">
                                     <i class="fa-solid fa-camera mr-2"></i> Anexar Evidência (Obrigatório)
                                     <input type="file" id="input_file_m1" accept="image/*" class="hidden" onchange="carregarEvidencia('m1', event)">
@@ -715,11 +720,15 @@
 
         // CHECKLIST E EVIDÊNCIAS
         function toggleObs(key, isNegative) {
-            const box = document.getElementById('obs_' + key);
+            const evidenceBox = document.getElementById('evidence_box_' + key);
+            const inputObs = document.getElementById('input_obs_' + key);
+            
             if (isNegative) {
-                box.classList.remove('hidden');
+                evidenceBox.classList.remove('hidden');
+                inputObs.placeholder = "Motivo da não conformidade (obrigatório)";
             } else {
-                box.classList.add('hidden');
+                evidenceBox.classList.add('hidden');
+                inputObs.placeholder = "Observação (opcional)";
                 fotosEvidencia[key] = null;
                 document.getElementById(`input_file_${key}`).value = '';
                 document.getElementById(`preview_evidencia_${key}`).innerHTML = '';
@@ -752,8 +761,8 @@
                         <button onclick="removerEvidencia('${key}')" class="absolute top-0 right-0 bg-red-600 text-white rounded-bl w-4 h-4 flex items-center justify-center text-[8px]"><i class="fa-solid fa-xmark"></i></button>
                     </div>
                     <div class="flex-1 space-y-1.5">
-                        <input type="text" placeholder="Título da Foto *" value="${data.titulo || ''}" onchange="fotosEvidencia['${key}'].titulo = this.value" class="w-full bg-slate-800 border border-slate-700 rounded px-2 py-1 text-[11px] text-white">
-                        <input type="text" placeholder="Descrição da Foto" value="${data.desc || ''}" onchange="fotosEvidencia['${key}'].desc = this.value" class="w-full bg-slate-800 border border-slate-700 rounded px-2 py-1 text-[11px] text-white">
+                        <input type="text" placeholder="Título da Foto (opcional)" value="${data.titulo || ''}" onchange="fotosEvidencia['${key}'].titulo = this.value" class="w-full bg-slate-800 border border-slate-700 rounded px-2 py-1 text-[11px] text-white">
+                        <input type="text" placeholder="Descrição da Foto (opcional)" value="${data.desc || ''}" onchange="fotosEvidencia['${key}'].desc = this.value" class="w-full bg-slate-800 border border-slate-700 rounded px-2 py-1 text-[11px] text-white">
                     </div>
                 </div>
             `;
@@ -777,10 +786,6 @@
                     }
                     if (!fotosEvidencia[id] || !fotosEvidencia[id].src) {
                         alert(`Por favor, anexe uma foto de evidência para as opções marcadas como "NÃO".`);
-                        return;
-                    }
-                    if (!fotosEvidencia[id].titulo || !fotosEvidencia[id].titulo.trim()) {
-                        alert(`Por favor, informe o título da foto de evidência.`);
                         return;
                     }
                 }
@@ -831,7 +836,7 @@
             return !pixelBuffer.some(color => color !== 0);
         }
 
-        // GERAÇÃO DE PDF COM FIX DE MARGEM SUPERIOR E IMAGENS LIMPcountdown AS
+        // GERAÇÃO DE PDF
         async function gerarPDF() {
             // 1. Validações
             const nrPedido = document.getElementById('inputNrPedido').value.trim();
@@ -902,13 +907,17 @@
             document.getElementById('pdf-sig-cliente').src = document.getElementById('canvasCliente').toDataURL("image/png");
             document.getElementById('pdf-sig-montador').src = document.getElementById('canvasMontador').toDataURL("image/png");
 
-            // MONTAGEM DA GRELHA DE FOTOS (LAYOUT LISPO SEM FLEXBOX PROFUNDO)
+            // MONTAGEM DA GRELHA DE FOTOS
             let todasFotosPDF = [];
             fotosGerais.forEach(f => todasFotosPDF.push({ src: f.src, titulo: f.titulo, desc: f.desc }));
             
             ['t1', 't2', 'm1'].forEach(key => {
                 if (fotosEvidencia[key]) {
-                    todasFotosPDF.push({ src: fotosEvidencia[key].src, titulo: `[Evidência] ${fotosEvidencia[key].titulo}`, desc: fotosEvidencia[key].desc || '' });
+                    todasFotosPDF.push({ 
+                        src: fotosEvidencia[key].src, 
+                        titulo: fotosEvidencia[key].titulo ? `[Evidência] ${fotosEvidencia[key].titulo}` : '[Evidência]', 
+                        desc: fotosEvidencia[key].desc || '' 
+                    });
                 }
             });
 
@@ -950,7 +959,7 @@
                 pdfFotosContainer.innerHTML = htmlPaginas;
             }
 
-            // FORÇA ROLAGEM AO TOPO E EXIBIÇÃO TEMPORÁRIA (ELIMINA MARGEM NO TOPO)
+            // FORÇA ROLAGEM AO TOPO E EXIBIÇÃO TEMPORÁRIA
             window.scrollTo(0, 0);
             const pdfTemplate = document.getElementById('pdf-template');
             pdfTemplate.style.display = 'block';
@@ -965,7 +974,7 @@
                 });
             }));
 
-            // Configuração do html2pdf com Captura no Ponto 0,0
+            // Configuração do html2pdf
             const element = document.getElementById('pdf-content');
             const opt = {
                 margin:       [0, 0, 0, 0],
