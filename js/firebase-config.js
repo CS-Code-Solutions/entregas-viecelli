@@ -7,8 +7,8 @@ const firebaseConfig = {
     appId: "1:887897617950:web:e96cf3cce4792e7e2b600f"
 };
 
-// Cole aqui a URL gerada após implantar o Google Apps Script (Web App)
-const GAS_EMAIL_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbwQnZs118OQMgdPtREv8rVKF6P_JANiN514nl5emGgFo80Jek-ZWU6IF1UeZKhIo6CW/exec";
+// Substitua pela URL gerada no Google Apps Script
+const GAS_EMAIL_WEBHOOK_URL = "https://script.google.com/macros/s/SEU_ID_DE_IMPLANTACAO/exec";
 
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
@@ -16,3 +16,10 @@ if (!firebase.apps.length) {
 
 const auth = firebase.auth();
 const db = firebase.firestore();
+
+// Instância secundária usada exclusivamente pelo Admin para cadastrar novos usuários sem derrubar a própria sessão
+function obterAuthSecundario() {
+    const appSecundario = firebase.apps.find((app) => app.name === 'SecondaryAuthApp')
+        || firebase.initializeApp(firebaseConfig, 'SecondaryAuthApp');
+    return appSecundario.auth();
+}
