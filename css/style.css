@@ -16,7 +16,10 @@ body {
 input[type="text"],
 input[type="email"],
 input[type="tel"],
-input[type="number"] {
+input[type="number"],
+input[type="password"],
+select,
+textarea {
     font-size: 16px;
 }
 
@@ -28,9 +31,15 @@ body.light-theme {
 }
 
 html[data-theme="light"] .bg-slate-900,
-body.light-theme .bg-slate-900 {
+html[data-theme="light"] .bg-slate-900\/70,
+html[data-theme="light"] .bg-slate-900\/60,
+html[data-theme="light"] .bg-slate-900\/50,
+body.light-theme .bg-slate-900,
+body.light-theme .bg-slate-900\/70,
+body.light-theme .bg-slate-900\/60,
+body.light-theme .bg-slate-900\/50 {
     background-color: #ffffff !important;
-    border-color: #e2e8f0 !important;
+    border-color: #cbd5e1 !important;
     color: #0f172a !important;
 }
 
@@ -65,15 +74,25 @@ body.light-theme .text-slate-400 {
 
 html[data-theme="light"] input.bg-slate-800,
 html[data-theme="light"] input.bg-slate-900,
+html[data-theme="light"] select.bg-slate-800,
+html[data-theme="light"] select.bg-slate-900,
+html[data-theme="light"] textarea.bg-slate-800,
+html[data-theme="light"] textarea.bg-slate-900,
 body.light-theme input.bg-slate-800,
-body.light-theme input.bg-slate-900 {
+body.light-theme input.bg-slate-900,
+body.light-theme select.bg-slate-800,
+body.light-theme select.bg-slate-900,
+body.light-theme textarea.bg-slate-800,
+body.light-theme textarea.bg-slate-900 {
     background-color: #ffffff !important;
     border-color: #cbd5e1 !important;
     color: #0f172a !important;
 }
 
 html[data-theme="light"] .border-slate-700,
-body.light-theme .border-slate-700 {
+html[data-theme="light"] .border-slate-800,
+body.light-theme .border-slate-700,
+body.light-theme .border-slate-800 {
     border-color: #cbd5e1 !important;
 }
 
