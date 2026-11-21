@@ -3,6 +3,7 @@ let emailSistema = 'entregas@viecelli.com.br';
 let fotosGerais = [];
 let fotosEvidencia = { t1: null, t2: null, m1: null };
 let relatoriosSalvos = [];
+let usuariosViecelli = [];
 let appInicializado = false;
 let processandoEnvio = false;
 
@@ -26,10 +27,20 @@ function iniciarAplicacao() {
         if (toggle) toggle.checked = true;
     }
 
+    // Blindagem extra de UI: remove completamente o painel Admin do DOM se não for administrador
+    if (!usuarioEhAdmin) {
+        const viewAdmin = document.getElementById('viewAdmin');
+        const btnAdmin = document.getElementById('btnAlternarPerfil');
+        if (viewAdmin) viewAdmin.remove();
+        if (btnAdmin) btnAdmin.remove();
+    }
+
     carregarConfiguracoesFirestore();
     escutarPedidosFirestore();
+
     if (usuarioEhAdmin) {
         escutarRelatoriosFirestore();
+        escutarUsuariosFirestore();
     }
 }
 
@@ -80,13 +91,14 @@ function escutarPedidosFirestore() {
         snapshot.forEach((doc) => {
             pedidosBase[doc.id] = doc.data();
         });
-        atualizarTabelaPedidosAdmin();
+        if (usuarioEhAdmin) atualizarTabelaPedidosAdmin();
     }, (error) => {
         console.error('Erro ao ler pedidos:', error);
     });
 }
 
 function escutarRelatoriosFirestore() {
+    if (!usuarioEhAdmin) return;
     db.collection('viecelli_relatorios')
         .orderBy('timestamp', 'desc')
         .limit(50)
@@ -99,6 +111,19 @@ function escutarRelatoriosFirestore() {
         }, (error) => {
             console.error('Erro ao ler relatórios:', error);
         });
+}
+
+function escutarUsuariosFirestore() {
+    if (!usuarioEhAdmin) return;
+    db.collection('viecelli_usuarios').onSnapshot((snapshot) => {
+        usuariosViecelli = [];
+        snapshot.forEach((doc) => {
+            usuariosViecelli.push({ uid: doc.id, ...doc.data() });
+        });
+        atualizarTabelaUsuariosAdmin();
+    }, (error) => {
+        console.error('Erro ao ler usuários:', error);
+    });
 }
 
 function atualizarTabelaPedidosAdmin() {
@@ -139,12 +164,169 @@ function atualizarTabelaRelatoriosAdmin() {
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td class="p-2 font-semibold">#${Security.escaparHTML(item.pedido)}</td>
-            <td class="p-2">${Security.escaparHTML(item.cliente)}</td>
+            <td class="p-2">${Security.escaparHTML(item.marca || item.cliente)}</td>
             <td class="p-2"><span class="px-2 py-0.5 rounded text-[9px] ${bClass}">${Security.escaparHTML(item.status)}</span></td>
         `;
         tbodyRel.appendChild(tr);
     });
 }
+
+function atualizarTabelaUsuariosAdmin() {
+    const tbodyUsers = document.getElementById('tabelaUsuariosAdmin');
+    if (!tbodyUsers) return;
+    tbodyUsers.innerHTML = '';
+
+    usuariosViecelli.forEach((u) => {
+        const isProprioUsuario = usuarioAtual && u.uid === usuarioAtual.uid;
+        const isAdminRole = u.role === 'admin';
+        const badgeClass = isAdminRole
+            ? 'bg-amber-500/20 text-amber-400 border border-amber-500/40'
+            : 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/40';
+        const roleLabel = isAdminRole ? 'Admin' : 'Montador';
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td class="p-2">
+                <div class="font-semibold text-white">${Security.escaparHTML(u.nome || 'Sem nome')}</div>
+                <div class="text-[10px] text-slate-400">${Security.escaparHTML(u.email || u.uid)}</div>
+            </td>
+            <td class="p-2">
+                <span class="px-2 py-0.5 rounded text-[9px] font-bold uppercase ${badgeClass}">${roleLabel}</span>
+            </td>
+            <td class="p-2 text-right space-x-2">
+                ${isProprioUsuario
+                    ? '<span class="text-[9px] text-slate-500 italic">Você</span>'
+                    : `
+                        <button class="btn-alternar-role text-slate-300 hover:text-amber-400" title="Alterar Perfil (Admin / Montador)">
+                            <i class="fa-solid fa-repeat"></i>
+                        </button>
+                        <button class="btn-remover-usuario text-red-500 hover:text-red-400" title="Revogar Acesso">
+                            <i class="fa-solid fa-user-xmark"></i>
+                        </button>
+                    `
+                }
+            </td>
+        `;
+
+        if (!isProprioUsuario) {
+            tr.querySelector('.btn-alternar-role').addEventListener('click', () => alternarPerfilUsuario(u));
+            tr.querySelector('.btn-remover-usuario').addEventListener('click', () => removerUsuarioViecelli(u));
+        }
+
+        tbodyUsers.appendChild(tr);
+    });
+}
+
+// ==========================================
+// GESTÃO DE USUÁRIOS (SOMENTE ADMIN)
+// ==========================================
+
+async function cadastrarUsuarioViecelli() {
+    if (!usuarioEhAdmin) {
+        alert('Acesso restrito a administradores.');
+        return;
+    }
+
+    const nome = Security.sanitizarTexto(document.getElementById('novoUsuarioNome').value, 120);
+    const email = document.getElementById('novoUsuarioEmail').value.trim();
+    const senha = document.getElementById('novoUsuarioSenha').value;
+    const role = document.getElementById('novoUsuarioRole').value;
+    const btnSalvar = document.getElementById('btnCadastrarUsuario');
+
+    if (!nome || !Security.validarEmail(email)) {
+        alert('Preencha o nome e um e-mail válido.');
+        return;
+    }
+
+    if (!senha || senha.length < 6) {
+        alert('A senha deve ter no mínimo 6 caracteres.');
+        return;
+    }
+
+    if (role !== 'admin' && role !== 'montador') {
+        alert('Selecione um perfil de acesso válido.');
+        return;
+    }
+
+    btnSalvar.disabled = true;
+    const textoOriginal = btnSalvar.innerHTML;
+    btnSalvar.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i> Criando acesso...`;
+
+    try {
+        const secondaryAuth = obterAuthSecundario();
+        const credencial = await secondaryAuth.createUserWithEmailAndPassword(email, senha);
+        const novoUid = credencial.user.uid;
+
+        // Encerra a sessão na instância secundária imediatamente
+        await secondaryAuth.signOut();
+
+        // Registra o perfil na coleção isolada viecelli_usuarios usando a sessão do Admin atual
+        await db.collection('viecelli_usuarios').doc(novoUid).set({
+            nome: nome,
+            email: email,
+            role: role,
+            criadoPor: usuarioAtual.uid,
+            criadoEm: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        document.getElementById('novoUsuarioNome').value = '';
+        document.getElementById('novoUsuarioEmail').value = '';
+        document.getElementById('novoUsuarioSenha').value = '';
+        document.getElementById('novoUsuarioRole').value = 'montador';
+
+        alert(`Usuário "${nome}" cadastrado com sucesso como ${role === 'admin' ? 'Administrador' : 'Montador'}!`);
+    } catch (error) {
+        console.error('Erro ao cadastrar usuário:', error);
+        if (error.code === 'auth/email-already-in-use') {
+            alert('Este e-mail já está cadastrado no Firebase Authentication.\n\nSe for um usuário já existente no sistema, cadastre o UID dele diretamente na coleção "viecelli_usuarios" no Console do Firebase.');
+        } else if (error.code === 'auth/weak-password') {
+            alert('Senha muito fraca. Utilize pelo menos 6 caracteres.');
+        } else {
+            alert('Não foi possível criar o usuário: ' + (error.message || 'Erro desconhecido.'));
+        }
+    } finally {
+        btnSalvar.disabled = false;
+        btnSalvar.innerHTML = textoOriginal;
+    }
+}
+
+async function alternarPerfilUsuario(usuario) {
+    if (!usuarioEhAdmin || !usuario || usuario.uid === usuarioAtual.uid) return;
+
+    const novoRole = usuario.role === 'admin' ? 'montador' : 'admin';
+    const labelNovo = novoRole === 'admin' ? 'Administrador' : 'Montador';
+
+    if (!confirm(`Alterar o perfil de "${usuario.nome}" para ${labelNovo}?`)) return;
+
+    try {
+        await db.collection('viecelli_usuarios').doc(usuario.uid).update({
+            role: novoRole,
+            atualizadoPor: usuarioAtual.uid,
+            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+        });
+    } catch (error) {
+        console.error('Erro ao alterar perfil:', error);
+        alert('Erro ao atualizar perfil do usuário.');
+    }
+}
+
+async function removerUsuarioViecelli(usuario) {
+    if (!usuarioEhAdmin || !usuario || usuario.uid === usuarioAtual.uid) return;
+
+    if (!confirm(`Revogar o acesso de "${usuario.nome}" ao sistema Viecelli?`)) return;
+
+    try {
+        await db.collection('viecelli_usuarios').doc(usuario.uid).delete();
+        alert('Acesso revogado com sucesso.');
+    } catch (error) {
+        console.error('Erro ao remover usuário:', error);
+        alert('Não foi possível remover o acesso.');
+    }
+}
+
+// ==========================================
+// PEDIDOS E CONFIGURAÇÕES (SOMENTE ADMIN)
+// ==========================================
 
 async function adicionarPedidoBase() {
     if (!usuarioEhAdmin) {
@@ -249,16 +431,24 @@ async function buscarPedido() {
 // ==========================================
 
 function alternarVisao() {
-    if (!usuarioEhAdmin) return;
-    const isAdmin = document.getElementById('viewAdmin').classList.contains('hidden');
+    if (!usuarioEhAdmin) {
+        alert('Acesso restrito a administradores.');
+        return;
+    }
+    const viewAdmin = document.getElementById('viewAdmin');
+    if (!viewAdmin) return;
+
+    const isAdmin = viewAdmin.classList.contains('hidden');
     document.getElementById('viewUsuario').classList.toggle('hidden', isAdmin);
-    document.getElementById('viewAdmin').classList.toggle('hidden', !isAdmin);
+    viewAdmin.classList.toggle('hidden', !isAdmin);
     document.getElementById('btnAlternarPerfil').innerHTML = isAdmin
         ? `<i class="fa-solid fa-mobile-screen mr-1"></i> App`
         : `<i class="fa-solid fa-user-gear mr-1"></i> Admin`;
 }
 
 function mudarAbaAdmin(abaId, btnElement) {
+    if (!usuarioEhAdmin) return;
+
     document.querySelectorAll('.aba-conteudo').forEach((el) => el.classList.add('hidden'));
     document.getElementById(abaId).classList.remove('hidden');
 
