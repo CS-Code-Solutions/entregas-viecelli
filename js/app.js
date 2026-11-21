@@ -7,6 +7,9 @@ let usuariosViecelli = [];
 let appInicializado = false;
 let processandoEnvio = false;
 
+// Armazena os dados do PDF montado para envio após conferência na pré-visualização
+let rascunhoPDFAtual = null;
+
 function iniciarAplicacao() {
     if (appInicializado) return;
     appInicializado = true;
@@ -835,10 +838,10 @@ function canvasEstaVazio(id) {
 }
 
 // ==========================================
-// GERAÇÃO DE PDF + ENVIO POR E-MAIL + FIRESTORE
+// PRÉ-VISUALIZAÇÃO DO PDF + ENVIO POR E-MAIL
 // ==========================================
 
-async function gerarPDF() {
+async function prepararPreviaPDF() {
     if (processandoEnvio) return;
 
     const nrPedido = document.getElementById('inputNrPedido').value.trim();
@@ -876,11 +879,10 @@ async function gerarPDF() {
         return;
     }
 
-    processandoEnvio = true;
     const btnGerar = document.getElementById('btnGerarPDF');
     const textoOriginalBtn = btnGerar.innerHTML;
     btnGerar.disabled = true;
-    btnGerar.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Gerando e Enviando PDF...`;
+    btnGerar.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Montando Prévia...`;
 
     try {
         document.getElementById('pdf-num').textContent = nrPedido;
@@ -979,8 +981,8 @@ async function gerarPDF() {
             pdfFotosContainer.innerHTML = htmlPaginas;
         }
 
-        window.scrollTo(0, 0);
         const pdfTemplate = document.getElementById('pdf-template');
+        const anteriorDisplay = pdfTemplate.style.display;
         pdfTemplate.style.display = 'block';
 
         const imgs = document.querySelectorAll('#pdf-content img');
@@ -1002,20 +1004,119 @@ async function gerarPDF() {
             jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
         };
 
-        const pdfBase64 = await html2pdf().set(opt).from(element).outputPdf('datauristring');
-        pdfTemplate.style.display = 'none';
+        const pdfWorker = html2pdf().set(opt).from(element);
+        const pdfBase64 = await pdfWorker.outputPdf('datauristring');
+        const pdfBlobUrl = await pdfWorker.outputPdf('bloburl');
+        pdfTemplate.style.display = anteriorDisplay || 'none';
+
+        rascunhoPDFAtual = {
+            pdfBase64,
+            pdfBlobUrl,
+            nomeArquivo,
+            nrPedido,
+            cliente,
+            endereco,
+            clienteNome,
+            clienteTel,
+            clienteEmail,
+            montadorNome,
+            respT1,
+            obsT1,
+            respT2,
+            obsT2,
+            respM1,
+            obsM1,
+            notaValor,
+            obsMontagem,
+            status,
+            qtdFotos: todasFotosPDF.length,
+            dataHoje
+        };
+
+        abrirModalPreviaPDF(rascunhoPDFAtual);
+    } catch (error) {
+        console.error('Erro ao gerar prévia do PDF:', error);
+        document.getElementById('pdf-template').style.display = 'none';
+        UIFeedback.toast('Não foi possível montar a pré-visualização do PDF.', 'erro');
+    } finally {
+        btnGerar.disabled = false;
+        btnGerar.innerHTML = textoOriginalBtn;
+    }
+}
+
+function abrirModalPreviaPDF(dados) {
+    const modal = document.getElementById('modalPreviaPDF');
+    const iframe = document.getElementById('iframePreviaPDF');
+    const resumo = document.getElementById('resumoPreviaPDF');
+
+    resumo.innerHTML = `
+        <span class="font-bold text-amber-400">Pedido #${Security.escaparHTML(dados.nrPedido)}</span> •
+        <span>${Security.escaparHTML(dados.cliente)}</span> •
+        <span>${dados.qtdFotos} foto(s)</span> •
+        <span>Destino: <strong class="text-white">${Security.escaparHTML(dados.clienteEmail)}</strong> e <strong class="text-white">${Security.escaparHTML(emailSistema)}</strong></span>
+    `;
+
+    iframe.src = dados.pdfBlobUrl;
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+}
+
+function fecharModalPreviaPDF() {
+    if (processandoEnvio) return;
+    const modal = document.getElementById('modalPreviaPDF');
+    const iframe = document.getElementById('iframePreviaPDF');
+    iframe.src = 'about:blank';
+    modal.classList.remove('flex');
+    modal.classList.add('hidden');
+}
+
+function baixarPreviaPDF() {
+    if (!rascunhoPDFAtual || !rascunhoPDFAtual.pdfBlobUrl) return;
+    const link = document.createElement('a');
+    link.href = rascunhoPDFAtual.pdfBlobUrl;
+    link.download = rascunhoPDFAtual.nomeArquivo;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    UIFeedback.toast('Download do PDF iniciado.', 'info', 2500);
+}
+
+async function confirmarEnvioPDF() {
+    if (!rascunhoPDFAtual || processandoEnvio) return;
+
+    if (!GAS_EMAIL_WEBHOOK_URL || GAS_EMAIL_WEBHOOK_URL.includes('SEU_ID_DE_IMPLANTACAO')) {
+        UIFeedback.alertaModal({
+            titulo: 'URL do Apps Script não configurada',
+            mensagem: 'Configure a constante GAS_EMAIL_WEBHOOK_URL no arquivo js/firebase-config.js com a URL terminada em /exec gerada no Google Apps Script.',
+            tipo: 'alerta'
+        });
+        return;
+    }
+
+    processandoEnvio = true;
+    const btnEnviar = document.getElementById('btnConfirmarEnvioPDF');
+    const textoOriginal = btnEnviar.innerHTML;
+    btnEnviar.disabled = true;
+    btnEnviar.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> Encaminhando...`;
+
+    try {
+        const d = rascunhoPDFAtual;
 
         const respostaEmail = await fetch(GAS_EMAIL_WEBHOOK_URL, {
             method: 'POST',
             body: JSON.stringify({
-                pdfBase64: pdfBase64,
-                nomeArquivo: nomeArquivo,
-                emailCliente: clienteEmail,
+                pdfBase64: d.pdfBase64,
+                nomeArquivo: d.nomeArquivo,
+                emailCliente: d.clienteEmail,
                 emailEmpresa: emailSistema,
-                nomeCliente: clienteNome,
-                pedido: nrPedido
+                nomeCliente: d.clienteNome,
+                pedido: d.nrPedido
             })
         });
+
+        if (!respostaEmail.ok) {
+            throw new Error(`HTTP ${respostaEmail.status}`);
+        }
 
         const resultadoEmail = await respostaEmail.json();
         if (!resultadoEmail.sucesso) {
@@ -1023,53 +1124,59 @@ async function gerarPDF() {
         }
 
         await db.collection('viecelli_relatorios').add({
-            pedido: nrPedido,
-            marca: cliente,
-            endereco: endereco,
-            clienteNome: clienteNome,
-            clienteTel: clienteTel,
-            clienteEmail: clienteEmail,
-            montadorNome: montadorNome,
+            pedido: d.nrPedido,
+            marca: d.cliente,
+            endereco: d.endereco,
+            clienteNome: d.clienteNome,
+            clienteTel: d.clienteTel,
+            clienteEmail: d.clienteEmail,
+            montadorNome: d.montadorNome,
             checklist: {
-                transporteAdequado: respT1,
-                obsTransporte: obsT1,
-                obraLimpa: respT2,
-                obsObraLimpa: obsT2,
-                moveisContrato: respM1,
-                obsMoveis: obsM1,
-                notaMontagem: Number(notaValor),
-                obsMontagem: obsMontagem
+                transporteAdequado: d.respT1,
+                obsTransporte: d.obsT1,
+                obraLimpa: d.respT2,
+                obsObraLimpa: d.obsT2,
+                moveisContrato: d.respM1,
+                obsMoveis: d.obsM1,
+                notaMontagem: Number(d.notaValor),
+                obsMontagem: d.obsMontagem
             },
-            status: status,
-            qtdFotosAnexadasNoPdf: todasFotosPDF.length,
-            dataEntrega: dataHoje,
+            status: d.status,
+            qtdFotosAnexadasNoPdf: d.qtdFotos,
+            dataEntrega: d.dataHoje,
             registradoPorUid: usuarioAtual.uid,
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
 
+        const emailDestinoCliente = d.clienteEmail;
+        const qtdFotosEnviadas = d.qtdFotos;
+        rascunhoPDFAtual = null;
+
+        processandoEnvio = false;
+        fecharModalPreviaPDF();
+
         await UIFeedback.alertaModal({
-            titulo: 'Termo de Aceite Finalizado!',
-            mensagem: `• Dados registrados no banco de dados.\n• PDF com ${todasFotosPDF.length} foto(s) enviado por e-mail para:\n  - ${clienteEmail}\n  - ${emailSistema}`,
+            titulo: 'Termo Encaminhado com Sucesso!',
+            mensagem: `• Dados registrados no banco de dados.\n• PDF com ${qtdFotosEnviadas} foto(s) enviado por e-mail para:\n  - ${emailDestinoCliente}\n  - ${emailSistema}`,
             tipo: 'sucesso',
             textoBotao: 'Concluir'
         });
 
         limparFormularioCompleto();
         mudarEtapa(1);
-
     } catch (error) {
-        console.error('Erro no processamento:', error);
-        document.getElementById('pdf-template').style.display = 'none';
+        console.error('Erro no envio do PDF:', error);
+        processandoEnvio = false;
         UIFeedback.alertaModal({
-            titulo: 'Falha no Envio',
-            mensagem: 'Ocorreu um erro ao enviar o PDF por e-mail ou salvar os dados. Verifique sua conexão e tente novamente.',
+            titulo: 'Falha ao Encaminhar PDF',
+            mensagem: `Não foi possível concluir o envio (${error.message || 'erro de rede'}).\n\nA pré-visualização continua aberta na tela para você tentar novamente ou baixar o PDF.`,
             tipo: 'erro',
-            textoBotao: 'Fechar'
+            textoBotao: 'Voltar à Prévia'
         });
     } finally {
         processandoEnvio = false;
-        btnGerar.disabled = false;
-        btnGerar.innerHTML = textoOriginalBtn;
+        btnEnviar.disabled = false;
+        btnEnviar.innerHTML = textoOriginal;
     }
 }
 
