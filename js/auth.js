@@ -22,10 +22,19 @@ let usuarioEhAdmin = false;
             return;
         }
 
-        // Verifica permissão de Administrador no Firestore (coleção 'usuarios/{uid}')
         try {
-            const userDoc = await db.collection('usuarios').doc(user.uid).get();
-            const dados = userDoc.exists ? userDoc.data() : {};
+            const userDoc = await db.collection('viecelli_usuarios').doc(user.uid).get();
+
+            // Bloqueia se o usuário existir apenas no sistema de salas e não tiver acesso ao Viecelli
+            if (!userDoc.exists) {
+                localStorage.removeItem(PERFIL_CACHE_KEY);
+                alert('Seu usuário não possui permissão de acesso ao sistema Viecelli.');
+                await auth.signOut();
+                window.location.replace('login.html');
+                return;
+            }
+
+            const dados = userDoc.data();
             usuarioEhAdmin = dados.role === 'admin';
 
             const perfilUI = {
@@ -44,18 +53,14 @@ let usuarioEhAdmin = false;
                 iniciarAplicacao();
             }
         } catch (err) {
-            console.error('Erro ao validar permissões:', err);
-            if (window.AntiFlicker) {
-                window.AntiFlicker.reveal({ ehAdmin: false });
-            }
-            if (typeof iniciarAplicacao === 'function') {
-                iniciarAplicacao();
-            }
+            console.error('Erro ao validar permissões Viecelli:', err);
+            localStorage.removeItem(PERFIL_CACHE_KEY);
+            await auth.signOut();
+            window.location.replace('login.html');
         }
     });
 })();
 
-// Login na tela login.html
 async function fazerLogin(event) {
     if (event) event.preventDefault();
 
@@ -75,7 +80,6 @@ async function fazerLogin(event) {
 
     try {
         await auth.signInWithEmailAndPassword(email, senha);
-        // Redirecionamento ocorre automaticamente pelo onAuthStateChanged
     } catch (error) {
         console.error('Falha de autenticação:', error.code);
         exibirErroLogin('E-mail ou senha inválidos. Verifique suas credenciais.');
@@ -94,7 +98,6 @@ function exibirErroLogin(texto) {
     }
 }
 
-// Encerramento seguro de sessão
 async function fazerLogout() {
     try {
         localStorage.removeItem(PERFIL_CACHE_KEY);
