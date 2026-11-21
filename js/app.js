@@ -27,7 +27,6 @@ function iniciarAplicacao() {
         if (toggle) toggle.checked = true;
     }
 
-    // Blindagem extra de UI: remove completamente o painel Admin do DOM se não for administrador
     if (!usuarioEhAdmin) {
         const viewAdmin = document.getElementById('viewAdmin');
         const btnAdmin = document.getElementById('btnAlternarPerfil');
@@ -141,7 +140,7 @@ function atualizarTabelaPedidosAdmin() {
             <td class="p-2 font-bold text-amber-400">#${nrSeguro}</td>
             <td class="p-2 text-white text-[10px]">${cliSeguro}<br><span class="text-slate-500">${endSeguro}</span></td>
             <td class="p-2 text-right">
-                <button data-nr="${nrSeguro}" class="btn-remover-pedido text-red-500 hover:text-red-400">
+                <button data-nr="${nrSeguro}" class="btn-remover-pedido text-red-500 hover:text-red-400 p-1">
                     <i class="fa-solid fa-trash"></i>
                 </button>
             </td>
@@ -197,10 +196,10 @@ function atualizarTabelaUsuariosAdmin() {
                 ${isProprioUsuario
                     ? '<span class="text-[9px] text-slate-500 italic">Você</span>'
                     : `
-                        <button class="btn-alternar-role text-slate-300 hover:text-amber-400" title="Alterar Perfil (Admin / Montador)">
+                        <button class="btn-alternar-role text-slate-300 hover:text-amber-400 p-1" title="Alterar Perfil (Admin / Montador)">
                             <i class="fa-solid fa-repeat"></i>
                         </button>
-                        <button class="btn-remover-usuario text-red-500 hover:text-red-400" title="Revogar Acesso">
+                        <button class="btn-remover-usuario text-red-500 hover:text-red-400 p-1" title="Revogar Acesso">
                             <i class="fa-solid fa-user-xmark"></i>
                         </button>
                     `
@@ -223,7 +222,7 @@ function atualizarTabelaUsuariosAdmin() {
 
 async function cadastrarUsuarioViecelli() {
     if (!usuarioEhAdmin) {
-        alert('Acesso restrito a administradores.');
+        UIFeedback.toast('Acesso restrito a administradores.', 'erro');
         return;
     }
 
@@ -234,17 +233,17 @@ async function cadastrarUsuarioViecelli() {
     const btnSalvar = document.getElementById('btnCadastrarUsuario');
 
     if (!nome || !Security.validarEmail(email)) {
-        alert('Preencha o nome e um e-mail válido.');
+        UIFeedback.toast('Preencha o nome e um e-mail válido.', 'alerta');
         return;
     }
 
     if (!senha || senha.length < 6) {
-        alert('A senha deve ter no mínimo 6 caracteres.');
+        UIFeedback.toast('A senha deve ter no mínimo 6 caracteres.', 'alerta');
         return;
     }
 
     if (role !== 'admin' && role !== 'montador') {
-        alert('Selecione um perfil de acesso válido.');
+        UIFeedback.toast('Selecione um perfil de acesso válido.', 'alerta');
         return;
     }
 
@@ -257,10 +256,8 @@ async function cadastrarUsuarioViecelli() {
         const credencial = await secondaryAuth.createUserWithEmailAndPassword(email, senha);
         const novoUid = credencial.user.uid;
 
-        // Encerra a sessão na instância secundária imediatamente
         await secondaryAuth.signOut();
 
-        // Registra o perfil na coleção isolada viecelli_usuarios usando a sessão do Admin atual
         await db.collection('viecelli_usuarios').doc(novoUid).set({
             nome: nome,
             email: email,
@@ -274,15 +271,19 @@ async function cadastrarUsuarioViecelli() {
         document.getElementById('novoUsuarioSenha').value = '';
         document.getElementById('novoUsuarioRole').value = 'montador';
 
-        alert(`Usuário "${nome}" cadastrado com sucesso como ${role === 'admin' ? 'Administrador' : 'Montador'}!`);
+        UIFeedback.toast(`Usuário "${nome}" cadastrado como ${role === 'admin' ? 'Administrador' : 'Montador'}!`, 'sucesso');
     } catch (error) {
         console.error('Erro ao cadastrar usuário:', error);
         if (error.code === 'auth/email-already-in-use') {
-            alert('Este e-mail já está cadastrado no Firebase Authentication.\n\nSe for um usuário já existente no sistema, cadastre o UID dele diretamente na coleção "viecelli_usuarios" no Console do Firebase.');
+            UIFeedback.alertaModal({
+                titulo: 'E-mail já existente',
+                mensagem: 'Este e-mail já está cadastrado no Firebase Authentication.\n\nCaso seja um usuário de outro módulo, vincule o UID dele diretamente na coleção "viecelli_usuarios" no Console do Firebase.',
+                tipo: 'alerta'
+            });
         } else if (error.code === 'auth/weak-password') {
-            alert('Senha muito fraca. Utilize pelo menos 6 caracteres.');
+            UIFeedback.toast('Senha muito fraca. Utilize pelo menos 6 caracteres.', 'alerta');
         } else {
-            alert('Não foi possível criar o usuário: ' + (error.message || 'Erro desconhecido.'));
+            UIFeedback.toast('Não foi possível criar o usuário.', 'erro');
         }
     } finally {
         btnSalvar.disabled = false;
@@ -296,7 +297,13 @@ async function alternarPerfilUsuario(usuario) {
     const novoRole = usuario.role === 'admin' ? 'montador' : 'admin';
     const labelNovo = novoRole === 'admin' ? 'Administrador' : 'Montador';
 
-    if (!confirm(`Alterar o perfil de "${usuario.nome}" para ${labelNovo}?`)) return;
+    const confirmado = await UIFeedback.confirmar({
+        titulo: 'Alterar Nível de Acesso',
+        mensagem: `Deseja alterar o perfil de "${usuario.nome}" para ${labelNovo}?`,
+        textoConfirmar: 'Alterar Perfil'
+    });
+
+    if (!confirmado) return;
 
     try {
         await db.collection('viecelli_usuarios').doc(usuario.uid).update({
@@ -304,23 +311,31 @@ async function alternarPerfilUsuario(usuario) {
             atualizadoPor: usuarioAtual.uid,
             atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
         });
+        UIFeedback.toast(`Perfil atualizado para ${labelNovo}.`, 'sucesso');
     } catch (error) {
         console.error('Erro ao alterar perfil:', error);
-        alert('Erro ao atualizar perfil do usuário.');
+        UIFeedback.toast('Erro ao atualizar perfil do usuário.', 'erro');
     }
 }
 
 async function removerUsuarioViecelli(usuario) {
     if (!usuarioEhAdmin || !usuario || usuario.uid === usuarioAtual.uid) return;
 
-    if (!confirm(`Revogar o acesso de "${usuario.nome}" ao sistema Viecelli?`)) return;
+    const confirmado = await UIFeedback.confirmar({
+        titulo: 'Revogar Acesso',
+        mensagem: `Deseja remover o acesso de "${usuario.nome}" ao sistema Viecelli?`,
+        textoConfirmar: 'Revogar Acesso',
+        perigoso: true
+    });
+
+    if (!confirmado) return;
 
     try {
         await db.collection('viecelli_usuarios').doc(usuario.uid).delete();
-        alert('Acesso revogado com sucesso.');
+        UIFeedback.toast('Acesso revogado com sucesso.', 'sucesso');
     } catch (error) {
         console.error('Erro ao remover usuário:', error);
-        alert('Não foi possível remover o acesso.');
+        UIFeedback.toast('Não foi possível remover o acesso.', 'erro');
     }
 }
 
@@ -330,7 +345,7 @@ async function removerUsuarioViecelli(usuario) {
 
 async function adicionarPedidoBase() {
     if (!usuarioEhAdmin) {
-        alert('Acesso restrito a administradores.');
+        UIFeedback.toast('Acesso restrito a administradores.', 'erro');
         return;
     }
 
@@ -339,7 +354,7 @@ async function adicionarPedidoBase() {
     const end = Security.sanitizarTexto(document.getElementById('novoEndPedido').value, 200);
 
     if (!Security.validarNumeroPedido(nr) || !cli || !end) {
-        alert('Preencha um número de pedido válido, cliente e endereço.');
+        UIFeedback.toast('Preencha um número de pedido válido, cliente e endereço.', 'alerta');
         return;
     }
 
@@ -354,22 +369,31 @@ async function adicionarPedidoBase() {
         document.getElementById('novoNrPedido').value = '';
         document.getElementById('novoClientePedido').value = '';
         document.getElementById('novoEndPedido').value = '';
-        alert('Pedido cadastrado no banco de dados!');
+        UIFeedback.toast(`Pedido #${nr} cadastrado no banco de dados!`, 'sucesso');
     } catch (error) {
         console.error('Erro ao salvar pedido:', error);
-        alert('Erro ao salvar pedido. Verifique suas permissões.');
+        UIFeedback.toast('Erro ao salvar pedido. Verifique suas permissões.', 'erro');
     }
 }
 
 async function removerPedidoBase(nr) {
     if (!usuarioEhAdmin) return;
-    if (!confirm(`Excluir o pedido #${nr}?`)) return;
+
+    const confirmado = await UIFeedback.confirmar({
+        titulo: 'Excluir Pedido',
+        mensagem: `Tem certeza que deseja remover o pedido #${nr} do pré-cadastro?`,
+        textoConfirmar: 'Excluir',
+        perigoso: true
+    });
+
+    if (!confirmado) return;
 
     try {
         await db.collection('viecelli_pedidos').doc(String(nr)).delete();
+        UIFeedback.toast(`Pedido #${nr} removido.`, 'sucesso');
     } catch (error) {
         console.error('Erro ao excluir pedido:', error);
-        alert('Não foi possível excluir o pedido.');
+        UIFeedback.toast('Não foi possível excluir o pedido.', 'erro');
     }
 }
 
@@ -378,7 +402,7 @@ async function salvarEmailPadrao() {
     const novoEmail = document.getElementById('emailPadraoAdmin').value.trim();
 
     if (!Security.validarEmail(novoEmail)) {
-        alert('Informe um e-mail válido.');
+        UIFeedback.toast('Informe um endereço de e-mail válido.', 'alerta');
         return;
     }
 
@@ -391,23 +415,24 @@ async function salvarEmailPadrao() {
 
         emailSistema = novoEmail;
         document.getElementById('spanAvisoEmail').textContent = emailSistema;
-        alert('E-mail padrão atualizado com sucesso!');
+        UIFeedback.toast('E-mail padrão atualizado com sucesso!', 'sucesso');
     } catch (error) {
         console.error('Erro ao atualizar e-mail:', error);
-        alert('Erro ao atualizar e-mail no banco.');
+        UIFeedback.toast('Erro ao atualizar e-mail no banco.', 'erro');
     }
 }
 
 async function buscarPedido() {
     const num = document.getElementById('inputNrPedido').value.trim();
     if (!Security.validarNumeroPedido(num)) {
-        alert('Digite um número de pedido válido.');
+        UIFeedback.toast('Digite um número de pedido válido.', 'alerta');
         return;
     }
 
     if (pedidosBase[num]) {
         document.getElementById('inputCliente').value = pedidosBase[num].cliente;
         document.getElementById('inputEndereco').value = pedidosBase[num].endereco;
+        UIFeedback.toast(`Pedido #${num} carregado!`, 'sucesso', 2200);
         return;
     }
 
@@ -417,12 +442,13 @@ async function buscarPedido() {
             const dados = doc.data();
             document.getElementById('inputCliente').value = dados.cliente || '';
             document.getElementById('inputEndereco').value = dados.endereco || '';
+            UIFeedback.toast(`Pedido #${num} carregado!`, 'sucesso', 2200);
         } else {
-            alert('Pedido não encontrado na base de dados.');
+            UIFeedback.toast('Pedido não encontrado na base de dados.', 'alerta');
         }
     } catch (error) {
         console.error('Erro ao buscar pedido:', error);
-        alert('Erro ao consultar o banco de dados.');
+        UIFeedback.toast('Erro ao consultar o banco de dados.', 'erro');
     }
 }
 
@@ -432,7 +458,7 @@ async function buscarPedido() {
 
 function alternarVisao() {
     if (!usuarioEhAdmin) {
-        alert('Acesso restrito a administradores.');
+        UIFeedback.toast('Acesso restrito a administradores.', 'erro');
         return;
     }
     const viewAdmin = document.getElementById('viewAdmin');
@@ -487,11 +513,15 @@ function fecharModalConfig() {
 }
 
 function salvarAssinaturaLocal() {
+    if (canvasEstaVazio('canvasConfigAssinatura')) {
+        UIFeedback.toast('Desenhe sua assinatura antes de guardar.', 'alerta');
+        return;
+    }
     const canvas = document.getElementById('canvasConfigAssinatura');
     localStorage.setItem('assinaturaMontadorLocal', canvas.toDataURL('image/png'));
     const nomeMont = Security.sanitizarTexto(document.getElementById('montadorNome').value, 100);
     if (nomeMont) localStorage.setItem('nomeMontadorLocal', nomeMont);
-    alert('Assinatura guardada no dispositivo!');
+    UIFeedback.toast('Assinatura guardada no dispositivo!', 'sucesso');
     fecharModalConfig();
 }
 
@@ -541,7 +571,7 @@ function mudarEtapa(etapaDestino) {
 
 function avancarEtapa3() {
     if (!document.getElementById('checkTermo').checked) {
-        alert('Confirme que está de acordo com o Termo.');
+        UIFeedback.toast('Confirme que está de acordo com o Termo de Aceite.', 'alerta');
         return;
     }
     mudarEtapa(4);
@@ -553,7 +583,7 @@ function avancarEtapa3() {
 
 function otimizarImagem(file, callback) {
     if (!Security.validarArquivoImagem(file)) {
-        alert('Arquivo inválido. Selecione apenas imagens (JPG, PNG ou WebP) de até 10MB.');
+        UIFeedback.toast('Arquivo inválido. Selecione imagens JPG, PNG ou WebP de até 10MB.', 'erro');
         return;
     }
 
@@ -590,7 +620,10 @@ function otimizarImagem(file, callback) {
 function adicionarFotosGerais(event) {
     const files = event.target.files;
     for (let i = 0; i < files.length; i++) {
-        if (fotosGerais.length >= 20) break;
+        if (fotosGerais.length >= 20) {
+            UIFeedback.toast('Limite máximo de 20 fotos atingido.', 'alerta');
+            break;
+        }
         otimizarImagem(files[i], function (dataUrl) {
             fotosGerais.push({ src: dataUrl, titulo: '', desc: '' });
             atualizarListaFotos();
@@ -714,11 +747,11 @@ function avancarEtapa4() {
         if (isNao) {
             const obsValue = document.getElementById(`input_obs_${id}`).value.trim();
             if (!obsValue) {
-                alert('Por favor, digite o motivo da não conformidade no item marcado como "NÃO".');
+                UIFeedback.toast('Informe o motivo da não conformidade no item marcado como "NÃO".', 'alerta');
                 return;
             }
             if (!fotosEvidencia[id] || !fotosEvidencia[id].src) {
-                alert('Por favor, anexe uma foto de evidência para as opções marcadas como "NÃO".');
+                UIFeedback.toast('Anexe uma foto de evidência para cada item marcado como "NÃO".', 'alerta');
                 return;
             }
         }
@@ -813,7 +846,7 @@ async function gerarPDF() {
     const endereco = Security.sanitizarTexto(document.getElementById('inputEndereco').value, 200);
 
     if (!Security.validarNumeroPedido(nrPedido) || !cliente || !endereco) {
-        alert('Atenção: Preencha corretamente os dados do Pedido no Passo 1.');
+        UIFeedback.toast('Preencha corretamente os dados do Pedido no Passo 1.', 'alerta');
         mudarEtapa(1);
         return;
     }
@@ -823,23 +856,23 @@ async function gerarPDF() {
     const clienteEmail = document.getElementById('clienteEmail').value.trim();
 
     if (!clienteNome || !clienteTel || !Security.validarEmail(clienteEmail)) {
-        alert('Atenção: Preencha o nome, telefone e um e-mail válido do Cliente no Passo 5.');
+        UIFeedback.toast('Preencha nome, telefone e um e-mail válido do Cliente.', 'alerta');
         return;
     }
 
     const montadorNome = Security.sanitizarTexto(document.getElementById('montadorNome').value, 120);
     if (!montadorNome) {
-        alert('Atenção: Preencha o Nome do Montador no Passo 5.');
+        UIFeedback.toast('Preencha o Nome do Montador.', 'alerta');
         return;
     }
 
     if (canvasEstaVazio('canvasCliente')) {
-        alert('Atenção: A assinatura do Cliente é obrigatória!');
+        UIFeedback.toast('A assinatura do Cliente é obrigatória.', 'alerta');
         return;
     }
 
     if (canvasEstaVazio('canvasMontador')) {
-        alert('Atenção: A assinatura do Montador é obrigatória!');
+        UIFeedback.toast('A assinatura do Montador é obrigatória.', 'alerta');
         return;
     }
 
@@ -1014,7 +1047,12 @@ async function gerarPDF() {
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
 
-        alert(`Termo finalizado com sucesso!\n\n• Dados registrados no banco.\n• PDF com ${todasFotosPDF.length} foto(s) enviado por e-mail para:\n  - ${clienteEmail}\n  - ${emailSistema}`);
+        await UIFeedback.alertaModal({
+            titulo: 'Termo de Aceite Finalizado!',
+            mensagem: `• Dados registrados no banco de dados.\n• PDF com ${todasFotosPDF.length} foto(s) enviado por e-mail para:\n  - ${clienteEmail}\n  - ${emailSistema}`,
+            tipo: 'sucesso',
+            textoBotao: 'Concluir'
+        });
 
         limparFormularioCompleto();
         mudarEtapa(1);
@@ -1022,7 +1060,12 @@ async function gerarPDF() {
     } catch (error) {
         console.error('Erro no processamento:', error);
         document.getElementById('pdf-template').style.display = 'none';
-        alert('Ocorreu um erro ao enviar o PDF por e-mail ou salvar os dados. Verifique sua conexão e tente novamente.');
+        UIFeedback.alertaModal({
+            titulo: 'Falha no Envio',
+            mensagem: 'Ocorreu um erro ao enviar o PDF por e-mail ou salvar os dados. Verifique sua conexão e tente novamente.',
+            tipo: 'erro',
+            textoBotao: 'Fechar'
+        });
     } finally {
         processandoEnvio = false;
         btnGerar.disabled = false;
