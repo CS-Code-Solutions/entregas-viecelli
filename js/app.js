@@ -56,6 +56,20 @@ function iniciarAplicacao() {
     }
 }
 
+function toggleSecaoAdminConfig(secaoId) {
+    if (!usuarioEhAdmin) return;
+    const painel = document.getElementById(secaoId);
+    if (!painel) return;
+
+    const vaiAbrir = painel.classList.contains('hidden');
+    painel.classList.toggle('hidden', !vaiAbrir);
+
+    const icone = document.getElementById(`icone-${secaoId}`);
+    if (icone) {
+        icone.classList.toggle('rotate-180', vaiAbrir);
+    }
+}
+
 function aplicarTextoTermoAceite(texto) {
     const valorFinal = texto && String(texto).trim() ? String(texto) : TERMO_ACEITE_PADRAO;
     termoAceiteEntrega = valorFinal;
