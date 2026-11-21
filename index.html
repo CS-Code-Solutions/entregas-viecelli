@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-PT" class="h-full">
 <head>
-    <script src="js/anti-flicker.js?v=3"></script>
+    <script src="js/anti-flicker.js?v=4"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Viecelli - Termo de Aceite de Entrega de Obra</title>
     <link rel="icon" type="image/png" href="ico.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css?v=3">
+    <link rel="stylesheet" href="css/style.css?v=4">
 
     <!-- Firebase SDK Compat v10 -->
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -300,7 +300,7 @@
 
                 <div class="flex space-x-2 pt-2">
                     <button onclick="mudarEtapa(4)" class="w-1/3 bg-slate-700 hover:bg-slate-600 text-white font-semibold py-3 rounded-xl text-xs transition flex justify-center items-center"><i class="fa-solid fa-arrow-left mr-1"></i> Voltar</button>
-                    <button id="btnGerarPDF" onclick="gerarPDF()" class="w-2/3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl text-xs transition shadow-lg flex justify-center items-center"><i class="fa-solid fa-file-pdf mr-2"></i> Gerar & Enviar PDF</button>
+                    <button id="btnGerarPDF" onclick="prepararPreviaPDF()" class="w-2/3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-3 rounded-xl text-xs transition shadow-lg flex justify-center items-center"><i class="fa-solid fa-eye mr-2"></i> Pré-visualizar PDF</button>
                 </div>
             </div>
         </div>
@@ -410,6 +410,41 @@
         </div>
     </div>
 
+    <!-- Modal Pré-visualização do PDF -->
+    <div id="modalPreviaPDF" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-5 z-[90]">
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl w-full max-w-3xl h-[88vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="p-4 border-b border-slate-700 flex justify-between items-center bg-slate-800 shrink-0">
+                <div>
+                    <h3 class="text-sm sm:text-base font-bold text-white flex items-center">
+                        <i class="fa-solid fa-file-pdf text-amber-400 mr-2"></i> Pré-visualização do Termo
+                    </h3>
+                    <p id="resumoPreviaPDF" class="text-[11px] text-slate-400 mt-0.5"></p>
+                </div>
+                <button type="button" onclick="fecharModalPreviaPDF()" class="text-slate-400 hover:text-red-400 text-lg p-1">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="flex-1 bg-slate-950 p-2 sm:p-3 overflow-hidden">
+                <iframe id="iframePreviaPDF" title="Pré-visualização do PDF" class="w-full h-full rounded-lg border border-slate-700 bg-white"></iframe>
+            </div>
+
+            <div class="p-3.5 border-t border-slate-700 bg-slate-800 flex flex-wrap gap-2 justify-between items-center shrink-0">
+                <div class="flex space-x-2">
+                    <button type="button" onclick="fecharModalPreviaPDF()" class="bg-slate-700 hover:bg-slate-600 text-white font-semibold px-4 py-2.5 rounded-xl text-xs transition">
+                        Voltar / Ajustar
+                    </button>
+                    <button type="button" onclick="baixarPreviaPDF()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-4 py-2.5 rounded-xl text-xs transition flex items-center">
+                        <i class="fa-solid fa-download mr-1.5"></i> Baixar PDF
+                    </button>
+                </div>
+                <button type="button" id="btnConfirmarEnvioPDF" onclick="confirmarEnvioPDF()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition shadow-lg flex items-center">
+                    <i class="fa-solid fa-paper-plane mr-1.5"></i> Encaminhar E-mail e Salvar
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Template PDF -->
     <div id="pdf-template">
         <div id="pdf-content">
@@ -478,10 +513,10 @@
     </div>
 
     <!-- Scripts Modulares -->
-    <script src="js/firebase-config.js?v=3"></script>
-    <script src="js/security.js?v=3"></script>
-    <script src="js/ui-feedback.js?v=3"></script>
-    <script src="js/auth.js?v=3"></script>
-    <script src="js/app.js?v=3"></script>
+    <script src="js/firebase-config.js?v=4"></script>
+    <script src="js/security.js?v=4"></script>
+    <script src="js/ui-feedback.js?v=4"></script>
+    <script src="js/auth.js?v=4"></script>
+    <script src="js/app.js?v=4"></script>
 </body>
 </html>
