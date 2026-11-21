@@ -56,12 +56,12 @@ function renderizarOpcoesNota() {
 }
 
 // ==========================================
-// SINCRONIZAÇÃO COM FIRESTORE (DADOS LEVES)
+// SINCRONIZAÇÃO COM FIRESTORE (COLEÇÕES VIECELLI)
 // ==========================================
 
 async function carregarConfiguracoesFirestore() {
     try {
-        const doc = await db.collection('configuracoes').doc('geral').get();
+        const doc = await db.collection('viecelli_config').doc('geral').get();
         if (doc.exists && doc.data().emailPadrao) {
             emailSistema = doc.data().emailPadrao;
         }
@@ -75,7 +75,7 @@ async function carregarConfiguracoesFirestore() {
 }
 
 function escutarPedidosFirestore() {
-    db.collection('pedidos').onSnapshot((snapshot) => {
+    db.collection('viecelli_pedidos').onSnapshot((snapshot) => {
         pedidosBase = {};
         snapshot.forEach((doc) => {
             pedidosBase[doc.id] = doc.data();
@@ -87,7 +87,7 @@ function escutarPedidosFirestore() {
 }
 
 function escutarRelatoriosFirestore() {
-    db.collection('relatorios')
+    db.collection('viecelli_relatorios')
         .orderBy('timestamp', 'desc')
         .limit(50)
         .onSnapshot((snapshot) => {
@@ -162,7 +162,7 @@ async function adicionarPedidoBase() {
     }
 
     try {
-        await db.collection('pedidos').doc(nr).set({
+        await db.collection('viecelli_pedidos').doc(nr).set({
             cliente: cli,
             endereco: end,
             criadoPor: usuarioAtual.uid,
@@ -184,7 +184,7 @@ async function removerPedidoBase(nr) {
     if (!confirm(`Excluir o pedido #${nr}?`)) return;
 
     try {
-        await db.collection('pedidos').doc(String(nr)).delete();
+        await db.collection('viecelli_pedidos').doc(String(nr)).delete();
     } catch (error) {
         console.error('Erro ao excluir pedido:', error);
         alert('Não foi possível excluir o pedido.');
@@ -201,7 +201,7 @@ async function salvarEmailPadrao() {
     }
 
     try {
-        await db.collection('configuracoes').doc('geral').set({
+        await db.collection('viecelli_config').doc('geral').set({
             emailPadrao: novoEmail,
             atualizadoPor: usuarioAtual.uid,
             atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
@@ -230,7 +230,7 @@ async function buscarPedido() {
     }
 
     try {
-        const doc = await db.collection('pedidos').doc(num).get();
+        const doc = await db.collection('viecelli_pedidos').doc(num).get();
         if (doc.exists) {
             const dados = doc.data();
             document.getElementById('inputCliente').value = dados.cliente || '';
@@ -389,7 +389,6 @@ function otimizarImagem(file, callback) {
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, width, height);
 
-            // Compressão JPEG 0.45 para manter o PDF leve no envio por e-mail
             const dataUrl = canvas.toDataURL('image/jpeg', 0.45);
             callback(dataUrl);
         };
@@ -661,7 +660,6 @@ async function gerarPDF() {
     btnGerar.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Gerando e Enviando PDF...`;
 
     try {
-        // 1. Popula dados no template do PDF de forma segura (.textContent)
         document.getElementById('pdf-num').textContent = nrPedido;
         document.getElementById('pdf-cli').textContent = cliente;
         document.getElementById('pdf-end').textContent = endereco;
@@ -704,7 +702,6 @@ async function gerarPDF() {
         document.getElementById('pdf-sig-cliente').src = document.getElementById('canvasCliente').toDataURL('image/png');
         document.getElementById('pdf-sig-montador').src = document.getElementById('canvasMontador').toDataURL('image/png');
 
-        // 2. Monta páginas de fotos apenas em memória para o PDF
         const todasFotosPDF = [];
         fotosGerais.forEach((f) => todasFotosPDF.push({ src: f.src, titulo: f.titulo, desc: f.desc }));
 
@@ -782,11 +779,9 @@ async function gerarPDF() {
             jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
         };
 
-        // 3. Gera o PDF em Base64 na memória (sem salvar fotos no Firebase)
         const pdfBase64 = await html2pdf().set(opt).from(element).outputPdf('datauristring');
         pdfTemplate.style.display = 'none';
 
-        // 4. Envia o PDF em anexo para os 2 destinatários (Cliente + Empresa) via Google Apps Script
         const respostaEmail = await fetch(GAS_EMAIL_WEBHOOK_URL, {
             method: 'POST',
             body: JSON.stringify({
@@ -804,8 +799,7 @@ async function gerarPDF() {
             throw new Error(resultadoEmail.erro || 'Falha ao disparar e-mail.');
         }
 
-        // 5. Salva APENAS os metadados leves em texto no Firebase Firestore (Zero imagens)
-        await db.collection('relatorios').add({
+        await db.collection('viecelli_relatorios').add({
             pedido: nrPedido,
             marca: cliente,
             endereco: endereco,
@@ -832,7 +826,6 @@ async function gerarPDF() {
 
         alert(`Termo finalizado com sucesso!\n\n• Dados registrados no banco.\n• PDF com ${todasFotosPDF.length} foto(s) enviado por e-mail para:\n  - ${clienteEmail}\n  - ${emailSistema}`);
 
-        // 6. Limpa todas as fotos da memória RAM e reseta o formulário
         limparFormularioCompleto();
         mudarEtapa(1);
 
