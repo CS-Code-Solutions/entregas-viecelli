@@ -8,7 +8,7 @@ const firebaseConfig = {
 };
 
 // Cole aqui a URL gerada após implantar o Google Apps Script (Web App)
-const GAS_EMAIL_WEBHOOK_URL = "https://script.google.com/macros/s/SEU_ID_DE_IMPLANTACAO/exec";
+const GAS_EMAIL_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbwQnZs118OQMgdPtREv8rVKF6P_JANiN514nl5emGgFo80Jek-ZWU6IF1UeZKhIo6CW/exec";
 
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
