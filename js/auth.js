@@ -25,12 +25,10 @@ let usuarioEhAdmin = false;
         try {
             const userDoc = await db.collection('viecelli_usuarios').doc(user.uid).get();
 
-            // Bloqueia se o usuário existir apenas no sistema de salas e não tiver acesso ao Viecelli
             if (!userDoc.exists) {
                 localStorage.removeItem(PERFIL_CACHE_KEY);
-                alert('Seu usuário não possui permissão de acesso ao sistema Viecelli.');
                 await auth.signOut();
-                window.location.replace('login.html');
+                window.location.replace('login.html?erro=sem_acesso');
                 return;
             }
 
@@ -59,6 +57,15 @@ let usuarioEhAdmin = false;
             window.location.replace('login.html');
         }
     });
+
+    if (isPaginaLogin) {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('erro') === 'sem_acesso') {
+            window.addEventListener('DOMContentLoaded', () => {
+                exibirErroLogin('Seu usuário não possui permissão de acesso ao sistema Viecelli.');
+            });
+        }
+    }
 })();
 
 async function fazerLogin(event) {
@@ -93,12 +100,20 @@ function exibirErroLogin(texto) {
     if (msgErro) {
         msgErro.textContent = texto;
         msgErro.classList.remove('hidden');
-    } else {
-        alert(texto);
     }
 }
 
 async function fazerLogout() {
+    const confirmado = await UIFeedback.confirmar({
+        titulo: 'Sair do Sistema',
+        mensagem: 'Deseja encerrar sua sessão atual neste dispositivo?',
+        textoConfirmar: 'Sair',
+        textoCancelar: 'Continuar',
+        perigoso: true
+    });
+
+    if (!confirmado) return;
+
     try {
         localStorage.removeItem(PERFIL_CACHE_KEY);
         await auth.signOut();
