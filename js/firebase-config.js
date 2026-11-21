@@ -1,17 +1,15 @@
-// Substitua pelos dados reais do seu projeto no Console do Firebase
 const firebaseConfig = {
-    apiKey: "SUA_API_KEY_AQUI",
-    authDomain: "SEU_PROJETO.firebaseapp.com",
-    projectId: "SEU_PROJETO",
-    storageBucket: "SEU_PROJETO.appspot.com",
-    messagingSenderId: "SEU_SENDER_ID",
-    appId: "SEU_APP_ID"
+    apiKey: "AIzaSyDa9ztrK6VxFVeLbP0ge6-31V05gnztjJw",
+    authDomain: "reuniao-d1b29.firebaseapp.com",
+    projectId: "reuniao-d1b29",
+    storageBucket: "reuniao-d1b29.firebasestorage.app",
+    messagingSenderId: "887897617950",
+    appId: "1:887897617950:web:e96cf3cce4792e7e2b600f"
 };
 
-// URL gerada após implantar o Google Apps Script (Web App)
+// Cole aqui a URL gerada após implantar o Google Apps Script (Web App)
 const GAS_EMAIL_WEBHOOK_URL = "https://script.google.com/macros/s/SEU_ID_DE_IMPLANTACAO/exec";
 
-// Inicializa o Firebase (SDK Compat v10)
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
