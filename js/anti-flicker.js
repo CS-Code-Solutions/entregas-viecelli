@@ -9,7 +9,6 @@
     const paginaAtual = path.split('/').pop() || 'index.html';
     const isLoginOrPublic = root.hasAttribute('data-public-page') || paginaAtual === 'login.html';
 
-    // 1. Aplica tema salvo antes do primeiro paint
     try {
         const savedTheme = localStorage.getItem(THEME_KEY);
         if (savedTheme) {
@@ -17,16 +16,18 @@
         }
     } catch (e) {}
 
-    // 2. Lê perfil em cache
     let cachedProfile = null;
     try {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (raw) cachedProfile = JSON.parse(raw);
     } catch (e) {}
 
-    // 3. Injeta regras CSS imediatas para ocultar elementos restritos e bloquear tela sem sessão
+    // Oculta qualquer elemento ou container administrativo em 0ms para não-admins
     const dynamicCss = `
-        html.af-not-admin .admin-only-item { display: none !important; }
+        html.af-not-admin .admin-only-item,
+        html.af-not-admin #viewAdmin {
+            display: none !important;
+        }
         html.af-locked body {
             opacity: 0 !important;
             visibility: hidden !important;
@@ -44,10 +45,9 @@
     style.textContent = dynamicCss;
     document.head.appendChild(style);
 
-    // 4. Liberação instantânea com cache ou trava preventiva em rota privada
     if (cachedProfile && cachedProfile.uid) {
         root.classList.add('af-has-session');
-        root.classList.add(cachedProfile.ehAdmin ? 'af-is-admin' : 'af-not-admin');
+        root.classList.add(cachedProfile.ehAdmin === true ? 'af-is-admin' : 'af-not-admin');
         isRevealed = true;
     } else if (!isLoginOrPublic) {
         root.classList.add('af-locked');
@@ -71,7 +71,6 @@
         isLocked: () => !isRevealed
     };
 
-    // Fail-safe de segurança
     setTimeout(() => {
         if (!isRevealed) reveal();
     }, MAX_LOCK_TIME_MS);
