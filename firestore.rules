@@ -1,0 +1,174 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ==========================================
+    // FUNÇÕES AUXILIARES GERAIS
+    // ==========================================
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    function isNonEmptyString(val, maxLen) {
+      return val is string && val.size() > 0 && val.size() <= maxLen;
+    }
+
+    // ==========================================
+    // SISTEMA 1: GESTÃO DE SALAS DE REUNIÃO
+    // ==========================================
+    function isAdmin() {
+      return isSignedIn() &&
+        exists(/databases/$(database)/documents/usuarios/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.cargo == "Administrador";
+    }
+
+    match /usuarios/{uid} {
+      allow read: if isSignedIn();
+
+      allow create: if isSignedIn()
+        && isNonEmptyString(request.resource.data.nome, 120)
+        && isNonEmptyString(request.resource.data.email, 160)
+        && request.resource.data.cargo in ["Administrador", "Usuário", "Recepcionista"]
+        && (
+          isAdmin()
+          || (
+            isOwner(uid)
+            && request.resource.data.uid == request.auth.uid
+            && request.resource.data.cargo != "Administrador"
+          )
+        );
+
+      allow update: if isSignedIn()
+        && (
+          isAdmin()
+          || (
+            isOwner(uid)
+            && !request.resource.data.diff(resource.data).affectedKeys().hasAny(["cargo", "uid", "email"])
+          )
+        );
+
+      allow delete: if isAdmin() && request.auth.uid != uid;
+    }
+
+    match /salas/{salaId} {
+      allow read: if isSignedIn();
+
+      allow create, update: if isAdmin()
+        && isNonEmptyString(request.resource.data.nome, 100)
+        && request.resource.data.status in ["Ativa", "Inativa", "Em breve"];
+
+      allow delete: if isAdmin();
+    }
+
+    match /reservas/{reservaId} {
+      allow read: if isSignedIn();
+
+      allow create: if isSignedIn()
+        && isNonEmptyString(request.resource.data.titulo, 150)
+        && isNonEmptyString(request.resource.data.sala, 100)
+        && isNonEmptyString(request.resource.data.data, 20)
+        && isNonEmptyString(request.resource.data.horarioInicio, 10)
+        && isNonEmptyString(request.resource.data.horarioFim, 10)
+        && (
+          isAdmin()
+          || request.resource.data.userId == request.auth.uid
+        );
+
+      allow update: if isSignedIn()
+        && isNonEmptyString(request.resource.data.titulo, 150)
+        && (
+          isAdmin()
+          || (
+            resource.data.userId == request.auth.uid
+            && request.resource.data.userId == resource.data.userId
+          )
+        );
+
+      allow delete: if isSignedIn()
+        && (isAdmin() || resource.data.userId == request.auth.uid);
+    }
+
+    match /notificacoes/{notificacaoId} {
+      allow read: if isSignedIn()
+        && (isAdmin() || resource.data.userId == request.auth.uid);
+
+      allow create: if isSignedIn()
+        && isNonEmptyString(request.resource.data.userId, 128);
+
+      allow update: if isSignedIn()
+        && (isAdmin() || resource.data.userId == request.auth.uid);
+
+      allow delete: if isSignedIn()
+        && (isAdmin() || resource.data.userId == request.auth.uid);
+    }
+
+    match /termos_aceites/{uid} {
+      allow read: if isOwner(uid) || isAdmin();
+
+      allow create, update: if isOwner(uid)
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.aceito == true
+        && isNonEmptyString(request.resource.data.versao, 20)
+        && isNonEmptyString(request.resource.data.dataHoraAceite, 40);
+
+      allow delete: if false;
+    }
+
+    // ==========================================
+    // SISTEMA 2: ACEITE DE ENTREGA - VIECELLI
+    // ==========================================
+    function isUsuarioViecelli() {
+      return isSignedIn() &&
+        exists(/databases/$(database)/documents/viecelli_usuarios/$(request.auth.uid));
+    }
+
+    function isAdminViecelli() {
+      return isUsuarioViecelli() &&
+        get(/databases/$(database)/documents/viecelli_usuarios/$(request.auth.uid)).data.role == "admin";
+    }
+
+    match /viecelli_usuarios/{uid} {
+      allow read: if isOwner(uid) || isAdminViecelli();
+
+      allow create, update: if isAdminViecelli()
+        && isNonEmptyString(request.resource.data.nome, 120)
+        && request.resource.data.role in ["admin", "montador"];
+
+      // Impede que o próprio administrador remova seu acesso acidentalmente
+      allow delete: if isAdminViecelli() && request.auth.uid != uid;
+    }
+
+    match /viecelli_pedidos/{pedidoId} {
+      allow read: if isUsuarioViecelli();
+      allow write: if isAdminViecelli()
+        && isNonEmptyString(request.resource.data.cliente, 150)
+        && isNonEmptyString(request.resource.data.endereco, 250);
+    }
+
+    match /viecelli_config/{docId} {
+      allow read: if isUsuarioViecelli();
+      allow write: if isAdminViecelli();
+    }
+
+    match /viecelli_relatorios/{relatorioId} {
+      allow read: if isAdminViecelli();
+      allow create: if isUsuarioViecelli()
+        && isNonEmptyString(request.resource.data.pedido, 20)
+        && isNonEmptyString(request.resource.data.clienteEmail, 160)
+        && request.resource.data.registradoPorUid == request.auth.uid
+        && request.resource.size() < 20480;
+      allow update, delete: if isAdminViecelli();
+    }
+
+    // ==========================================
+    // BLOQUEIO PADRÃO PARA QUALQUER OUTRA COLEÇÃO
+    // ==========================================
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
