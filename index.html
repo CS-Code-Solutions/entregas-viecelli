@@ -151,9 +151,9 @@
                 </h2>
                 
                 <div id="textoTermoAceiteUI" class="bg-slate-900 p-4 rounded-lg border border-slate-700/80 text-[11px] sm:text-xs text-slate-300 space-y-2 leading-relaxed whitespace-pre-line">Este documento formaliza a entrega do projeto executado, considerando os requisitos, cronograma e os critérios de aceitação previamente relacionados e acordados através de um contrato entre o cliente e a Viecelli Móveis S/A.
-• A partir da assinatura deste Termo, será considerada como encerrada a etapa de montagem.
-• Qualquer problema relacionado aos procedimentos, dentro do prazo, será resolvido sob garantia.
-• A garantia não é estendida a produtos/serviços de terceiros não contratados pela Viecelli.
+- A partir da assinatura deste Termo, será considerada como encerrada a etapa de montagem.
+- Qualquer problema relacionado aos procedimentos, dentro do prazo, será resolvido sob garantia.
+- A garantia não é estendida a produtos/serviços de terceiros não contratados pela Viecelli.
 O Cliente declara que a Viecelli Móveis S/A entregou os produtos/serviços de acordo com os requisitos e prazos.</div>
 
                 <div class="bg-slate-900 p-3 rounded-xl border border-amber-500/50 flex items-start space-x-3">
@@ -347,54 +347,71 @@ O Cliente declara que a Viecelli Móveis S/A entregou os produtos/serviços de a
                 </div>
             </div>
 
-            <div id="admin-config" class="aba-conteudo hidden bg-slate-800 border border-slate-700 rounded-xl p-4 shadow-lg space-y-6">
-                <div class="space-y-3">
-                    <h2 class="text-sm font-bold text-white border-b border-slate-700 pb-2"><i class="fa-solid fa-envelope text-amber-400 mr-1.5"></i> Configurações de E-mail</h2>
-                    <div class="space-y-3 bg-slate-900 p-3 rounded-lg border border-slate-700">
+            <div id="admin-config" class="aba-conteudo hidden bg-slate-800 border border-slate-700 rounded-xl p-4 shadow-lg space-y-3">
+                <div class="bg-slate-900/70 rounded-xl border border-slate-700 overflow-hidden">
+                    <button type="button" onclick="toggleSecaoAdminConfig('painelConfigEmail')" class="w-full px-3.5 py-3 flex items-center justify-between text-left hover:bg-slate-800/60 transition">
+                        <span class="text-xs font-bold text-white flex items-center">
+                            <i class="fa-solid fa-envelope text-amber-400 mr-2"></i> Configurações de E-mail
+                        </span>
+                        <i id="icone-painelConfigEmail" class="fa-solid fa-chevron-down text-xs text-slate-400 transition-transform"></i>
+                    </button>
+                    <div id="painelConfigEmail" class="hidden space-y-3 p-3 pt-1 border-t border-slate-800">
                         <label class="block text-[11px] text-slate-300 font-bold">E-mail Padrão do Sistema</label>
                         <input type="email" id="emailPadraoAdmin" placeholder="entregas@viecelli.com.br" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-sm text-white">
                         <button onclick="salvarEmailPadrao()" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold py-2 rounded-lg text-xs transition">Atualizar E-mail</button>
                     </div>
                 </div>
 
-                <div class="space-y-3">
-                    <h2 class="text-sm font-bold text-white border-b border-slate-700 pb-2"><i class="fa-solid fa-file-contract text-amber-400 mr-1.5"></i> 3. Termo de Aceite de Entrega</h2>
-                    <div class="space-y-3 bg-slate-900 p-3 rounded-lg border border-slate-700">
+                <div class="bg-slate-900/70 rounded-xl border border-slate-700 overflow-hidden">
+                    <button type="button" onclick="toggleSecaoAdminConfig('painelConfigTermo')" class="w-full px-3.5 py-3 flex items-center justify-between text-left hover:bg-slate-800/60 transition">
+                        <span class="text-xs font-bold text-white flex items-center">
+                            <i class="fa-solid fa-file-contract text-amber-400 mr-2"></i> 3. Termo de Aceite de Entrega
+                        </span>
+                        <i id="icone-painelConfigTermo" class="fa-solid fa-chevron-down text-xs text-slate-400 transition-transform"></i>
+                    </button>
+                    <div id="painelConfigTermo" class="hidden space-y-3 p-3 pt-1 border-t border-slate-800">
                         <label class="block text-[11px] text-slate-300 font-bold">Texto do Termo de Aceite</label>
                         <textarea id="termoAceiteAdmin" rows="6" placeholder="Digite o texto do Termo de Aceite de Entrega..." class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs text-white focus:outline-none focus:border-amber-500"></textarea>
                         <button onclick="salvarTermoAceiteAdmin()" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold py-2 rounded-lg text-xs transition">Salvar Termo de Aceite</button>
                     </div>
                 </div>
 
-                <div class="space-y-3">
-                    <h2 class="text-sm font-bold text-white border-b border-slate-700 pb-2"><i class="fa-solid fa-users-gear text-indigo-400 mr-1.5"></i> Gestão de Usuários e Permissões</h2>
-                    <div class="space-y-3 bg-slate-900 p-3 rounded-lg border border-slate-700">
-                        <input type="text" id="novoUsuarioNome" placeholder="Nome completo *" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs text-white">
-                        <input type="email" id="novoUsuarioEmail" placeholder="E-mail de acesso *" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs text-white">
-                        <input type="password" id="novoUsuarioSenha" placeholder="Senha inicial (mín. 6 caracteres) *" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs text-white">
-                        <div>
-                            <label class="block text-[10px] text-slate-400 mb-1">Nível de Acesso *</label>
-                            <select id="novoUsuarioRole" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
-                                <option value="montador">Montador (Apenas formulário em campo)</option>
-                                <option value="admin">Administrador (Acesso total + Painel Admin)</option>
-                            </select>
+                <div class="bg-slate-900/70 rounded-xl border border-slate-700 overflow-hidden">
+                    <button type="button" onclick="toggleSecaoAdminConfig('painelConfigUsuarios')" class="w-full px-3.5 py-3 flex items-center justify-between text-left hover:bg-slate-800/60 transition">
+                        <span class="text-xs font-bold text-white flex items-center">
+                            <i class="fa-solid fa-users-gear text-indigo-400 mr-2"></i> Gestão de Usuários e Permissões
+                        </span>
+                        <i id="icone-painelConfigUsuarios" class="fa-solid fa-chevron-down text-xs text-slate-400 transition-transform"></i>
+                    </button>
+                    <div id="painelConfigUsuarios" class="hidden space-y-3 p-3 pt-1 border-t border-slate-800">
+                        <div class="space-y-3 bg-slate-900 p-3 rounded-lg border border-slate-700">
+                            <input type="text" id="novoUsuarioNome" placeholder="Nome completo *" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs text-white">
+                            <input type="email" id="novoUsuarioEmail" placeholder="E-mail de acesso *" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs text-white">
+                            <input type="password" id="novoUsuarioSenha" placeholder="Senha inicial (mín. 6 caracteres) *" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs text-white">
+                            <div>
+                                <label class="block text-[10px] text-slate-400 mb-1">Nível de Acesso *</label>
+                                <select id="novoUsuarioRole" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
+                                    <option value="montador">Montador (Apenas formulário em campo)</option>
+                                    <option value="admin">Administrador (Acesso total + Painel Admin)</option>
+                                </select>
+                            </div>
+                            <button id="btnCadastrarUsuario" onclick="cadastrarUsuarioViecelli()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-lg text-xs transition flex items-center justify-center">
+                                <i class="fa-solid fa-user-plus mr-1.5"></i> Cadastrar Usuário
+                            </button>
                         </div>
-                        <button id="btnCadastrarUsuario" onclick="cadastrarUsuarioViecelli()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-lg text-xs transition flex items-center justify-center">
-                            <i class="fa-solid fa-user-plus mr-1.5"></i> Cadastrar Usuário
-                        </button>
-                    </div>
 
-                    <div class="overflow-x-auto mt-3">
-                        <table class="w-full text-left border-collapse text-[11px] whitespace-nowrap">
-                            <thead>
-                                <tr class="border-b border-slate-700 text-slate-400 bg-slate-900/50">
-                                    <th class="p-2">Usuário</th>
-                                    <th class="p-2">Perfil</th>
-                                    <th class="p-2 text-right">Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tabelaUsuariosAdmin" class="divide-y divide-slate-700/60"></tbody>
-                        </table>
+                        <div class="overflow-x-auto mt-3">
+                            <table class="w-full text-left border-collapse text-[11px] whitespace-nowrap">
+                                <thead>
+                                    <tr class="border-b border-slate-700 text-slate-400 bg-slate-900/50">
+                                        <th class="p-2">Usuário</th>
+                                        <th class="p-2">Perfil</th>
+                                        <th class="p-2 text-right">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabelaUsuariosAdmin" class="divide-y divide-slate-700/60"></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -520,9 +537,9 @@ O Cliente declara que a Viecelli Móveis S/A entregou os produtos/serviços de a
                 <div class="pdf-section">
                     <h3>3. Termo de Aceite e Conformidade</h3>
                     <p id="pdf-termo-texto" style="margin-bottom: 6px; font-size: 9.5px; color:#333; line-height: 1.35; white-space: pre-line;">Este documento formaliza a entrega do projeto executado, considerando os requisitos, cronograma e os critérios de aceitação previamente relacionados e acordados através de um contrato entre o cliente e a Viecelli Móveis S/A.
-• A partir da assinatura deste Termo, será considerada como encerrada a etapa de montagem.
-• Qualquer problema relacionado aos procedimentos, dentro do prazo, será resolvido sob garantia.
-• A garantia não é estendida a produtos/serviços de terceiros não contratados pela Viecelli.
+- A partir da assinatura deste Termo, será considerada como encerrada a etapa de montagem.
+- Qualquer problema relacionado aos procedimentos, dentro do prazo, será resolvido sob garantia.
+- A garantia não é estendida a produtos/serviços de terceiros não contratados pela Viecelli.
 O Cliente declara que a Viecelli Móveis S/A entregou os produtos/serviços de acordo com os requisitos e prazos.</p>
                     <p style="margin-bottom: 8px; font-size: 10.5px;"><strong>Status Final:</strong> <span id="pdf-status" style="color: #f59e0b; font-weight:bold;"></span></p>
                     
