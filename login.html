@@ -1,126 +1,127 @@
 <!DOCTYPE html>
-<html lang="pt-PT">
+<html lang="pt-PT" data-public-page>
 <head>
-  <!-- Configurações para PWA e iOS -->
-  <link rel="manifest" href="manifest.json">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Aceite Obra">
-  <link rel="apple-touch-icon" href="ico.png">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Viecelli - Entrar</title>
-  <link rel="icon" href="ico.png" type="image/png">
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: url('fundo.jpg') no-repeat center center fixed;
-      background-size: cover;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    .login-card {
-      background: rgba(255, 255, 255, 0.95);
-      padding: 40px;
-      border-radius: 16px;
-      width: 90%;
-      max-width: 400px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-      text-align: center;
-    }
-    .login-logo {
-      max-width: 180px;
-      height: auto;
-      margin-bottom: 24px;
-      object-fit: contain;
-    }
-    .form-group {
-      margin-bottom: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      text-align: left;
-    }
-    .form-group label {
-      font-weight: 600;
-      font-size: 13px;
-      color: #334155;
-    }
-    .form-group input {
-      padding: 12px;
-      border: 1px solid #cbd5e1;
-      border-radius: 8px;
-      font-size: 14px;
-      outline: none;
-    }
-    .form-group input:focus {
-      border-color: #f59e0b;
-      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
-    }
-    .btn-login {
-      width: 100%;
-      padding: 12px;
-      background: #f59e0b;
-      color: #0f172a;
-      border: none;
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: 15px;
-      cursor: pointer;
-      margin-top: 10px;
-      transition: background 0.3s;
-    }
-    .btn-login:hover {
-      background: #d97706;
-    }
-    .test-credentials {
-      margin-top: 20px;
-      font-size: 11px;
-      color: #64748b;
-    }
-  </style>
+    <script src="js/anti-flicker.js?v=1"></script>
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Aceite Obra">
+    <link rel="apple-touch-icon" href="ico.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viecelli - Entrar</title>
+    <link rel="icon" href="ico.png" type="image/png">
+
+    <!-- Firebase SDK Compat v10 -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: url('fundo.jpg') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        .login-logo {
+            max-width: 180px;
+            height: auto;
+            margin-bottom: 24px;
+            object-fit: contain;
+        }
+        .form-group {
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            text-align: left;
+        }
+        .form-group label {
+            font-weight: 600;
+            font-size: 13px;
+            color: #334155;
+        }
+        .form-group input {
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+        }
+        .form-group input:focus {
+            border-color: #f59e0b;
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+        }
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background: #f59e0b;
+            color: #0f172a;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+        .btn-login:hover {
+            background: #d97706;
+        }
+        .btn-login:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .login-erro {
+            background: #fee2e2;
+            color: #b91c1c;
+            font-size: 12px;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border: 1px solid #fca5a5;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-  <div class="login-card">
-    <img src="cabe.png" alt="Logo Viecelli" class="login-logo">
-    
-    <div class="form-group">
-      <label>E-mail</label>
-      <input type="email" id="emailLogin" placeholder="admin@viecelli.com" required>
-    </div>
-    <div class="form-group">
-      <label>Senha</label>
-      <input type="password" id="senhaLogin" placeholder="••••••••" required>
-    </div>
-    <button class="btn-login" onclick="fazerLogin()">Entrar no Sistema</button>
-    
-    <div class="test-credentials">
-      <strong>Modo de Teste Ativo</strong><br>
-      E-mail: admin@viecelli.com | Senha: 123456
-    </div>
-  </div>
+    <div class="login-card">
+        <img src="cabe.png" alt="Logo Viecelli" class="login-logo">
+        
+        <div id="loginErro" class="login-erro hidden"></div>
 
-  <script>
-    function fazerLogin() {
-      const email = document.getElementById("emailLogin").value.trim();
-      const senha = document.getElementById("senhaLogin").value.trim();
+        <form onsubmit="fazerLogin(event)">
+            <div class="form-group">
+                <label for="emailLogin">E-mail</label>
+                <input type="email" id="emailLogin" placeholder="seuemail@viecelli.com.br" required autocomplete="email">
+            </div>
+            <div class="form-group">
+                <label for="senhaLogin">Senha</label>
+                <input type="password" id="senhaLogin" placeholder="••••••••" required autocomplete="current-password">
+            </div>
+            <button type="submit" id="btnLogin" class="btn-login">Entrar no Sistema</button>
+        </form>
+    </div>
 
-      if (!email || !senha) {
-        alert("Por favor, preencha o e-mail e a senha.");
-        return;
-      }
-
-      // Simulação de Login (Substitua depois pela chamada ao Firebase)
-      if (email === "admin@viecelli.com" && senha === "123456") {
-        window.location.href = "index.html";
-      } else {
-        alert("Credenciais incorretas.\n\nPara testes, utilize:\nE-mail: admin@viecelli.com\nSenha: 123456");
-      }
-    }
-  </script>
+    <script src="js/firebase-config.js?v=1"></script>
+    <script src="js/security.js?v=1"></script>
+    <script src="js/auth.js?v=1"></script>
 </body>
 </html>
