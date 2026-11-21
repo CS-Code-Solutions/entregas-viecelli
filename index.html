@@ -47,6 +47,7 @@
         <ul class="p-4 space-y-4 flex-1">
             <li><button onclick="mudarEtapa(1); toggleMenu();" class="flex items-center text-sm text-slate-300 hover:text-amber-500 w-full text-left"><i class="fa-solid fa-house w-6 text-center mr-2"></i> Início</button></li>
             <li><button onclick="abrirConfigAssinatura(); toggleMenu();" class="flex items-center text-sm text-slate-300 hover:text-amber-500 w-full text-left"><i class="fa-solid fa-signature w-6 text-center mr-2"></i> Configurar Assinatura</button></li>
+            <li><button onclick="abrirModalPrivacidade(); toggleMenu();" class="flex items-center text-sm text-slate-300 hover:text-amber-500 w-full text-left"><i class="fa-solid fa-shield-halved w-6 text-center mr-2"></i> Política de Privacidade</button></li>
             <li class="pt-4 border-t border-slate-700">
                 <div class="flex items-center justify-between text-sm text-slate-300">
                     <span class="flex items-center"><i class="fa-solid fa-circle-half-stroke w-6 text-center mr-2"></i> Tema Claro</span>
@@ -149,15 +150,11 @@
                     <i class="fa-solid fa-circle-info mr-2"></i> 3. Termo de Aceite de Entrega
                 </h2>
                 
-                <div class="bg-slate-900 p-4 rounded-lg border border-slate-700/80 text-[11px] sm:text-xs text-slate-300 space-y-2 leading-relaxed">
-                    <p class="font-semibold text-white">Este documento formaliza a entrega do projeto executado, considerando os requisitos, cronograma e os critérios de aceitação previamente relacionados e acordados através de um contrato entre o cliente e a Viecelli Móveis S/A.</p>
-                    <ul class="list-disc list-inside space-y-1 text-slate-400">
-                        <li>A partir da assinatura deste Termo, será considerada como encerrada a etapa de montagem.</li>
-                        <li>Qualquer problema relacionado aos procedimentos, dentro do prazo, será resolvido sob garantia.</li>
-                        <li>A garantia não é estendida a produtos/serviços de terceiros não contratados pela Viecelli.</li>
-                    </ul>
-                    <p class="text-white pt-1">O Cliente declara que a Viecelli Móveis S/A entregou os produtos/serviços de acordo com os requisitos e prazos.</p>
-                </div>
+                <div id="textoTermoAceiteUI" class="bg-slate-900 p-4 rounded-lg border border-slate-700/80 text-[11px] sm:text-xs text-slate-300 space-y-2 leading-relaxed whitespace-pre-line">Este documento formaliza a entrega do projeto executado, considerando os requisitos, cronograma e os critérios de aceitação previamente relacionados e acordados através de um contrato entre o cliente e a Viecelli Móveis S/A.
+• A partir da assinatura deste Termo, será considerada como encerrada a etapa de montagem.
+• Qualquer problema relacionado aos procedimentos, dentro do prazo, será resolvido sob garantia.
+• A garantia não é estendida a produtos/serviços de terceiros não contratados pela Viecelli.
+O Cliente declara que a Viecelli Móveis S/A entregou os produtos/serviços de acordo com os requisitos e prazos.</div>
 
                 <div class="bg-slate-900 p-3 rounded-xl border border-amber-500/50 flex items-start space-x-3">
                     <input type="checkbox" id="checkTermo" class="mt-0.5 w-4 h-4 accent-amber-500 cursor-pointer shrink-0">
@@ -296,6 +293,17 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Consentimento LGPD / Política de Privacidade (sempre desmarcado por padrão) -->
+                    <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-700 space-y-2">
+                        <label class="flex items-start space-x-2.5 cursor-pointer">
+                            <input type="checkbox" id="checkLGPDCliente" class="mt-0.5 w-4 h-4 accent-amber-500 cursor-pointer shrink-0">
+                            <span class="text-[11px] text-slate-300 leading-tight">
+                                Declaro ciência e consentimento (LGPD) para o tratamento dos dados de contato e assinatura informados neste termo, conforme a
+                                <button type="button" onclick="abrirModalPrivacidade()" class="text-amber-400 underline hover:text-amber-300 font-semibold">Política de Privacidade</button>. *
+                            </span>
+                        </label>
+                    </div>
                 </div>
 
                 <div class="flex space-x-2 pt-2">
@@ -350,6 +358,15 @@
                 </div>
 
                 <div class="space-y-3">
+                    <h2 class="text-sm font-bold text-white border-b border-slate-700 pb-2"><i class="fa-solid fa-file-contract text-amber-400 mr-1.5"></i> 3. Termo de Aceite de Entrega</h2>
+                    <div class="space-y-3 bg-slate-900 p-3 rounded-lg border border-slate-700">
+                        <label class="block text-[11px] text-slate-300 font-bold">Texto do Termo de Aceite</label>
+                        <textarea id="termoAceiteAdmin" rows="6" placeholder="Digite o texto do Termo de Aceite de Entrega..." class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs text-white focus:outline-none focus:border-amber-500"></textarea>
+                        <button onclick="salvarTermoAceiteAdmin()" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold py-2 rounded-lg text-xs transition">Salvar Termo de Aceite</button>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
                     <h2 class="text-sm font-bold text-white border-b border-slate-700 pb-2"><i class="fa-solid fa-users-gear text-indigo-400 mr-1.5"></i> Gestão de Usuários e Permissões</h2>
                     <div class="space-y-3 bg-slate-900 p-3 rounded-lg border border-slate-700">
                         <input type="text" id="novoUsuarioNome" placeholder="Nome completo *" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs text-white">
@@ -386,11 +403,31 @@
     </main>
 
     <!-- Rodapé -->
-    <footer class="text-center py-4 text-[11px] text-slate-500 border-t border-slate-800/60">
+    <footer class="text-center py-4 text-[11px] text-slate-500 border-t border-slate-800/60 space-x-3">
+        <button type="button" onclick="abrirModalPrivacidade()" class="hover:text-amber-400 transition underline">Política de Privacidade (LGPD)</button>
+        <span>•</span>
         <a href="https://www.instagram.com/cs_code_solutions?exln=Ym1mNDMzYTYxa3d6" target="_blank" rel="noopener noreferrer" class="hover:text-amber-400 transition">
             Powered by CS Code Solutions
         </a>
     </footer>
+
+    <!-- Modal Política de Privacidade (LGPD) -->
+    <div id="modalPrivacidade" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm hidden items-center justify-center p-4 z-[95]">
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl w-full max-w-lg p-5 sm:p-6 space-y-4 shadow-2xl max-h-[85vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b border-slate-700 pb-2">
+                <h3 class="text-sm sm:text-base font-bold text-white"><i class="fa-solid fa-shield-halved text-amber-400 mr-2"></i>Política de Privacidade e LGPD</h3>
+                <button type="button" onclick="fecharModalPrivacidade()" class="text-slate-400 hover:text-red-400 text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="text-xs text-slate-300 space-y-2.5 leading-relaxed">
+                <p><strong class="text-white">Dados coletados:</strong> nome do cliente, telefone/WhatsApp, e-mail, assinatura digital, registros fotográficos da entrega e informações do pedido.</p>
+                <p><strong class="text-white">Finalidade:</strong> formalizar o aceite de entrega/montagem, encaminhar o comprovante em PDF às partes envolvidas e manter o histórico operacional do pedido.</p>
+                <p><strong class="text-white">Retenção e direitos do titular (LGPD):</strong> os registros permanecem armazenados para fins contratuais e de garantia. Solicitações de acesso, correção, confirmação ou exclusão podem ser feitas pelo canal oficial da empresa.</p>
+            </div>
+            <div class="pt-2 flex justify-end">
+                <button type="button" onclick="fecharModalPrivacidade()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-5 py-2 rounded-xl text-xs transition">Fechar</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Modal Assinatura -->
     <div id="modalConfig" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4 z-[80]">
@@ -482,13 +519,11 @@
 
                 <div class="pdf-section">
                     <h3>3. Termo de Aceite e Conformidade</h3>
-                    <p style="margin-bottom: 6px; font-size: 9.5px; color:#333; line-height: 1.35;">
-                        Este documento formaliza a entrega do projeto executado, considerando os requisitos, cronograma e os critérios de aceitação previamente relacionados e acordados através de um contrato entre o cliente e a Viecelli Móveis S/A.<br>
-                        • A partir da assinatura deste Termo, será considerada como encerrada a etapa de montagem.<br>
-                        • Qualquer problema relacionado aos procedimentos, dentro do prazo, será resolvido sob garantia.<br>
-                        • A garantia não é estendida a produtos/serviços de terceiros não contratados pela Viecelli.<br>
-                        O Cliente declara que a Viecelli Móveis S/A entregou os produtos/serviços de acordo com os requisitos e prazos.
-                    </p>
+                    <p id="pdf-termo-texto" style="margin-bottom: 6px; font-size: 9.5px; color:#333; line-height: 1.35; white-space: pre-line;">Este documento formaliza a entrega do projeto executado, considerando os requisitos, cronograma e os critérios de aceitação previamente relacionados e acordados através de um contrato entre o cliente e a Viecelli Móveis S/A.
+• A partir da assinatura deste Termo, será considerada como encerrada a etapa de montagem.
+• Qualquer problema relacionado aos procedimentos, dentro do prazo, será resolvido sob garantia.
+• A garantia não é estendida a produtos/serviços de terceiros não contratados pela Viecelli.
+O Cliente declara que a Viecelli Móveis S/A entregou os produtos/serviços de acordo com os requisitos e prazos.</p>
                     <p style="margin-bottom: 8px; font-size: 10.5px;"><strong>Status Final:</strong> <span id="pdf-status" style="color: #f59e0b; font-weight:bold;"></span></p>
                     
                     <div class="pdf-row"><span class="pdf-label">Nome do Cliente:</span> <span id="pdf-nomecli"></span></div>
