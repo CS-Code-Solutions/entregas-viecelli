@@ -1,0 +1,163 @@
+body {
+    font-size: 14px;
+    overflow-x: hidden;
+}
+
+.signature-canvas {
+    touch-action: none;
+    cursor: crosshair;
+}
+
+.etapa-form {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="number"] {
+    font-size: 16px;
+}
+
+/* Tema Claro */
+html[data-theme="light"] body,
+body.light-theme {
+    background-color: #f1f5f9 !important;
+    color: #0f172a !important;
+}
+
+html[data-theme="light"] .bg-slate-900,
+body.light-theme .bg-slate-900 {
+    background-color: #ffffff !important;
+    border-color: #e2e8f0 !important;
+    color: #0f172a !important;
+}
+
+html[data-theme="light"] .bg-slate-800,
+body.light-theme .bg-slate-800 {
+    background-color: #f8fafc !important;
+    border-color: #cbd5e1 !important;
+    color: #0f172a !important;
+}
+
+html[data-theme="light"] .bg-slate-700,
+body.light-theme .bg-slate-700 {
+    background-color: #e2e8f0 !important;
+    color: #0f172a !important;
+}
+
+html[data-theme="light"] .text-white,
+html[data-theme="light"] .text-slate-100,
+html[data-theme="light"] .text-slate-200,
+html[data-theme="light"] .text-slate-300,
+body.light-theme .text-white,
+body.light-theme .text-slate-100,
+body.light-theme .text-slate-200,
+body.light-theme .text-slate-300 {
+    color: #1e293b !important;
+}
+
+html[data-theme="light"] .text-slate-400,
+body.light-theme .text-slate-400 {
+    color: #475569 !important;
+}
+
+html[data-theme="light"] input.bg-slate-800,
+html[data-theme="light"] input.bg-slate-900,
+body.light-theme input.bg-slate-800,
+body.light-theme input.bg-slate-900 {
+    background-color: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    color: #0f172a !important;
+}
+
+html[data-theme="light"] .border-slate-700,
+body.light-theme .border-slate-700 {
+    border-color: #cbd5e1 !important;
+}
+
+/* Template A4 para Geração de PDF */
+#pdf-template {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 794px;
+    background: #ffffff;
+    z-index: 99999;
+}
+
+.pdf-page {
+    padding: 15px 25px;
+    font-family: Arial, sans-serif;
+    color: #111111;
+    font-size: 11px;
+    line-height: 1.35;
+    background: #ffffff;
+    box-sizing: border-box;
+}
+
+.pdf-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #f59e0b;
+    padding-bottom: 6px;
+    margin-bottom: 10px;
+    margin-top: 0;
+}
+
+.pdf-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #111111;
+    margin: 0;
+}
+
+.pdf-section {
+    margin-bottom: 10px;
+    border: 1px solid #e2e8f0;
+    padding: 8px 10px;
+    border-radius: 6px;
+}
+
+.pdf-section h3 {
+    margin: 0 0 6px 0;
+    font-size: 12px;
+    color: #d97706;
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 3px;
+}
+
+.pdf-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 3px;
+}
+
+.pdf-label {
+    font-weight: bold;
+}
+
+.pdf-signatures {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.pdf-sig-box {
+    width: 45%;
+    text-align: center;
+}
+
+.pdf-sig-box img {
+    width: 100%;
+    max-height: 65px;
+    object-fit: contain;
+    border-bottom: 1px solid #000000;
+    margin-bottom: 4px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
