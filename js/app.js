@@ -1,5 +1,14 @@
 let pedidosBase = {};
 let emailSistema = 'entregas@viecelli.com.br';
+const TERMO_ACEITE_PADRAO = [
+    'Este documento formaliza a entrega do projeto executado, considerando os requisitos, cronograma e os critérios de aceitação previamente relacionados e acordados através de um contrato entre o cliente e a Viecelli Móveis S/A.',
+    '• A partir da assinatura deste Termo, será considerada como encerrada a etapa de montagem.',
+    '• Qualquer problema relacionado aos procedimentos, dentro do prazo, será resolvido sob garantia.',
+    '• A garantia não é estendida a produtos/serviços de terceiros não contratados pela Viecelli.',
+    'O Cliente declara que a Viecelli Móveis S/A entregou os produtos/serviços de acordo com os requisitos e prazos.'
+].join('\n');
+let termoAceiteEntrega = TERMO_ACEITE_PADRAO;
+const VERSAO_LGPD_POLITICA = '1.0';
 let fotosGerais = [];
 let fotosEvidencia = { t1: null, t2: null, m1: null };
 let relatoriosSalvos = [];
@@ -14,6 +23,7 @@ function iniciarAplicacao() {
     if (appInicializado) return;
     appInicializado = true;
 
+    aplicarTextoTermoAceite(TERMO_ACEITE_PADRAO);
     renderizarOpcoesNota();
     setupCanvas('canvasCliente');
     setupCanvas('canvasMontador');
@@ -46,6 +56,36 @@ function iniciarAplicacao() {
     }
 }
 
+function aplicarTextoTermoAceite(texto) {
+    const valorFinal = texto && String(texto).trim() ? String(texto) : TERMO_ACEITE_PADRAO;
+    termoAceiteEntrega = valorFinal;
+
+    const elUI = document.getElementById('textoTermoAceiteUI');
+    if (elUI) elUI.textContent = valorFinal;
+
+    const elPDF = document.getElementById('pdf-termo-texto');
+    if (elPDF) elPDF.textContent = valorFinal;
+
+    const inputAdmin = document.getElementById('termoAceiteAdmin');
+    if (inputAdmin && document.activeElement !== inputAdmin) {
+        inputAdmin.value = valorFinal;
+    }
+}
+
+function abrirModalPrivacidade() {
+    const modal = document.getElementById('modalPrivacidade');
+    if (!modal) return;
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+}
+
+function fecharModalPrivacidade() {
+    const modal = document.getElementById('modalPrivacidade');
+    if (!modal) return;
+    modal.classList.remove('flex');
+    modal.classList.add('hidden');
+}
+
 function renderizarOpcoesNota() {
     const container = document.getElementById('containerNotasMontagem');
     if (!container) return;
@@ -75,11 +115,18 @@ function renderizarOpcoesNota() {
 async function carregarConfiguracoesFirestore() {
     try {
         const doc = await db.collection('viecelli_config').doc('geral').get();
-        if (doc.exists && doc.data().emailPadrao) {
-            emailSistema = doc.data().emailPadrao;
+        if (doc.exists) {
+            const data = doc.data();
+            if (data.emailPadrao) {
+                emailSistema = data.emailPadrao;
+            }
+            aplicarTextoTermoAceite(data.termoAceiteEntrega);
+        } else {
+            aplicarTextoTermoAceite(TERMO_ACEITE_PADRAO);
         }
     } catch (e) {
-        console.warn('Usando e-mail padrão local:', e);
+        console.warn('Usando configurações padrão locais:', e);
+        aplicarTextoTermoAceite(TERMO_ACEITE_PADRAO);
     }
     const inputEmailAdmin = document.getElementById('emailPadraoAdmin');
     const spanAviso = document.getElementById('spanAvisoEmail');
@@ -422,6 +469,31 @@ async function salvarEmailPadrao() {
     } catch (error) {
         console.error('Erro ao atualizar e-mail:', error);
         UIFeedback.toast('Erro ao atualizar e-mail no banco.', 'erro');
+    }
+}
+
+async function salvarTermoAceiteAdmin() {
+    if (!usuarioEhAdmin) return;
+    const textarea = document.getElementById('termoAceiteAdmin');
+    const textoSanitizado = Security.sanitizarTexto(textarea ? textarea.value : '', 3000);
+
+    if (!textoSanitizado) {
+        UIFeedback.toast('Informe o texto do Termo de Aceite de Entrega.', 'alerta');
+        return;
+    }
+
+    try {
+        await db.collection('viecelli_config').doc('geral').set({
+            termoAceiteEntrega: textoSanitizado,
+            atualizadoPor: usuarioAtual.uid,
+            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+        aplicarTextoTermoAceite(textoSanitizado);
+        UIFeedback.toast('3. Termo de Aceite de Entrega atualizado!', 'sucesso');
+    } catch (error) {
+        console.error('Erro ao salvar termo de aceite:', error);
+        UIFeedback.toast('Erro ao salvar o termo no banco.', 'erro');
     }
 }
 
@@ -879,6 +951,12 @@ async function prepararPreviaPDF() {
         return;
     }
 
+    const checkLGPD = document.getElementById('checkLGPDCliente');
+    if (!checkLGPD || !checkLGPD.checked) {
+        UIFeedback.toast('Confirme o consentimento LGPD e a ciência da Política de Privacidade.', 'alerta');
+        return;
+    }
+
     const btnGerar = document.getElementById('btnGerarPDF');
     const textoOriginalBtn = btnGerar.innerHTML;
     btnGerar.disabled = true;
@@ -916,6 +994,8 @@ async function prepararPreviaPDF() {
         const obsMontagem = Security.sanitizarTexto(document.getElementById('obs_montagem').value, 300);
         document.getElementById('pdf-nota').textContent = notaValor;
         document.getElementById('pdf-obs-nota').textContent = obsMontagem ? `Obs: ${obsMontagem}` : '';
+
+        document.getElementById('pdf-termo-texto').textContent = termoAceiteEntrega;
 
         const status = document.querySelector('input[name="conformidade"]:checked').value;
         document.getElementById('pdf-status').textContent = status;
@@ -1030,7 +1110,10 @@ async function prepararPreviaPDF() {
             obsMontagem,
             status,
             qtdFotos: todasFotosPDF.length,
-            dataHoje
+            dataHoje,
+            lgpdAceito: true,
+            lgpdVersao: VERSAO_LGPD_POLITICA,
+            lgpdDataAceiteISO: new Date().toISOString()
         };
 
         abrirModalPreviaPDF(rascunhoPDFAtual);
@@ -1141,6 +1224,11 @@ async function confirmarEnvioPDF() {
                 notaMontagem: Number(d.notaValor),
                 obsMontagem: d.obsMontagem
             },
+            lgpd: {
+                aceito: d.lgpdAceito === true,
+                versao: d.lgpdVersao || VERSAO_LGPD_POLITICA,
+                dataAceiteISO: d.lgpdDataAceiteISO || new Date().toISOString()
+            },
             status: d.status,
             qtdFotosAnexadasNoPdf: d.qtdFotos,
             dataEntrega: d.dataHoje,
@@ -1195,6 +1283,8 @@ function limparFormularioCompleto() {
 
     document.getElementById('obs_montagem').value = '';
     document.getElementById('checkTermo').checked = false;
+    const checkLGPD = document.getElementById('checkLGPDCliente');
+    if (checkLGPD) checkLGPD.checked = false;
     limparCanvas('canvasCliente');
 
     document.getElementById('inputNrPedido').value = '';
