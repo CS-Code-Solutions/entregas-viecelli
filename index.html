@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-PT" class="h-full">
 <head>
-    <script src="js/anti-flicker.js?v=1"></script>
+    <script src="js/anti-flicker.js?v=2"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Viecelli - Termo de Aceite de Entrega de Obra</title>
     <link rel="icon" type="image/png" href="ico.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css?v=1">
+    <link rel="stylesheet" href="css/style.css?v=2">
 
     <!-- Firebase SDK Compat v10 -->
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -305,8 +305,8 @@
             </div>
         </div>
 
-        <!-- MODO ADMIN -->
-        <div id="viewAdmin" class="hidden space-y-4">
+        <!-- MODO ADMIN (RESTRITO A ADMINISTRADORES) -->
+        <div id="viewAdmin" class="admin-only-item hidden space-y-4">
             <div class="flex space-x-2 overflow-x-auto bg-slate-800 p-2 rounded-xl border border-slate-700">
                 <button onclick="mudarAbaAdmin('admin-relatorios', this)" class="aba-btn flex-1 py-2 px-3 bg-slate-700 text-white text-[11px] font-bold rounded-lg transition"><i class="fa-solid fa-chart-line mr-1"></i> Relatórios</button>
                 <button onclick="mudarAbaAdmin('admin-pedidos', this)" class="aba-btn flex-1 py-2 px-3 text-slate-400 hover:bg-slate-700/50 text-[11px] font-bold rounded-lg transition"><i class="fa-solid fa-box mr-1"></i> Pedidos</button>
@@ -339,12 +339,48 @@
                 </div>
             </div>
 
-            <div id="admin-config" class="aba-conteudo hidden bg-slate-800 border border-slate-700 rounded-xl p-4 shadow-lg space-y-4">
-                <h2 class="text-sm font-bold text-white border-b border-slate-700 pb-2">Configurações de E-mail</h2>
-                <div class="space-y-3 bg-slate-900 p-3 rounded-lg border border-slate-700">
-                    <label class="block text-[11px] text-slate-300 font-bold">E-mail Padrão do Sistema</label>
-                    <input type="email" id="emailPadraoAdmin" placeholder="entregas@viecelli.com.br" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-sm text-white">
-                    <button onclick="salvarEmailPadrao()" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold py-2 rounded-lg text-xs transition">Atualizar E-mail</button>
+            <div id="admin-config" class="aba-conteudo hidden bg-slate-800 border border-slate-700 rounded-xl p-4 shadow-lg space-y-6">
+                <!-- Bloco 1: E-mail Padrão -->
+                <div class="space-y-3">
+                    <h2 class="text-sm font-bold text-white border-b border-slate-700 pb-2"><i class="fa-solid fa-envelope text-amber-400 mr-1.5"></i> Configurações de E-mail</h2>
+                    <div class="space-y-3 bg-slate-900 p-3 rounded-lg border border-slate-700">
+                        <label class="block text-[11px] text-slate-300 font-bold">E-mail Padrão do Sistema</label>
+                        <input type="email" id="emailPadraoAdmin" placeholder="entregas@viecelli.com.br" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-sm text-white">
+                        <button onclick="salvarEmailPadrao()" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold py-2 rounded-lg text-xs transition">Atualizar E-mail</button>
+                    </div>
+                </div>
+
+                <!-- Bloco 2: Gestão de Usuários (Admin / Montador) -->
+                <div class="space-y-3">
+                    <h2 class="text-sm font-bold text-white border-b border-slate-700 pb-2"><i class="fa-solid fa-users-gear text-indigo-400 mr-1.5"></i> Gestão de Usuários e Permissões</h2>
+                    <div class="space-y-3 bg-slate-900 p-3 rounded-lg border border-slate-700">
+                        <input type="text" id="novoUsuarioNome" placeholder="Nome completo *" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs text-white">
+                        <input type="email" id="novoUsuarioEmail" placeholder="E-mail de acesso *" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs text-white">
+                        <input type="password" id="novoUsuarioSenha" placeholder="Senha inicial (mín. 6 caracteres) *" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs text-white">
+                        <div>
+                            <label class="block text-[10px] text-slate-400 mb-1">Nível de Acesso *</label>
+                            <select id="novoUsuarioRole" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
+                                <option value="montador">Montador (Apenas formulário em campo)</option>
+                                <option value="admin">Administrador (Acesso total + Painel Admin)</option>
+                            </select>
+                        </div>
+                        <button id="btnCadastrarUsuario" onclick="cadastrarUsuarioViecelli()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-lg text-xs transition flex items-center justify-center">
+                            <i class="fa-solid fa-user-plus mr-1.5"></i> Cadastrar Usuário
+                        </button>
+                    </div>
+
+                    <div class="overflow-x-auto mt-3">
+                        <table class="w-full text-left border-collapse text-[11px] whitespace-nowrap">
+                            <thead>
+                                <tr class="border-b border-slate-700 text-slate-400 bg-slate-900/50">
+                                    <th class="p-2">Usuário</th>
+                                    <th class="p-2">Perfil</th>
+                                    <th class="p-2 text-right">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabelaUsuariosAdmin" class="divide-y divide-slate-700/60"></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -444,9 +480,9 @@
     </div>
 
     <!-- Scripts Modulares -->
-    <script src="js/firebase-config.js?v=1"></script>
-    <script src="js/security.js?v=1"></script>
-    <script src="js/auth.js?v=1"></script>
-    <script src="js/app.js?v=1"></script>
+    <script src="js/firebase-config.js?v=2"></script>
+    <script src="js/security.js?v=2"></script>
+    <script src="js/auth.js?v=2"></script>
+    <script src="js/app.js?v=2"></script>
 </body>
 </html>
