@@ -31,7 +31,7 @@
         }
         .login-card {
             background: rgba(255, 255, 255, 0.95);
-            padding: 40px;
+            padding: 40px 40px 28px;
             border-radius: 16px;
             width: 90%;
             max-width: 400px;
@@ -96,6 +96,25 @@
             margin-bottom: 12px;
             border: 1px solid #fca5a5;
         }
+        .login-footer {
+            margin-top: 22px;
+            padding-top: 14px;
+            border-top: 1px solid #e2e8f0;
+            font-size: 12px;
+            color: #64748b;
+        }
+        .login-footer p {
+            margin: 0;
+        }
+        .login-footer a {
+            color: #b45309;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .login-footer a:hover {
+            color: #d97706;
+            text-decoration: underline;
+        }
         .hidden {
             display: none;
         }
@@ -118,6 +137,10 @@
             </div>
             <button type="submit" id="btnLogin" class="btn-login">Entrar no Sistema</button>
         </form>
+
+        <div class="login-footer">
+            <p>&copy; 2026 | Powered by <a href="https://cs-code-solutions.github.io/CS-Code-Solutions/" target="_blank" rel="noopener noreferrer"><strong>CS Code Solutions</strong></a></p>
+        </div>
     </div>
 
     <script src="js/firebase-config.js?v=1"></script>
